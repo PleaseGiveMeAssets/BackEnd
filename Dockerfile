@@ -17,7 +17,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # 7. 빌드된 WAR 파일을 복사
-COPY --from=build /app/build/libs/exploded/spring-1.0-SNAPSHOT.war /app/spring-1.0-SNAPSHOT.war
+COPY --from=build /app/build/libs/spring-1.0-SNAPSHOT.war /app/spring-1.0-SNAPSHOT.war
 
 # 8. 포트 설정
 EXPOSE 8080
