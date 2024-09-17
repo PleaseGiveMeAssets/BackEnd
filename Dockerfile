@@ -15,7 +15,7 @@ COPY src /app/src
 RUN mvn package -DskipTests
 
 # 6. Run stage with Tomcat
-FROM tomcat:9.0-jdk17-slim
+FROM tomcat:9.0-jdk17
 
 # 7. 작업 디렉토리 설정
 WORKDIR /usr/local/tomcat/webapps
