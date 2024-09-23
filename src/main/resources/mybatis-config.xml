@@ -10,9 +10,11 @@
 
     <typeAliases>
         <typeAlias type="com.example.spring.vo.ExampleVO" alias="ExampleVO"/>
+        <typeAlias type="com.example.spring.vo.OrderVO" alias="OrderVO"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/ExampleMapper.xml"/>
+        <mapper resource="mapper/OrderMapper.xml"/>
     </mappers>
 </configuration>
