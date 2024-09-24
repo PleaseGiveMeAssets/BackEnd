@@ -25,6 +25,13 @@ public class DailyRecommendController {
         this.dailyRecommendService = dailyRecommendService;
     }
 
+    /**
+     * 일일추천종목 조회
+     *
+     * @param userDetails
+     * @param date
+     * @return
+     */
     @GetMapping({"", "{date}"})
     public ResponseEntity<List<StockDTO>> getDailyRecommendStockInfo(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(value = "date", required = false) String date) {
         log.info("getDailyRecommendStockInfo userDetails : {}, date : {}", userDetails, date);
