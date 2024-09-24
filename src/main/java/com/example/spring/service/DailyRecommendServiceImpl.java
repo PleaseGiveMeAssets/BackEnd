@@ -22,11 +22,21 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
+    /**
+     * 일일추천종목 조회
+     * <p>
+     * 유저아이디와 날짜를 사용해 추천종목 리스트를 조회하는 메소드이다.
+     *
+     * @param userId
+     * @param date
+     * @return
+     */
     @Override
     public List<StockDTO> getDailyRecommendStockInfo(String userId, String date) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         List<StockVO> stockVOList = stockMapper.selectListRecommendStockByUserId(userId, date);
+        log.info("getDailyRecommendStockInfo stockVOList : {}", stockVOList);
 
         List<StockDTO> stockDTOList = new ArrayList<>();
         if (!stockVOList.isEmpty()) {
@@ -46,7 +56,6 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
                 stockDTOList.add(stockDTO);
             });
         }
-        log.info("getDailyRecommendStockInfo stockDTOList : {}", stockDTOList);
         return stockDTOList;
     }
 }
