@@ -34,7 +34,9 @@ public class DailyRecommendController {
      */
     @GetMapping({"", "{date}"})
     public ResponseEntity<List<StockDTO>> getDailyRecommendStockInfo(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(value = "date", required = false) String date) {
-        log.info("getDailyRecommendStockInfo userDetails : {}, date : {}", userDetails, date);
+        if (log.isInfoEnabled()) {
+            log.info("getDailyRecommendStockInfo userDetails : {}, date : {}", userDetails, date);
+        }
         return ResponseEntity.ok(dailyRecommendService.getDailyRecommendStockInfo(userDetails.getUsername(), date));
     }
 }
