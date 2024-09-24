@@ -36,7 +36,9 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         List<StockVO> stockVOList = stockMapper.selectListRecommendStockByUserId(userId, date);
-        log.info("getDailyRecommendStockInfo stockVOList : {}", stockVOList);
+        if (log.isInfoEnabled()) {
+            log.info("getDailyRecommendStockInfo stockVOList : {}", stockVOList);
+        }
 
         List<StockDTO> stockDTOList = new ArrayList<>();
         if (!stockVOList.isEmpty()) {
