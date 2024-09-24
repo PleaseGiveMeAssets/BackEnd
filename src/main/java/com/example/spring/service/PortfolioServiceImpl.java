@@ -19,7 +19,8 @@ import java.util.List;
 public class PortfolioServiceImpl implements PortfolioService {
     private final SqlSessionFactory sqlSessionFactory;
 
-    public List<OrderDTO> getPortfolio(String userId) {
+    @Override
+    public List<OrderDTO> getOrderList(String userId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
         List<OrderVO> orderVOList = portfolioMapper.findByUserId(userId);
@@ -28,7 +29,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         for (OrderVO orderVO : orderVOList) {
             orderDTOList.add(OrderDTO.of(orderVO));
         }
-        log.info("portfolioDTOList : {}", orderDTOList);
+        log.info("orderDTOList : {}", orderDTOList);
         log.info(System.getProperty("user.dir"));
         return orderDTOList;
     }

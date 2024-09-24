@@ -5,8 +5,7 @@
 <mapper namespace="com.example.spring.mapper.PortfolioMapper">
     <select id="findByUserId" resultType="OrderVO">
         SELECT *
-        FROM order
+        FROM `order`
         where userId=#{userId}
-<!--        where id=#{id}-->
     </select>
 </mapper>

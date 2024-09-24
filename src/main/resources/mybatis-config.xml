@@ -15,6 +15,6 @@
 
     <mappers>
         <mapper resource="mapper/ExampleMapper.xml"/>
-        <mapper resource="mapper/OrderMapper.xml"/>
+        <mapper resource="mapper/PortfolioMapper.xml"/>
     </mappers>
 </configuration>

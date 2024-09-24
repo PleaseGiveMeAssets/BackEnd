@@ -5,10 +5,7 @@ import com.example.spring.service.PortfolioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,13 +17,13 @@ public class PortfolioController {
     private final PortfolioService portfolioService;
 
     /**
-     * 유저 거래 내역 조회
+     * 유저 Order 내역 조회
      * UserId로 거래 목록을 조회한다.
      */
 
-    @GetMapping("/portfolio/{userId}")
-    public ResponseEntity<List<OrderDTO>> getPortfolio(@PathVariable String userId) {
-        List<OrderDTO> orderDTOList = portfolioService.getPortfolio(userId);
+    @GetMapping("/portfolio")
+    public ResponseEntity<List<OrderDTO>> getPortfolio(@RequestParam("userId") String userId) {
+        List<OrderDTO> orderDTOList = portfolioService.getOrderList(userId);
         return ResponseEntity.ok(orderDTOList);
     }
 }
