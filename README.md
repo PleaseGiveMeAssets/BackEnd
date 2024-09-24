@@ -27,7 +27,6 @@
 feat    | 새로운 기능 추가
 docs	| 문서 수정
 fix	    | 버그 수정
-docs	| 문서 수정
 test    | 테스트 코드, 리팩토링 테스트 코드 추가
 refactor| 코드 리팩토링
 build   | 빌드 파일 수정
