@@ -19,7 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @WebAppConfiguration
-public class ExampleControllerTest {
+public class DailyRecommendControllerTest {
     @Autowired
     private WebApplicationContext context;
 
@@ -31,9 +31,10 @@ public class ExampleControllerTest {
     }
 
     @Test
-    public void getListExample() throws Exception {
-        String uri = "/api/v1/example/list";
-        MockHttpServletRequestBuilder mockRequestBuilder = MockMvcRequestBuilders.get(uri);
+    public void getDailyRecommendStockInfo() throws Exception {
+        StringBuilder uri = new StringBuilder("/api/v1/dailyrecommend/");
+        StringBuilder date = new StringBuilder("2024-09-13");
+        MockHttpServletRequestBuilder mockRequestBuilder = MockMvcRequestBuilders.get(uri.append(date).toString());
         ResultActions resultActions = mockMvc.perform(mockRequestBuilder);
         resultActions.andExpect(MockMvcResultMatchers.status().isOk());
     }
