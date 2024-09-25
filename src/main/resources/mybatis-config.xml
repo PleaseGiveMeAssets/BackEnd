@@ -11,9 +11,13 @@
     <typeAliases>
         <typeAlias type="com.example.spring.vo.RecommendStockVO" alias="RecommendStockVO"/>
         <typeAlias type="com.example.spring.vo.StockVO" alias="StockVO"/>
+        <typeAlias type="com.example.spring.vo.OrderVO" alias="OrderVO"/>
+        <typeAlias type="com.example.spring.vo.UserVO" alias="UserVO"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/StockMapper.xml"/>
+        <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/OrderMapper.xml"/>
     </mappers>
 </configuration>
