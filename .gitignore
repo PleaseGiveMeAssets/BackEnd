@@ -16,7 +16,7 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-!**/src/main/**/application.properties/
+/src/main/resources/application.properties
 
 
 ### Eclipse ###
