@@ -22,10 +22,10 @@
         WHERE USER_ID = #{userId}
         <choose>
             <when test="date != null and date != ''">
-                AND DATE_FORMAT('YYYY-MM-DD', rs.CREATED_AT) LIKE CONCAT('%', #{date}, '%');
+                AND DATE_FORMAT(rs.CREATED_AT, '%Y-%m-%d') LIKE CONCAT('%', #{date}, '%');
             </when>
             <otherwise>
-                AND DATE_FORMAT('YYYY-MM-DD', rs.CREATED_AT) = DATE_FORMAT('YYYY-MM-DD', CURRENT_TIMESTAMP)
+                AND DATE_FORMAT(rs.CREATED_AT, '%Y-%m-%d') = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y-%m-%d')
             </otherwise>
         </choose>
     </select>
