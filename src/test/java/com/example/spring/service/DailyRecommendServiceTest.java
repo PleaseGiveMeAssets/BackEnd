@@ -1,7 +1,7 @@
 package com.example.spring.service;
 
 import com.example.spring.config.AppConfig;
-import com.example.spring.dto.StockDTO;
+import com.example.spring.dto.DailyStockDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ public class DailyRecommendServiceTest {
 
     @Test
     public void getDailyRecommendStockInfo() {
-        String userId = "testUser";
-        String date = "2024-09-13";
-        List<StockDTO> stockDTOList = dailyRecommendService.getDailyRecommendStockInfo(userId, date);
-        assertTrue(stockDTOList.size() > 0);
+        String userId = "testUser1";
+        String date = "2024-09-26";
+        List<DailyStockDTO> dailyStockDTOList = dailyRecommendService.getDailyRecommendStockInfo(userId, date);
+        assertTrue(dailyStockDTOList.size() > 0);
     }
 }

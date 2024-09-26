@@ -22,8 +22,8 @@ public class StockMapperTest {
 
     @Test
     public void selectListRecommendStockByUserId() {
-        String userId = "testUser";
-        String date = "date";
+        String userId = "testUser1";
+        String date = "2024-09-26";
         List<StockVO> stockVOList = stockMapper.selectListRecommendStockByUserId(userId, date);
         assertTrue(stockVOList.size() > 0);
     }
