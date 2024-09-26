@@ -1,7 +1,7 @@
 package com.example.spring.service;
 
 import com.example.spring.config.AppConfig;
-import com.example.spring.dto.DailyStockDTO;
+import com.example.spring.dto.DailyTrendReportDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,22 +9,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @WebAppConfiguration
-public class DailyRecommendServiceTest {
+public class DailyTrendServiceTest {
     @Autowired
-    private DailyRecommendService dailyRecommendService;
+    private DailyTrendService dailyTrendService;
 
     @Test
-    public void getDailyRecommendStockInfo() {
+    public void getDailyTrendInfo() {
         String userId = "testUser1";
-        String date = "2024-09-26";
-        List<DailyStockDTO> dailyStockDTOList = dailyRecommendService.getDailyRecommendStockInfo(userId, date);
-        assertTrue(dailyStockDTOList.size() > 0);
+        DailyTrendReportDTO dailyReportDTO = dailyTrendService.getDailyTrendInfo(userId);
+        assertNotNull(dailyReportDTO);
     }
 }
