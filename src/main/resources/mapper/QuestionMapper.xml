@@ -4,11 +4,20 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.QuestionMapper">
 
+    <!-- 질문 조회 -->
     <select id="selectSurveyQuestion" parameterType="int" resultType="com.example.spring.vo.QuestionVO">
         SELECT QUESTION_ID as questionId, CONTENT as content
         FROM QUESTION
         WHERE QUESTION_ID = #{questionId}
     </select>
+
+    <!-- 특정 질문에 대한 옵션을 조회 -->
+    <select id="selectOptionsByQuestionId" parameterType="int" resultType="com.example.spring.vo.QuestionOptionVO">
+        SELECT QUESTION_OPTION_ID as questionOptionId, QUESTION_ID as questionId, CONTENT as content, SCORE as score
+        FROM QUESTION_OPTION
+        WHERE QUESTION_ID = #{questionId}
+    </select>
+
 
 
 </mapper>
