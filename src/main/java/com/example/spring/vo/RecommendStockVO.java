@@ -10,9 +10,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecommendStockVO {
-    private int recommendStockId;
-    private int stockId;
+    private long recommendStockId;
     private String userId;
+    private long stockId;
+    private String shortCode;
     private String Content;
     private int price;
     private Timestamp createdAt;
