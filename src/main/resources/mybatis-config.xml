@@ -14,12 +14,14 @@
         <typeAlias type="com.example.spring.vo.OrderVO" alias="OrderVO"/>
         <typeAlias type="com.example.spring.vo.UserVO" alias="UserVO"/>
         <typeAlias type="com.example.spring.vo.DailyReportVO" alias="DailyReportVO"/>
+        <typeAlias type="com.example.spring.vo.QuestionVO" alias="QuestionVO"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/StockMapper.xml"/>
-        <mapper resource="mapper/UserMapper.xml"/>
+<!--        <mapper resource="mapper/UserMapper.xml"/>-->
         <mapper resource="mapper/OrderMapper.xml"/>
         <mapper resource="mapper/DailyReportMapper.xml"/>
+        <mapper resource="mapper/QuestionMapper.xml"/>
     </mappers>
 </configuration>
