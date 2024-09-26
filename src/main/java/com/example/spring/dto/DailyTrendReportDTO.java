@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DailyReportDTO {
+public class DailyTrendReportDTO {
     private long dailyReportId;
     private String userId;
     private String recentTrendTitle;
@@ -25,5 +25,4 @@ public class DailyReportDTO {
     private String dailyTrendSummarizedTitle;
     private String dailyTrendSummarizedContent;
     private Timestamp createdAt;
-    private Timestamp updatedAt;
 }
