@@ -1,7 +1,7 @@
-package com.example.spring.service;
+package com.example.spring.mapper;
 
 import com.example.spring.config.AppConfig;
-import com.example.spring.dto.ExampleDTO;
+import com.example.spring.vo.StockVO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @WebAppConfiguration
-public class ExampleServiceTest {
+public class StockMapperTest {
     @Autowired
-    private ExampleService exampleService;
+    private StockMapper stockMapper;
 
     @Test
-    public void getListExample() {
-        List<ExampleDTO> exampleDTOList = exampleService.getListExample();
-        assertTrue(exampleDTOList.size() > 0);
+    public void selectListRecommendStockByUserId() {
+        String userId = "testUser";
+        String date = "date";
+        List<StockVO> stockVOList = stockMapper.selectListRecommendStockByUserId(userId, date);
+        assertTrue(stockVOList.size() > 0);
     }
 }
