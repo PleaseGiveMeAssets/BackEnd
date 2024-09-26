@@ -14,6 +14,7 @@
         <typeAlias type="com.example.spring.vo.OrderVO" alias="OrderVO"/>
         <typeAlias type="com.example.spring.vo.UserVO" alias="UserVO"/>
         <typeAlias type="com.example.spring.vo.DailyReportVO" alias="DailyReportVO"/>
+        <typeAlias type="com.example.spring.vo.PortfolioVO" alias="PortfolioVO"/>
     </typeAliases>
 
     <mappers>

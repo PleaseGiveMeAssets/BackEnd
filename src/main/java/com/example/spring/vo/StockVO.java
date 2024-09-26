@@ -15,6 +15,7 @@ public class StockVO {
     private String shortCode;
     private int subCategoryId;
     private List<RecommendStockVO> recommendStockVOList;
+    private List<PortfolioVO> portfolioVOList;
     private String stockName;
     private String standardCode;
     private char stockExchangeMarket;
