@@ -9,10 +9,11 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="com.example.spring.vo.ExampleVO" alias="ExampleVO"/>
+        <typeAlias type="com.example.spring.vo.StockVO" alias="StockVO"/>
+        <typeAlias type="com.example.spring.dto.MyStockDTO" alias="MyStockDTO"/>
     </typeAliases>
 
     <mappers>
-        <mapper resource="mapper/ExampleMapper.xml"/>
+        <mapper resource="mapper/SearchMapper.xml"/>
     </mappers>
 </configuration>
