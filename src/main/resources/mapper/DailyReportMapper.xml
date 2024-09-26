@@ -17,9 +17,8 @@
         , DAILY_TREND_SUMMARIZED_TITLE AS dailyTrendSummarizedTitle
         , DAILY_TREND_SUMMARIZED_CONTENT AS dailyTrendSummarizedContent
         , CREATED_AT AS createdAt
-        , UPDATED_AT AS updatedAt
         FROM DAILY_REPORT
-        WHERE USER_ID = 'testUser'
+        WHERE USER_ID = #{userId}
         AND DATE_FORMAT(CREATED_AT, '%Y-%m-%d') = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y-%m-%d')
     </select>
 </mapper>

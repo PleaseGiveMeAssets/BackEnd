@@ -1,7 +1,7 @@
 package com.example.spring.service;
 
-import com.example.spring.dto.DailyReportDTO;
+import com.example.spring.dto.DailyTrendReportDTO;
 
 public interface DailyTrendService {
-    public DailyReportDTO getDailyTrendInfo(String userId);
+    public DailyTrendReportDTO getDailyTrendInfo(String userId);
 }
