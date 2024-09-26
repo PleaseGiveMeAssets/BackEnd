@@ -10,7 +10,8 @@
 
     <typeAliases>
         <typeAlias type="com.example.spring.vo.ExampleVO" alias="ExampleVO"/>
-        <typeAlias type="com.example.spring.vo.OrderVO" alias="OrderVO"/>
+        <typeAlias type="com.example.spring.vo.PortfolioVO" alias="PortfolioVO"/>
+        <typeAlias type="com.example.spring.dto.ForChartDTO" alias="ForChartDTO"/>
     </typeAliases>
 
     <mappers>

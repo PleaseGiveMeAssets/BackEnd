@@ -1,0 +1,310 @@
+Index: src/main/resources/mybatis-config.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<!DOCTYPE configuration\r\n        PUBLIC \"-//mybatis.org//DTD Config 3.0//EN\"\r\n        \"http://mybatis.org/dtd/mybatis-3-config.dtd\">\r\n\r\n<configuration>\r\n    <settings>\r\n        <setting name=\"mapUnderscoreToCamelCase\" value=\"true\"/>\r\n    </settings>\r\n\r\n    <typeAliases>\r\n        <typeAlias type=\"com.example.spring.vo.ExampleVO\" alias=\"ExampleVO\"/>\r\n    </typeAliases>\r\n\r\n    <mappers>\r\n        <mapper resource=\"mapper/ExampleMapper.xml\"/>\r\n    </mappers>\r\n</configuration>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/mybatis-config.xml b/src/main/resources/mybatis-config.xml
+--- a/src/main/resources/mybatis-config.xml	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ b/src/main/resources/mybatis-config.xml	(date 1727225919443)
+@@ -9,10 +9,10 @@
+     </settings>
+ 
+     <typeAliases>
+-        <typeAlias type="com.example.spring.vo.ExampleVO" alias="ExampleVO"/>
++        <typeAlias type="com.example.spring.vo.SearchVO" alias="ExampleVO"/>
+     </typeAliases>
+ 
+     <mappers>
+-        <mapper resource="mapper/ExampleMapper.xml"/>
++        <mapper resource="mapper/SearchMapper.xml"/>
+     </mappers>
+ </configuration>
+Index: src/main/resources/mapper/ExampleMapper.xml
+===================================================================
+diff --git a/src/main/resources/mapper/ExampleMapper.xml b/src/main/resources/mapper/ExampleMapper.xml
+deleted file mode 100644
+--- a/src/main/resources/mapper/ExampleMapper.xml	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8" ?>
+-<!DOCTYPE mapper
+-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+-<mapper namespace="com.example.spring.mapper.ExampleMapper">
+-    <select id="findAll" resultType="ExampleVO">
+-        SELECT *
+-        FROM example
+-    </select>
+-</mapper>
+Index: src/test/java/com/example/spring/service/ExampleServiceTest.java
+===================================================================
+diff --git a/src/test/java/com/example/spring/service/ExampleServiceTest.java b/src/test/java/com/example/spring/service/ExampleServiceTest.java
+deleted file mode 100644
+--- a/src/test/java/com/example/spring/service/ExampleServiceTest.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,28 +0,0 @@
+-package com.example.spring.service;
+-
+-import com.example.spring.config.AppConfig;
+-import com.example.spring.dto.ExampleDTO;
+-import org.junit.jupiter.api.Test;
+-import org.junit.jupiter.api.extension.ExtendWith;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.test.context.ContextConfiguration;
+-import org.springframework.test.context.junit.jupiter.SpringExtension;
+-import org.springframework.test.context.web.WebAppConfiguration;
+-
+-import java.util.List;
+-
+-import static org.junit.jupiter.api.Assertions.assertTrue;
+-
+-@ExtendWith(SpringExtension.class)
+-@ContextConfiguration(classes = AppConfig.class)
+-@WebAppConfiguration
+-public class ExampleServiceTest {
+-    @Autowired
+-    private ExampleService exampleService;
+-
+-    @Test
+-    public void getListExample() {
+-        List<ExampleDTO> exampleDTOList = exampleService.getListExample();
+-        assertTrue(exampleDTOList.size() > 0);
+-    }
+-}
+Index: src/main/java/com/example/spring/controller/ExampleController.java
+===================================================================
+diff --git a/src/main/java/com/example/spring/controller/ExampleController.java b/src/main/java/com/example/spring/controller/ExampleController.java
+deleted file mode 100644
+--- a/src/main/java/com/example/spring/controller/ExampleController.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,29 +0,0 @@
+-package com.example.spring.controller;
+-
+-import com.example.spring.dto.ExampleDTO;
+-import com.example.spring.service.ExampleService;
+-import lombok.extern.slf4j.Slf4j;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.http.ResponseEntity;
+-import org.springframework.web.bind.annotation.GetMapping;
+-import org.springframework.web.bind.annotation.RequestMapping;
+-import org.springframework.web.bind.annotation.RestController;
+-
+-import java.util.List;
+-
+-@RestController
+-@RequestMapping("/api/v1/example")
+-@Slf4j
+-public class ExampleController {
+-    private ExampleService exampleService;
+-
+-    @Autowired
+-    public ExampleController(ExampleService exampleService) {
+-        this.exampleService = exampleService;
+-    }
+-
+-    @GetMapping("/list")
+-    public ResponseEntity<List<ExampleDTO>> getListExample() {
+-        return ResponseEntity.ok(exampleService.getListExample());
+-    }
+-}
+Index: src/main/java/com/example/spring/service/ExampleServiceImpl.java
+===================================================================
+diff --git a/src/main/java/com/example/spring/service/ExampleServiceImpl.java b/src/main/java/com/example/spring/service/ExampleServiceImpl.java
+deleted file mode 100644
+--- a/src/main/java/com/example/spring/service/ExampleServiceImpl.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,39 +0,0 @@
+-package com.example.spring.service;
+-
+-import com.example.spring.dto.ExampleDTO;
+-import com.example.spring.mapper.ExampleMapper;
+-import com.example.spring.vo.ExampleVO;
+-import lombok.extern.slf4j.Slf4j;
+-import org.apache.ibatis.session.SqlSession;
+-import org.apache.ibatis.session.SqlSessionFactory;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.stereotype.Service;
+-
+-import java.util.ArrayList;
+-import java.util.List;
+-
+-@Service
+-@Slf4j
+-public class ExampleServiceImpl implements ExampleService {
+-    private SqlSessionFactory sqlSessionFactory;
+-
+-    @Autowired
+-    public ExampleServiceImpl(SqlSessionFactory sqlSessionFactory) {
+-        this.sqlSessionFactory = sqlSessionFactory;
+-    }
+-
+-    @Override
+-    public List<ExampleDTO> getListExample() {
+-        SqlSession sqlSession = sqlSessionFactory.openSession();
+-        ExampleMapper exampleMapper = sqlSession.getMapper(ExampleMapper.class);
+-        List<ExampleVO> exampleVOList = exampleMapper.findAll();
+-
+-        List<ExampleDTO> exampleDTOList = new ArrayList<>();
+-        for (ExampleVO exampleVO : exampleVOList) {
+-            exampleDTOList.add(ExampleDTO.of(exampleVO));
+-        }
+-        log.info("exampleDTOList : {}", exampleDTOList);
+-        log.info(System.getProperty("user.dir"));
+-        return exampleDTOList;
+-    }
+-}
+Index: src/main/java/com/example/spring/domain/Example.java
+===================================================================
+diff --git a/src/main/java/com/example/spring/domain/Example.java b/src/main/java/com/example/spring/domain/Example.java
+deleted file mode 100644
+--- a/src/main/java/com/example/spring/domain/Example.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,4 +0,0 @@
+-package com.example.spring.domain;
+-
+-public class Example {
+-}
+Index: src/main/java/com/example/spring/mapper/ExampleMapper.java
+===================================================================
+diff --git a/src/main/java/com/example/spring/mapper/ExampleMapper.java b/src/main/java/com/example/spring/mapper/ExampleMapper.java
+deleted file mode 100644
+--- a/src/main/java/com/example/spring/mapper/ExampleMapper.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,11 +0,0 @@
+-package com.example.spring.mapper;
+-
+-import com.example.spring.vo.ExampleVO;
+-import org.apache.ibatis.annotations.Mapper;
+-
+-import java.util.List;
+-
+-@Mapper
+-public interface ExampleMapper {
+-    List<ExampleVO> findAll();
+-}
+Index: src/test/java/com/example/spring/mapper/ExampleMapperTest.java
+===================================================================
+diff --git a/src/test/java/com/example/spring/mapper/ExampleMapperTest.java b/src/test/java/com/example/spring/mapper/ExampleMapperTest.java
+deleted file mode 100644
+--- a/src/test/java/com/example/spring/mapper/ExampleMapperTest.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,28 +0,0 @@
+-package com.example.spring.mapper;
+-
+-import com.example.spring.config.AppConfig;
+-import com.example.spring.vo.ExampleVO;
+-import org.junit.jupiter.api.Test;
+-import org.junit.jupiter.api.extension.ExtendWith;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.test.context.ContextConfiguration;
+-import org.springframework.test.context.junit.jupiter.SpringExtension;
+-import org.springframework.test.context.web.WebAppConfiguration;
+-
+-import java.util.List;
+-
+-import static org.junit.jupiter.api.Assertions.assertTrue;
+-
+-@ExtendWith(SpringExtension.class)
+-@ContextConfiguration(classes = AppConfig.class)
+-@WebAppConfiguration
+-public class ExampleMapperTest {
+-    @Autowired
+-    private ExampleMapper exampleMapper;
+-
+-    @Test
+-    public void findAll() {
+-        List<ExampleVO> exampleVOList = exampleMapper.findAll();
+-        assertTrue(exampleVOList.size() > 0);
+-    }
+-}
+Index: src/main/java/com/example/spring/dto/ExampleDTO.java
+===================================================================
+diff --git a/src/main/java/com/example/spring/dto/ExampleDTO.java b/src/main/java/com/example/spring/dto/ExampleDTO.java
+deleted file mode 100644
+--- a/src/main/java/com/example/spring/dto/ExampleDTO.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,19 +0,0 @@
+-package com.example.spring.dto;
+-
+-import com.example.spring.vo.ExampleVO;
+-import lombok.AllArgsConstructor;
+-import lombok.Getter;
+-import lombok.NoArgsConstructor;
+-import lombok.Setter;
+-
+-@Getter
+-@Setter
+-@NoArgsConstructor
+-@AllArgsConstructor
+-public class ExampleDTO {
+-    private String example;
+-
+-    public static ExampleDTO of(ExampleVO exampleVO) {
+-        return new ExampleDTO(exampleVO.getExample());
+-    }
+-}
+Index: src/test/java/com/example/spring/controller/ExampleControllerTest.java
+===================================================================
+diff --git a/src/test/java/com/example/spring/controller/ExampleControllerTest.java b/src/test/java/com/example/spring/controller/ExampleControllerTest.java
+deleted file mode 100644
+--- a/src/test/java/com/example/spring/controller/ExampleControllerTest.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,40 +0,0 @@
+-package com.example.spring.controller;
+-
+-import com.example.spring.config.AppConfig;
+-import org.junit.jupiter.api.BeforeEach;
+-import org.junit.jupiter.api.Test;
+-import org.junit.jupiter.api.extension.ExtendWith;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.test.context.ContextConfiguration;
+-import org.springframework.test.context.junit.jupiter.SpringExtension;
+-import org.springframework.test.context.web.WebAppConfiguration;
+-import org.springframework.test.web.servlet.MockMvc;
+-import org.springframework.test.web.servlet.ResultActions;
+-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+-import org.springframework.web.context.WebApplicationContext;
+-
+-@ExtendWith(SpringExtension.class)
+-@ContextConfiguration(classes = AppConfig.class)
+-@WebAppConfiguration
+-public class ExampleControllerTest {
+-    @Autowired
+-    private WebApplicationContext context;
+-
+-    private MockMvc mockMvc;
+-
+-    @BeforeEach
+-    public void setup() {
+-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+-    }
+-
+-    @Test
+-    public void getListExample() throws Exception {
+-        String uri = "/api/v1/example/list";
+-        MockHttpServletRequestBuilder mockRequestBuilder = MockMvcRequestBuilders.get(uri);
+-        ResultActions resultActions = mockMvc.perform(mockRequestBuilder);
+-        resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+-    }
+-}
+Index: src/main/java/com/example/spring/service/ExampleService.java
+===================================================================
+diff --git a/src/main/java/com/example/spring/service/ExampleService.java b/src/main/java/com/example/spring/service/ExampleService.java
+deleted file mode 100644
+--- a/src/main/java/com/example/spring/service/ExampleService.java	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
++++ /dev/null	(revision d5b9f7897fe2d1d977b284494629e9be636dfc08)
+@@ -1,9 +0,0 @@
+-package com.example.spring.service;
+-
+-import com.example.spring.dto.ExampleDTO;
+-
+-import java.util.List;
+-
+-public interface ExampleService {
+-    public List<ExampleDTO> getListExample();
+-}

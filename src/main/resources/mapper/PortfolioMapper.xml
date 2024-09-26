@@ -3,9 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.PortfolioMapper">
-    <select id="findByUserId" resultType="OrderVO">
-        SELECT *
-        FROM `order`
-        where userId=#{userId}
+    <select id="findByUserId" resultType="ForChartDTO">
+        SELECT
+        s.STOCK_NAME,
+        SUM(CASE WHEN o.ORDER_TYPE = '0' THEN o.QUANTITY ELSE -o.QUANTITY END) AS total_quantity,
+        SUM(CASE WHEN o.ORDER_TYPE = '0' THEN o.QUANTITY * o.PRICE ELSE -o.QUANTITY * o.PRICE END) AS total_price
+        FROM
+        `PORTFOLIO` o
+        JOIN
+        `STOCK` s ON o.STOCK_ID = s.STOCK_ID
+        WHERE
+        o.USER_ID =#{userId}
+        GROUP BY
+        s.STOCK_NAME;
     </select>
 </mapper>

@@ -11,20 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderVO {
-    /**
-     [
-       {
-        "orderId": ,
-        "userId":  ,
-        "stockId":  ,
-        "price":  ,
-        "quantity" : ,
-        "memo" : ,
-        "orderType" :
-       }
-     ]
-     **/
+public class PortfolioVO {
+
     private int orderId;
     private int userId;
     private int stockId;
@@ -36,6 +24,4 @@ public class OrderVO {
     private LocalDateTime orderedAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-
 }
