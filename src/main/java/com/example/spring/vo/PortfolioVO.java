@@ -4,18 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecommendStockVO {
-    private long recommendStockId;
+public class PortfolioVO {
+    private int portfolioId;
     private String userId;
-    private long stockId;
+    private int stockId;
     private String shortCode;
-    private String Content;
     private int price;
+    private int quantity;
+    private String memo;
+    private char orderType;
+    private Date orderedAt;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

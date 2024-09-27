@@ -22,7 +22,7 @@ public class DailyReportMapperTest {
 
     @Test
     public void selectDailyReportByUserId() {
-        String userId = "testUser";
+        String userId = "testUser1";
         List<DailyReportVO> dailyReportVOList = dailyReportMapper.selectDailyReportByUserId(userId);
         assertTrue(dailyReportVOList.size() > 0);
     }

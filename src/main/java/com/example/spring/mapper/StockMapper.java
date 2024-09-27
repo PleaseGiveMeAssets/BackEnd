@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper
 public interface StockMapper {
     List<StockVO> selectListRecommendStockByUserId(@Param("userId") String userId, @Param("date") String date);
+
+    List<StockVO> selectListPortfolioByUserId(String userId);
 }

@@ -1,6 +1,6 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.DailyReportDTO;
+import com.example.spring.dto.DailyTrendReportDTO;
 import com.example.spring.service.DailyTrendService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class DailyTrendController {
     }
 
     @GetMapping
-    public ResponseEntity<DailyReportDTO> getDailyTrendInfo(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<DailyTrendReportDTO> getDailyTrendInfo(@AuthenticationPrincipal UserDetails userDetails) {
         if (log.isInfoEnabled()) {
             log.info("getDailyTrendInfo userDetails : {}", userDetails);
         }

@@ -1,6 +1,6 @@
 package com.example.spring.service;
 
-import com.example.spring.dto.DailyReportDTO;
+import com.example.spring.dto.DailyTrendReportDTO;
 import com.example.spring.mapper.DailyReportMapper;
 import com.example.spring.vo.DailyReportVO;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class DailyTrendServiceImpl implements DailyTrendService {
     }
 
     @Override
-    public DailyReportDTO getDailyTrendInfo(String userId) {
+    public DailyTrendReportDTO getDailyTrendInfo(String userId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DailyReportMapper dailyReportMapper = sqlSession.getMapper(DailyReportMapper.class);
         List<DailyReportVO> dailyReportVOList = dailyReportMapper.selectDailyReportByUserId(userId);
@@ -30,23 +30,22 @@ public class DailyTrendServiceImpl implements DailyTrendService {
             log.info("getDailyTrendInfo dailyReportVOList : {}", dailyReportVOList);
         }
 
-        DailyReportDTO dailyReportDTO = new DailyReportDTO();
+        DailyTrendReportDTO dailyTrendReportDTO = new DailyTrendReportDTO();
         if (!dailyReportVOList.isEmpty()) {
-            dailyReportDTO.setDailyReportId(dailyReportVOList.get(0).getDailyReportId());
-            dailyReportDTO.setUserId(dailyReportVOList.get(0).getUserId());
-            dailyReportDTO.setRecentTrendTitle(dailyReportVOList.get(0).getRecentTrendTitle());
-            dailyReportDTO.setRecentTrendContent(dailyReportVOList.get(0).getRecentTrendContent());
-            dailyReportDTO.setStockTrendTitle(dailyReportVOList.get(0).getStockTrendTitle());
-            dailyReportDTO.setStockTrendContent(dailyReportVOList.get(0).getStockTrendContent());
-            dailyReportDTO.setKosdaqPrice(dailyReportVOList.get(0).getKosdaqPrice());
-            dailyReportDTO.setKosdaqProfitRate(dailyReportVOList.get(0).getKosdaqProfitRate());
-            dailyReportDTO.setKospiPrice(dailyReportVOList.get(0).getKospiPrice());
-            dailyReportDTO.setKospiProfitRate(dailyReportVOList.get(0).getKospiProfitRate());
-            dailyReportDTO.setDailyTrendSummarizedTitle(dailyReportVOList.get(0).getDailyTrendSummarizedTitle());
-            dailyReportDTO.setDailyTrendSummarizedContent(dailyReportVOList.get(0).getDailyTrendSummarizedContent());
-            dailyReportDTO.setCreatedAt(dailyReportVOList.get(0).getCreatedAt());
-            dailyReportDTO.setUpdatedAt(dailyReportVOList.get(0).getUpdatedAt());
+            dailyTrendReportDTO.setDailyReportId(dailyReportVOList.get(0).getDailyReportId());
+            dailyTrendReportDTO.setUserId(dailyReportVOList.get(0).getUserId());
+            dailyTrendReportDTO.setRecentTrendTitle(dailyReportVOList.get(0).getRecentTrendTitle());
+            dailyTrendReportDTO.setRecentTrendContent(dailyReportVOList.get(0).getRecentTrendContent());
+            dailyTrendReportDTO.setStockTrendTitle(dailyReportVOList.get(0).getStockTrendTitle());
+            dailyTrendReportDTO.setStockTrendContent(dailyReportVOList.get(0).getStockTrendContent());
+            dailyTrendReportDTO.setKosdaqPrice(dailyReportVOList.get(0).getKosdaqPrice());
+            dailyTrendReportDTO.setKosdaqProfitRate(dailyReportVOList.get(0).getKosdaqProfitRate());
+            dailyTrendReportDTO.setKospiPrice(dailyReportVOList.get(0).getKospiPrice());
+            dailyTrendReportDTO.setKospiProfitRate(dailyReportVOList.get(0).getKospiProfitRate());
+            dailyTrendReportDTO.setDailyTrendSummarizedTitle(dailyReportVOList.get(0).getDailyTrendSummarizedTitle());
+            dailyTrendReportDTO.setDailyTrendSummarizedContent(dailyReportVOList.get(0).getDailyTrendSummarizedContent());
+            dailyTrendReportDTO.setCreatedAt(dailyReportVOList.get(0).getCreatedAt());
         }
-        return dailyReportDTO;
+        return dailyTrendReportDTO;
     }
 }

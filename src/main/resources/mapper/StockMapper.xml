@@ -4,19 +4,25 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.StockMapper">
     <resultMap id="selectListRecommendStockByUserIdResultMap" type="StockVO" autoMapping="true">
-        <id property="stockId" column="stock_id"/>
+        <id property="stockId" column="stockId"/>
         <collection property="recommendStockVOList" ofType="RecommendStockVO" autoMapping="true">
+        </collection>
+    </resultMap>
+
+    <resultMap id="selectListPortfolioByUserIdResultMap" type="StockVO" autoMapping="true">
+        <id property="stockId" column="stockId"/>
+        <collection property="portfolioVOList" ofType="PortfolioVO" autoMapping="true">
         </collection>
     </resultMap>
 
     <select id="selectListRecommendStockByUserId" parameterType="map"
             resultMap="selectListRecommendStockByUserIdResultMap">
-        SELECT rs.USER_ID AS userId
-        , rs. RECOMMEND_STOCK_ID AS recommendStockId
-        , rs.CONTENT AS content
-        , s.STOCK_ID AS stockId
-        , s.STOCK_NAME as stockName
+        SELECT s.STOCK_ID AS stockId
         , s.SHORT_CODE AS shortCode
+        , s.STOCK_NAME as stockName
+        , rs.RECOMMEND_STOCK_ID AS recommendStockId
+        , rs.USER_ID AS userId
+        , rs.CONTENT AS content
         FROM RECOMMEND_STOCK rs
         JOIN STOCK s ON rs.STOCK_ID = s.STOCK_ID
         WHERE USER_ID = #{userId}
@@ -28,5 +34,21 @@
                 AND DATE_FORMAT(rs.CREATED_AT, '%Y-%m-%d') = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y-%m-%d')
             </otherwise>
         </choose>
+    </select>
+
+    <select id="selectListPortfolioByUserId" parameterType="string" resultMap="selectListPortfolioByUserIdResultMap">
+        SELECT s.STOCK_ID AS stockId
+        , s.SHORT_CODE AS shortCode
+        , s.STOCK_NAME AS stockName
+        , s.STOCK_TRADE_STATUS AS stockTradeStatus
+        , p.PORTFOLIO_ID AS portfolioId
+        , p.USER_ID AS userId
+        , p.PRICE AS price
+        , p.QUANTITY AS quantity
+        , p.ORDER_TYPE AS orderType
+        FROM STOCK s
+        JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
+        AND s.SHORT_CODE = p.SHORT_CODE
+        AND p.USER_ID = #{userId}
     </select>
 </mapper>
