@@ -11,13 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockVO {
-    private long stockId;
-    private String shortCode;
-    private int subCategoryId;
-    private List<RecommendStockVO> recommendStockVOList;
-    private List<PortfolioVO> portfolioVOList;
-    private String stockName;
+    private Long stockId;
     private String standardCode;
+    private Long subCategoryId;
+    private String shortCode;
+    private List<RecommendStockVO> recommendStockVOList;
+    private String stockName;
     private char stockExchangeMarket;
     private String marketCapitalization;
     private int openPrice;

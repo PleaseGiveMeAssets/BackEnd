@@ -1,24 +1,21 @@
-package com.example.spring.vo;
+package com.example.spring.dto;
 
+import com.example.spring.util.OrderTypeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortfolioVO {
-    private Long portfolioId;
-    private String userId;
-    private Long stockId;
-    private String shortCode;
+public class PortfolioDTO {
     private Long price;
     private Long quantity;
     private String memo;
-    private char orderType;
+    private OrderTypeStatus orderType;
     private Timestamp orderedAt;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 }

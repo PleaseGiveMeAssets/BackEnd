@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,25 @@ public class StockMapperTest {
         String date = "2024-09-26";
         List<StockVO> stockVOList = stockMapper.selectListRecommendStockByUserId(userId, date);
         assertTrue(stockVOList.size() > 0);
+    }
+
+    @Test
+    @Transactional
+    public void insertStock(){
+        StockVO stockVO = new StockVO(
+                1L,                                // stockId
+                "12345",                            // standardCode
+                10L,
+                null,// subCategoryId
+                "Test Stock",                       // stockName
+                "TST",                              // shortCode
+                'N',                                // stockExchangeMarket ('N' for NASDAQ)
+                "1000000000",                       // marketCapitalization
+                '1',                                // stockTradeStatus ('A' for Active)
+                null,
+                null
+        );
+        stockMapper.insert(stockVO);
     }
 
     @Test
