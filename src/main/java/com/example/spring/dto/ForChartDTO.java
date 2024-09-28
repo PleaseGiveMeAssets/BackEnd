@@ -1,6 +1,5 @@
 package com.example.spring.dto;
 
-import com.example.spring.vo.OrderVO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

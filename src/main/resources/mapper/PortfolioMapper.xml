@@ -6,8 +6,8 @@
     <select id="findByUserId" resultType="ForChartDTO">
         SELECT
         s.STOCK_NAME,
-        SUM(CASE WHEN o.ORDER_TYPE = '0' THEN o.QUANTITY ELSE -o.QUANTITY END) AS total_quantity,
-        SUM(CASE WHEN o.ORDER_TYPE = '0' THEN o.QUANTITY * o.PRICE ELSE -o.QUANTITY * o.PRICE END) AS total_price
+        SUM(CASE WHEN o.ORDER_TYPE = 'B' THEN o.QUANTITY ELSE -o.QUANTITY END) AS total_quantity,
+        SUM(CASE WHEN o.ORDER_TYPE = 'B' THEN o.QUANTITY * o.PRICE ELSE -o.QUANTITY * o.PRICE END) AS total_price
         FROM
         `PORTFOLIO` o
         JOIN

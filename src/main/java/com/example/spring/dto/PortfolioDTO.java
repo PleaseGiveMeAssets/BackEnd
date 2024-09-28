@@ -1,6 +1,6 @@
 package com.example.spring.dto;
 
-import com.example.spring.vo.OrderVO;
+import com.example.spring.vo.PortfolioVO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDTO {
+public class PortfolioDTO {
     private int orderId;
     private int userId;
     private int stockId;
@@ -26,17 +26,17 @@ public class OrderDTO {
     private LocalDateTime updatedAt;
 
 
-    public static OrderDTO of(OrderVO orderVO) {
-        return new OrderDTO(
-                orderVO.getOrderId(),
-                orderVO.getUserId(),
-                orderVO.getStockId(),
-                orderVO.getPrice(),
-                orderVO.getQuantity(),
-                orderVO.getMemo(),
-                orderVO.getOrderType(),
-                orderVO.getOrderedAt(),
-                orderVO.getUpdatedAt()
+    public static PortfolioDTO of(PortfolioVO portfolioVO) {
+        return new PortfolioDTO(
+                portfolioVO.getOrderId(),
+                portfolioVO.getUserId(),
+                portfolioVO.getStockId(),
+                portfolioVO.getPrice(),
+                portfolioVO.getQuantity(),
+                portfolioVO.getMemo(),
+                portfolioVO.getOrderType(),
+                portfolioVO.getOrderedAt(),
+                portfolioVO.getUpdatedAt()
         );
     }
 
