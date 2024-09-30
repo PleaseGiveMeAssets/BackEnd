@@ -5,7 +5,7 @@
 <mapper namespace="com.example.spring.mapper.QuestionMapper">
 
     <!-- 질문 조회 -->
-    <select id="selectSurveyQuestion" parameterType="int" resultType="com.example.spring.vo.QuestionVO">
+    <select id="selectSurveyQuestion" parameterType="int" resultType="Question">
         SELECT QUESTION_ID as questionId, CONTENT as content
         FROM QUESTION
         WHERE QUESTION_ID = #{questionId}
