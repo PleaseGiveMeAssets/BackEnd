@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,28 +15,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class StockDTO {
     private int stockId;
-    private String standardCode;
-    private String stockName;
-    private int mainCategory;
-    private int subCategory;
     private String shortCode;
-    private char stockExchangeMarket;
-    private String marketCapitalization;
-    private char stockTradeStatus;
-    private LocalDateTime updatedAt;
+    private String stockName;
 
     public static StockDTO of(StockVO stockVO) {
         return new StockDTO(
                 stockVO.getStockId(),
-                stockVO.getStandardCode(),
-                stockVO.getStockName(),
-                stockVO.getMainCategory(),
-                stockVO.getSubCategory(),
                 stockVO.getShortCode(),
-                stockVO.getStockExchangeMarket(),
-                stockVO.getMarketCapitalization(),
-                stockVO.getStockTradeStatus(),
-                stockVO.getUpdatedAt()
+                stockVO.getStockName()
         );
     }
 }

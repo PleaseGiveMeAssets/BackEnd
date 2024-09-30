@@ -10,7 +10,6 @@
 
     <typeAliases>
         <typeAlias type="com.example.spring.vo.StockVO" alias="StockVO"/>
-        <typeAlias type="com.example.spring.dto.MyStockDTO" alias="MyStockDTO"/>
     </typeAliases>
 
     <mappers>

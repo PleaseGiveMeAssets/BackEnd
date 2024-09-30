@@ -2,33 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.spring.mapper.SearchMapper">
+<mapper namespace="com.example.spring.mapper.SearchStockMapper">
     <select id="findByStockName" resultType="StockVO">
         SELECT *
         FROM STOCK
         where stock_Name=#{stockName}
-    </select>
-
-    <select id="findByMyStockList" resultType="MyStockDTO">
-        SELECT s.stock_Name,
-        SUM(CASE WHEN o.order_type = 0 THEN o.quantity ELSE 0 END) -
-        SUM(CASE WHEN o.order_type = 1 THEN o.quantity ELSE 0 END) AS total_quantity
-        FROM `order` o
-        JOIN `stock` s ON o.stock_Id = s.stock_Id
-        WHERE o.user_Id = #{userId} AND s.stock_Name LIKE CONCAT('%', #{stockName}, '%')
-        GROUP BY s.stock_Name
-        HAVING total_quantity > 0;
-    </select>
-
-
-    <select id="findMyAllStockByUserId" resultType="MyStockDTO">
-        SELECT s.stock_Name,
-        SUM(CASE WHEN o.order_type = 0 THEN o.quantity ELSE 0 END) -
-        SUM(CASE WHEN o.order_type = 1 THEN o.quantity ELSE 0 END) AS total_quantity
-        FROM `order` o
-        JOIN `stock` s ON o.stock_Id = s.stock_Id
-        WHERE o.user_Id = #{userId}
-        GROUP BY s.stock_Name
-        HAVING total_quantity > 0;
     </select>
 </mapper>
