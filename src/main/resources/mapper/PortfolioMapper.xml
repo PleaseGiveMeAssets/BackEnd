@@ -7,7 +7,7 @@
     <!-- 특정 사용자에 대한 주문 정보 조회 -->
     <select id="selectOrdersByUserId" parameterType="string" resultType="Portfolio">
         SELECT USER_ID AS userId, PRICE AS price, QUANTITY AS quantity
-        FROM `ORDER`
+        FROM `PORTFOLIO`
         WHERE USER_ID = #{userId}
     </select>
 
