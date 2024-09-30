@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spring.mapper.UserAnswerMapper">
+
+    <!-- 사용자 답변 삽입 -->
+    <insert id="insertUserAnswer" parameterType="com.example.spring.vo.UserAnswerVO">
+        INSERT INTO USER_ANSWER (USER_ID, QUESTION_ID, QUESTION_OPTION_ID, CREATED_AT, UPDATED_AT)
+        VALUES (#{userId}, #{questionId}, #{questionOptionId}, NOW(), NOW())
+    </insert>
+
+    <!-- 사용자 답변 수정 -->
+    <update id="updateUserAnswer" parameterType="com.example.spring.vo.UserAnswerVO">
+        UPDATE USER_ANSWER
+        SET QUESTION_OPTION_ID = #{questionOptionId}, UPDATED_AT = NOW()
+        WHERE USER_ID = #{userId} AND QUESTION_ID = #{questionId}
+    </update>
+
+    <!-- 사용자 답변 조회 -->
+    <select id="selectUserAnswer" parameterType="map" resultType="com.example.spring.vo.UserAnswerVO">
+        SELECT * FROM USER_ANSWER
+        WHERE USER_ID = #{userId} AND QUESTION_ID = #{questionId}
+    </select>
+
+</mapper>
