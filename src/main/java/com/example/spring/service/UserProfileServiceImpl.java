@@ -1,9 +1,9 @@
 package com.example.spring.service;
 
+import com.example.spring.domain.Portfolio;
+import com.example.spring.domain.User;
 import com.example.spring.dto.UserDTO;
-import com.example.spring.mapper.OrderMapper;
-import com.example.spring.vo.OrderVO;
-import com.example.spring.vo.UserVO;
+import com.example.spring.mapper.PortfolioMapper;
 import com.example.spring.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -17,18 +17,18 @@ import java.util.List;
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserMapper userMapper;
-    private final OrderMapper orderMapper;
+    private final PortfolioMapper portfolioMapper;
 
     @Autowired
-    public UserProfileServiceImpl(UserMapper userMapper, OrderMapper orderMapper) {
+    public UserProfileServiceImpl(UserMapper userMapper, PortfolioMapper portfolioMapper) {
         this.userMapper = userMapper;
-        this.orderMapper = orderMapper;
+        this.portfolioMapper = portfolioMapper;
     }
 
     @Override
     public UserDTO getUserProfile(String userId) {
         // 사용자 정보를 가져옴
-        UserVO userProfile = userMapper.selectUserProfile(userId);
+        User userProfile = userMapper.selectUserProfile(userId);
 
         if (userProfile == null) {
             log.warn("User not found for userId: {}", userId);
@@ -36,10 +36,10 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
 
         // 사용자의 주문 정보를 가져옴
-        List<OrderVO> orders = orderMapper.selectOrdersByUserId(userId);
+        List<Portfolio> portfolios = portfolioMapper.selectOrdersByUserId(userId);
 
         // 자산 총액을 계산
-        double totalAssets = orders.stream()
+        double totalAssets = portfolios.stream()
                 .mapToDouble(order -> order.getPrice() * order.getQuantity())
                 .sum();
 

@@ -1,11 +1,11 @@
 package com.example.spring.mapper;
 
-import com.example.spring.vo.DailyReportVO;
+import com.example.spring.domain.DailyReport;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface DailyReportMapper {
-    List<DailyReportVO> selectDailyReportByUserId(String userId);
+    List<DailyReport> selectDailyReportByUserId(String userId);
 }
