@@ -1,4 +1,4 @@
-package com.example.spring.vo;
+package com.example.spring.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,13 +9,10 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecommendStockVO {
-    private long recommendStockId;
+public class SavedNews {
+    private Long savedNewsId;
+    private Long newsId;
     private String userId;
-    private long stockId;
-    private String shortCode;
-    private String Content;
-    private int price;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

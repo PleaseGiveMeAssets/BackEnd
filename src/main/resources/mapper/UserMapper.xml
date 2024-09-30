@@ -5,7 +5,7 @@
 <mapper namespace="com.example.spring.mapper.UserMapper">
 
     <!-- User 정보를 가져오는 resultMap -->
-    <resultMap id="selectUserProfileResultMap" type="com.example.spring.vo.UserVO" autoMapping="false">
+    <resultMap id="selectUserProfileResultMap" type="User" autoMapping="false">
         <constructor>
             <idArg column="user_id" javaType="String"/>
             <arg column="profile_image_url" javaType="String"/>

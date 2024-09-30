@@ -3,15 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.StockMapper">
-    <resultMap id="selectListRecommendStockByUserIdResultMap" type="StockVO" autoMapping="true">
+    <resultMap id="selectListRecommendStockByUserIdResultMap" type="Stock" autoMapping="true">
         <id property="stockId" column="stockId"/>
-        <collection property="recommendStockVOList" ofType="RecommendStockVO" autoMapping="true">
+        <collection property="recommendStockList" ofType="RecommendStock" autoMapping="true">
         </collection>
     </resultMap>
 
-    <resultMap id="selectListPortfolioByUserIdResultMap" type="StockVO" autoMapping="true">
+    <resultMap id="selectListPortfolioByUserIdResultMap" type="Stock" autoMapping="true">
         <id property="stockId" column="stockId"/>
-        <collection property="portfolioVOList" ofType="PortfolioVO" autoMapping="true">
+        <collection property="portfolioList" ofType="Portfolio" autoMapping="true">
         </collection>
     </resultMap>
 

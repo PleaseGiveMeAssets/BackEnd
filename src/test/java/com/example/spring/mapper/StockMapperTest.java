@@ -1,7 +1,6 @@
 package com.example.spring.mapper;
 
 import com.example.spring.config.AppConfig;
-import com.example.spring.vo.StockVO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
