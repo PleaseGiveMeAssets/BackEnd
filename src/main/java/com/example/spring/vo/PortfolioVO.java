@@ -5,12 +5,12 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class OrderVO {
+public class PortfolioVO {
 
-    private int orderId;          // 주문 ID
+    private int portfolioId;          // 주문 ID
     private String userId;        // 사용자 ID
     private int stockId;          // 주식 ID
-    private String standardCode;  // 표준 코드
+    private String shortCode;  // 표준 코드
     private long price;           // 가격
     private int quantity;         // 수량
     private String memo;          // 메모

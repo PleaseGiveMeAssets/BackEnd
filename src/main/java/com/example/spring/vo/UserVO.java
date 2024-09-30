@@ -9,5 +9,4 @@ public class UserVO {
     private final String userId;
     private final String profileImageUrl;
     private final String nickname;
-
 }

@@ -2,7 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.dto.UserDTO;
 import com.example.spring.mapper.OrderMapper;
-import com.example.spring.vo.OrderVO;
+import com.example.spring.vo.PortfolioVO;
 import com.example.spring.vo.UserVO;
 import com.example.spring.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
 
         // 사용자의 주문 정보를 가져옴
-        List<OrderVO> orders = orderMapper.selectOrdersByUserId(userId);
+        List<PortfolioVO> orders = orderMapper.selectOrdersByUserId(userId);
 
         // 자산 총액을 계산
         double totalAssets = orders.stream()
