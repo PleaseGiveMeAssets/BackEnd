@@ -12,7 +12,7 @@
     </select>
 
     <!-- 특정 질문에 대한 옵션을 조회 -->
-    <select id="selectOptionsByQuestionId" parameterType="int" resultType="QuestionOptionVO">
+    <select id="selectOptionsByQuestionId" parameterType="int" resultType="QuestionOption">
         SELECT QUESTION_OPTION_ID as questionOptionId, QUESTION_ID as questionId, CONTENT as content, SCORE as score
         FROM QUESTION_OPTION
         WHERE QUESTION_ID = #{questionId}
