@@ -39,7 +39,7 @@ public class SurveyController {
 
         int result = surveyService.insertOrUpdateUserAnswer(userId, questionId, userAnswerDTO);
         if (result > 0) {
-            return ResponseEntity.status(201).body("Created/Updated");  // 생성 또는 수정 성공
+            return ResponseEntity.status(201).body("Inserted/Updated");  // 생성 또는 수정 성공
         } else {
             return ResponseEntity.badRequest().body("Bad Request");  // 잘못된 요청
         }

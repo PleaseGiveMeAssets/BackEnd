@@ -37,11 +37,10 @@ public class SurveyServiceImpl implements SurveyService {
             log.warn("Question not found for questionId: {}", questionId);
             return null;
         }
-
-        List<QuestionOptionVO> optionVOs = questionMapper.selectOptionsByQuestionId(questionId);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(questionVO, questionDTO);
 
+        List<QuestionOptionVO> optionVOs = questionMapper.selectOptionsByQuestionId(questionId);
         List<QuestionOptionDTO> optionDTOs = optionVOs.stream()
                 .map(optionVO -> {
                     QuestionOptionDTO optionDTO = new QuestionOptionDTO();
@@ -58,27 +57,34 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public int insertOrUpdateUserAnswer(String userId, int questionId, UserAnswerDTO userAnswerDTO) {
         try {
-        UserAnswerVO existingAnswer = userAnswerMapper.selectUserAnswer(userId, questionId);
+            UserAnswerVO existingAnswer = userAnswerMapper.selectUserAnswer(userId, questionId);
 
-        if (existingAnswer == null) {
-            // 신규 답변 삽입
             UserAnswerVO userAnswerVO = new UserAnswerVO();
             userAnswerVO.setUserId(userId);
             userAnswerVO.setQuestionId(questionId);
             userAnswerVO.setQuestionOptionId(userAnswerDTO.getOptionId());
-            return userAnswerMapper.insertUserAnswer(userAnswerVO);
-        } else {
-            // 기존 답변 업데이트
-            UserAnswerVO userAnswerVO = new UserAnswerVO();
-            userAnswerVO.setUserId(userId);
-            userAnswerVO.setQuestionId(questionId);
-            userAnswerVO.setQuestionOptionId(userAnswerDTO.getOptionId());
-            return userAnswerMapper.updateUserAnswer(userAnswerVO);
+
+            if (existingAnswer == null) {
+                // 신규 답변 삽입
+                int insertResult = userAnswerMapper.insertUserAnswer(userAnswerVO);
+                if (insertResult > 0) {
+//                    log.info("New answer inserted for userId: {}, questionId: {}, optionId: {}", userId, questionId, userAnswerDTO.getOptionId());
+                    log.info("New answer inserted : {}", userAnswerDTO);
+                }
+                return insertResult;
+            } else {
+                // 기존 답변 업데이트
+                int updateResult = userAnswerMapper.updateUserAnswer(userAnswerVO);
+                if (updateResult > 0) {
+//                    log.info("Answer updated for userId: {}, questionId: {}, optionId: {}", userId, questionId, userAnswerDTO.getOptionId());
+                    log.info("Answer updated : {}", userAnswerDTO);
+                }
+                return updateResult;
+            }
+        } catch (Exception e) {
+            log.error("Error while inserting/updating user answer for userId: {}, questionId: {}", userId, questionId, e);
+            return -1; // 에러 코드 반환
         }
-    } catch (Exception e) {
-        log.error("Error while inserting/updating user answer", e);
-        return -1; // 에러 코드 반환
-    }
     }
 }
 
