@@ -28,7 +28,5 @@ public class StockPurchaseServiceImpl implements StockPurchaseService {
                 'B',
                 stockPurchaseDTO.getOrderedAt()
         );
-
-        log.info(System.getProperty("user.dir"));
     }
 }
