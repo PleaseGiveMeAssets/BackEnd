@@ -1,12 +1,12 @@
 package com.example.spring.service;
 
+import com.example.spring.domain.Question;
+import com.example.spring.domain.QuestionOption;
 import com.example.spring.dto.QuestionDTO;
 import com.example.spring.dto.QuestionOptionDTO;
 import com.example.spring.dto.UserAnswerDTO;
 import com.example.spring.mapper.QuestionMapper;
 import com.example.spring.mapper.UserAnswerMapper;
-import com.example.spring.vo.QuestionOptionVO;
-import com.example.spring.vo.QuestionVO;
 import com.example.spring.vo.UserAnswerVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -31,20 +31,20 @@ public class SurveyServiceImpl implements SurveyService {
 
     @Override
     public QuestionDTO getSurveyQuestion(int questionId) {
-        QuestionVO questionVO = questionMapper.selectSurveyQuestion(questionId);
+        Question question = questionMapper.selectSurveyQuestion(questionId);
 
-        if (questionVO == null) {
+        if (question == null) {
             log.warn("Question not found for questionId: {}", questionId);
             return null;
         }
         QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(questionVO, questionDTO);
+        BeanUtils.copyProperties(question, questionDTO);
 
-        List<QuestionOptionVO> optionVOs = questionMapper.selectOptionsByQuestionId(questionId);
-        List<QuestionOptionDTO> optionDTOs = optionVOs.stream()
-                .map(optionVO -> {
+        List<QuestionOption> options = questionMapper.selectOptionsByQuestionId(questionId);
+        List<QuestionOptionDTO> optionDTOs = options.stream()
+                .map(option -> {
                     QuestionOptionDTO optionDTO = new QuestionOptionDTO();
-                    BeanUtils.copyProperties(optionVO, optionDTO);
+                    BeanUtils.copyProperties(option, optionDTO);
                     return optionDTO;
                 })
                 .collect(Collectors.toList());
