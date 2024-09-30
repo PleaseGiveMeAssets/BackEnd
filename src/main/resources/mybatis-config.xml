@@ -8,10 +8,6 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
-    <typeAliases>
-        <typeAlias type="com.example.spring.vo.PortfolioVO" alias="PortfolioVO"/>
-    </typeAliases>
-
     <mappers>
         <mapper resource="mapper/PortfolioPurchaseMapper.xml"/>
     </mappers>

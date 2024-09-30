@@ -7,20 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortfolioPurchaseDTO {
-
+public class StockPurchaseDTO {
     private String stockName;
     private BigInteger price;
     private int quantity;
     private String memo;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime orderedAt;
+    private Timestamp orderedAt;
 
 }

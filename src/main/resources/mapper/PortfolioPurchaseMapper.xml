@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.spring.mapper.PortfolioPurchaseMapper">
+<mapper namespace="com.example.spring.mapper.StockPurchaseMapper">
     <insert id="savePortfolio">
-        INSERT INTO `order` (user_Id, stock_Id, short_code, price, quantity, memo, order_Type, ordered_At)
+        INSERT INTO `PORTFOLIO` (user_Id, stock_Id, short_code, price, quantity, memo, order_Type, ordered_At)
         VALUES (
         #{userId},
         (SELECT stock_Id FROM stock WHERE stock_Name = #{stockName}),
