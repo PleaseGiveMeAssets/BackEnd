@@ -1,4 +1,4 @@
-package com.example.spring.service.impl;
+package com.example.spring.service;
 
 import com.example.spring.dto.InterestCategoryDTO;
 import com.example.spring.mapper.InterestCategoryMapper;

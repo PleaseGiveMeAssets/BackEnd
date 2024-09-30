@@ -5,10 +5,9 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class UserAnswerVO {
-    private String userId;
+public class QuestionVO {
     private int questionId;
-    private int questionOptionId;
+    private String content;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

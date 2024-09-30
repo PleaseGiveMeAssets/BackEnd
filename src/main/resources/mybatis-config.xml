@@ -10,18 +10,24 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="com.example.spring.domain.RecommendStock" alias="RecommendStock"/>
-        <typeAlias type="com.example.spring.domain.Stock" alias="Stock"/>
-        <typeAlias type="com.example.spring.domain.Portfolio" alias="Portfolio"/>
-        <typeAlias type="com.example.spring.domain.User" alias="User"/>
-        <typeAlias type="com.example.spring.domain.DailyReport" alias="DailyReport"/>
+        <typeAlias type="com.example.spring.vo.RecommendStockVO" alias="RecommendStockVO"/>
+        <typeAlias type="com.example.spring.vo.StockVO" alias="StockVO"/>
+        <typeAlias type="com.example.spring.vo.OrderVO" alias="OrderVO"/>
+        <typeAlias type="com.example.spring.vo.UserVO" alias="UserVO"/>
+        <typeAlias type="com.example.spring.vo.DailyReportVO" alias="DailyReportVO"/>
+        <typeAlias type="com.example.spring.vo.PortfolioVO" alias="PortfolioVO"/>
+        <typeAlias type="com.example.spring.vo.QuestionVO" alias="QuestionVO"/>
+        <typeAlias type="com.example.spring.vo.QuestionOptionVO" alias="QuestionOptionVO"/>
+        <typeAlias type="com.example.spring.vo.UserAnswerVO" alias="UserAnswerVO"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/StockMapper.xml"/>
         <mapper resource="mapper/UserMapper.xml"/>
-        <mapper resource="mapper/PortfolioMapper.xml"/>
+        <mapper resource="mapper/OrderMapper.xml"/>
         <mapper resource="mapper/InterestCategoryMapper.xml"/>
         <mapper resource="mapper/DailyReportMapper.xml"/>
+        <mapper resource="mapper/QuestionMapper.xml"/>
+        <mapper resource="mapper/UserAnswerMapper.xml"/>
     </mappers>
 </configuration>
