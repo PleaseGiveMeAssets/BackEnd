@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.spring.mapper.OrderMapper">
+<mapper namespace="com.example.spring.mapper.PortfolioMapper">
 
     <!-- 특정 사용자에 대한 주문 정보 조회 -->
-    <select id="selectOrdersByUserId" parameterType="string" resultType="com.example.spring.vo.OrderVO">
+    <select id="selectOrdersByUserId" parameterType="string" resultType="Portfolio">
         SELECT USER_ID AS userId, PRICE AS price, QUANTITY AS quantity
-        FROM `ORDER`
+        FROM `PORTFOLIO`
         WHERE USER_ID = #{userId}
     </select>
 

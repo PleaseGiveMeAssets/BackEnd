@@ -1,27 +1,29 @@
-package com.example.spring.vo;
+package com.example.spring.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DailyReportVO {
-    private long dailyReportId;
+public class DailyReport {
+    private Long dailyReportId;
     private String userId;
     private String recentTrendTitle;
     private String recentTrendContent;
     private String stockTrendTitle;
     private String stockTrendContent;
-    private int kosdaqPrice;
-    private int kosdaqProfitRate;
-    private int kospiPrice;
-    private int kospiProfitRate;
+    private Integer kosdaqPrice;
+    private Integer kosdaqProfitRate;
+    private Integer kospiPrice;
+    private Integer kospiProfitRate;
     private String dailyTrendSummarizedTitle;
     private String dailyTrendSummarizedContent;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private List<SavedReport> savedReportList;
 }

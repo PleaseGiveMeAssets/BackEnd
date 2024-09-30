@@ -1,25 +1,21 @@
-package com.example.spring.vo;
+package com.example.spring.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortfolioVO {
-    private int portfolioId;
+public class RecommendStock {
+    private Long recommendStockId;
     private String userId;
-    private int stockId;
+    private Long stockId;
     private String shortCode;
-    private int price;
-    private int quantity;
-    private String memo;
-    private char orderType;
-    private Date orderedAt;
+    private String content;
+    private Integer price;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }
