@@ -12,9 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockPortfolioDTO {
-    private long stockId;
+    private Long stockId;
     private String shortCode;
     private List<OrderPortfolioDTO> orderPortfolioDTOList;
     private String stockName;
-    private char stockTradeStatus;
+    private Character stockTradeStatus;
 }

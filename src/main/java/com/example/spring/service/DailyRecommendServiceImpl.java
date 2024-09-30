@@ -59,7 +59,7 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
                         dailyRecommendStockDTOList.add(dailyRecommendStockDTO);
                     });
                 }
-                dailyStockDTO.setRecommendStockVOList(dailyRecommendStockDTOList);
+                dailyStockDTO.setDailyRecommendStockDTOList(dailyRecommendStockDTOList);
                 dailyStockDTOList.add(dailyStockDTO);
             });
         }
