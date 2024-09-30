@@ -27,6 +27,10 @@ public class StockPortfolioServiceImpl implements StockPortfolioService {
         StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         List<Stock> stockList = stockMapper.selectListPortfolioByUserId(userId);
 
+        if (log.isInfoEnabled()) {
+            log.info("getStockPortfolioInfo stockList : {}", stockList);
+        }
+
         List<StockPortfolioDTO> stockPortfolioDTOList = new ArrayList<>();
         if (!stockList.isEmpty()) {
             stockList.stream().forEach(stock -> {
