@@ -35,23 +35,22 @@
             </otherwise>
         </choose>
     </select>
-    <select id="findByStockId" parameterType="Long" resultType="StockVO">
+    <select id="findByStockId" parameterType="Long" resultType="Stock">
         SELECT *
         FROM STOCK
         WHERE STOCK_ID = #{stockId}
     </select>
-    <insert id="insert" parameterType="StockVO">
+    <insert id="insert" parameterType="Stock">
         INSERT INTO STOCK
         (STANDARD_CODE, SUB_CATEGORY_ID, STOCK_NAME, SHORT_CODE, STOCK_EXCHANGE_MARKET, MARKET_CAPITALIZATION, STOCK_TRADE_STATUS)
         VALUES
         (#{standardCode}, #{subCategoryId}, #{stockName}, #{shortCode}, #{stockExchangeMarket}, #{marketCapitalization}, #{stockTradeStatus})
     </insert>
-    <select id="findShortCodeByStockId" parameterType="Long" resultType="String">
+    <select id="findShortCodeByStockId" parameterType="Long" resultType="string">
         SELECT SHORT_CODE
         FROM STOCK
         WHERE STOCK_ID = #{stockId}
     </select>
-
     <select id="selectListPortfolioByUserId" parameterType="string" resultMap="selectListPortfolioByUserIdResultMap">
         SELECT s.STOCK_ID AS stockId
         , s.SHORT_CODE AS shortCode

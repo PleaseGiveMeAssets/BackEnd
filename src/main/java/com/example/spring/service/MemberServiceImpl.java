@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final SmsService smsService;
-    private final JavaMailSender mailSender;
+//    private final JavaMailSender mailSender;
 
     // 아이디 찾기
     @Override

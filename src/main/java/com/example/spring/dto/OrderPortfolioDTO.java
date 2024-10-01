@@ -13,6 +13,6 @@ public class OrderPortfolioDTO {
     private Long portfolioId;
     private String userId;
     private Long price;
-    private Integer quantity;
+    private Long quantity;
     private Character orderType;
 }

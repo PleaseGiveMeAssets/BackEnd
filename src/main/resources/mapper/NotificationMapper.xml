@@ -6,7 +6,7 @@
 <mapper namespace="com.example.spring.mapper.NotificationMapper">
 
     <!-- 특정 사용자의 알림 목록 불러오기 -->
-    <select id="getNotificationsByUserId" resultType="com.example.spring.vo.NotificationVO">
+    <select id="getNotificationsByUserId" resultType="Notification">
         SELECT NOTIFICATION_ID, USER_ID, MESSAGE, MESSAGE_TYPE, READED, CREATED_AT, UPDATED_AT
         FROM NOTIFICATION
         WHERE USER_ID = #{userId}
