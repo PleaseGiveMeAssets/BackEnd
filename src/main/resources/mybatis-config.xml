@@ -21,10 +21,13 @@
         <typeAlias type="com.example.spring.dto.FindIdRequestDTO" alias="FindIdRequestDTO"/>
         <typeAlias type="com.example.spring.dto.FindPasswordRequestDTO" alias="FindPasswordRequestDTO"/>
         <typeAlias type="com.example.spring.domain.SelectedTerms" alias="SelectedTerms"/>
+        <typeAlias type="com.example.spring.domain.TermsOfUse" alias="TermsOfUse"/>
+        <typeAlias type="com.example.spring.dto.MemberDTO" alias="MemberDTO"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/StockMapper.xml"/>
         <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/TermsOfUseMapper.xml"/>
     </mappers>
 </configuration>

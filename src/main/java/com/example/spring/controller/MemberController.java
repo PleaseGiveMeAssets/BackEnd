@@ -2,14 +2,12 @@ package com.example.spring.controller;
 
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
+import com.example.spring.dto.MemberDTO;
 import com.example.spring.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -19,6 +17,22 @@ import java.util.Map;
 public class MemberController {
     @Autowired
     public MemberService memberService;
+
+    /**
+     * 회원가입
+     * <p>
+     * 회원가입 정보를 입력하는 메소드이다.
+     *
+     * @param memberDTO
+     * @return
+     */
+    @PutMapping("signup")
+    public ResponseEntity<Integer> signup(@RequestBody MemberDTO memberDTO) {
+        if (log.isInfoEnabled()) {
+            log.info("signup memberDTO : {}", memberDTO);
+        }
+        return ResponseEntity.ok(memberService.signup(memberDTO));
+    }
 
     @PostMapping("/find-id")
     public ResponseEntity<Map<String, Object>> findId(@RequestBody FindIdRequestDTO findIdRequestDTO) {

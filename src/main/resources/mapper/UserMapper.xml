@@ -38,6 +38,19 @@
         WHERE u.USER_ID = #{userId}
     </select>
 
+    <select id="selectUserById" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM USER
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <insert id="insertUser" parameterType="MemberDTO">
+        INSERT INTO USER (USER_ID, PASSWORD, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, PHONE_VERIFICATION_CODE, NAME,
+        EMAIL, EMAIL_VERIFICATION_CODE)
+        VALUES (#{userId}, #{password}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{phoneVerificationCode}, #{name},
+        #{email}, #{emailVerificationCode})
+    </insert>
+
     <!--아이디와 휴대폰 번호로 회원찾기-->
     <select id="findMemberByNameAndPhone" parameterType="FindIdRequestDTO" resultType="User">
         SELECT *
