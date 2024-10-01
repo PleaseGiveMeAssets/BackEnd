@@ -2,6 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.config.AppConfig;
 import com.example.spring.dto.PortfolioDTO;
+import com.example.spring.dto.OrderSummaryDTO;
 import com.example.spring.util.OrderTypeStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

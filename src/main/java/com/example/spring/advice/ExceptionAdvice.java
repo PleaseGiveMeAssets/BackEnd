@@ -1,7 +1,6 @@
 package com.example.spring.advice;
 
 import com.example.spring.exception.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,14 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.naming.AuthenticationException;
 
 @RestControllerAdvice
-@Slf4j
 public class ExceptionAdvice {
-    //로그인
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<String> invalidCredentialException(InvalidCredentialsException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    } // 아이디, 비번 일치x - INVALID_CREDENTIALS
-
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> badCredentialsException(BadCredentialsException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -45,6 +37,11 @@ public class ExceptionAdvice {
     public ResponseEntity<String> invalidEmailException(InvalidEmailException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } // 이메일 양식x - INVALID_EMAIL_FORMAT
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> illegalArgumentException(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<String> userAlreadyExistsException(UserAlreadyExistsException e) {
