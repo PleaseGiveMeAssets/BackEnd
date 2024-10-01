@@ -25,19 +25,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            if ("testUser".equals(username)) {
-                return User.withUsername("testUser")
-                        .password(passwordEncoder().encode("testPassword")) // 비밀번호 해시화
-                        .roles("USER") // 권한 설정
-                        .build();
-            }
-            throw new UsernameNotFoundException("User not found");
-        };
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정

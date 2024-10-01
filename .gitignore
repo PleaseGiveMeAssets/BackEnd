@@ -18,6 +18,16 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 /src/main/resources/application.properties
+/src/main/resources/logback.xml
+/Dockerfile
+/gradlew
+/gradlew.bat
+/settings.gradle
+/src/main/webapp
+/src/main/java/com/example/spring/config
+/logs
+/gradle
+/.github
 
 
 ### Eclipse ###
