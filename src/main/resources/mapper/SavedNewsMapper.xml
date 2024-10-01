@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.SavedNewsMapper">
+
+    <!-- ResultMap 설정: DB에서 조회한 결과를 VO에 매핑 -->
+    <resultMap id="SavedNewsMap" type="com.example.vo.SavedNewsVO">
+        <id property="savedNewsId" column="SAVED_NEWS_ID"/>
+        <result property="newsId" column="NEWS_ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="updatedAt" column="UPDATED_AT"/>
+    </resultMap>
+
+    <!-- 특정 사용자의 저장된 뉴스 목록 조회 -->
+    <select id="getSavedNewsByUserId" resultMap="SavedNewsMap" parameterType="String">
+        SELECT * FROM SAVED_NEWS WHERE USER_ID = #{userId}
+    </select>
+
+    <!-- 뉴스 저장 -->
+    <insert id="insertSavedNews" parameterType="com.example.vo.SavedNewsVO">
+        INSERT INTO SAVED_NEWS (SAVED_NEWS_ID, NEWS_ID, USER_ID, CREATED_AT, UPDATED_AT)
+        VALUES (#{savedNewsId}, #{newsId}, #{userId}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <!-- 뉴스 삭제 -->
+    <delete id="deleteSavedNews" parameterType="int">
+        DELETE FROM SAVED_NEWS WHERE SAVED_NEWS_ID = #{savedNewsId}
+    </delete>
+
+</mapper>
