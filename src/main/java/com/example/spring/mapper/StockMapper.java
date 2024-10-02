@@ -1,6 +1,7 @@
 package com.example.spring.mapper;
 
 import com.example.spring.domain.Stock;
+import com.example.spring.dto.StockIndexDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

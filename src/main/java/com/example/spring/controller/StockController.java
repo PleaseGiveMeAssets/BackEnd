@@ -1,0 +1,33 @@
+package com.example.spring.controller;
+
+import com.example.spring.domain.StockHistory;
+import com.example.spring.dto.OrderSummaryDTO;
+import com.example.spring.dto.StockHistoryDTO;
+import com.example.spring.service.StockHistoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/api/v1/stock/")
+public class StockController {
+
+    private final StockHistoryService stockHistoryService;
+
+    @Autowired
+    public StockController(StockHistoryService stockHistoryService) {
+        this.stockHistoryService = stockHistoryService;
+    }
+
+    @GetMapping("/{stockId}")
+    public ResponseEntity<List<StockHistoryDTO>> getStockHistories(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long stockId) {
+        return ResponseEntity.ok(stockHistoryService.findByStockId(stockId));
+    }
+}

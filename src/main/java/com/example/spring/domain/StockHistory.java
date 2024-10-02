@@ -10,10 +10,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockHistory {
-    private Long stockHistoryId;
+    private String stockHistoryId;
     private Long stockId;
     private String shortCode;
-    private Integer currentPrice;
+    private Long currentPrice;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }
