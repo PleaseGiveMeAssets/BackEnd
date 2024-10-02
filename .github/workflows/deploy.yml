@@ -29,15 +29,24 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 4. 애플리케이션 빌드 (Gradle)
+      # 4. Gradle 캐시 설정
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # 5. 애플리케이션 빌드 (Gradle)
       - name: Build application with Gradle
         run: ./gradlew build -x test
 
-      # 5. Docker 이미지 빌드
+      # 6. Docker 이미지 빌드
       - name: Build Docker image
         run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
-      # 6. Docker 이미지 푸시
+      # 7. Docker 이미지 푸시
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
@@ -47,7 +56,7 @@ jobs:
     steps:
       # 1. EC2 서버에 SSH로 접근하여 Docker 컨테이너 업데이트
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}

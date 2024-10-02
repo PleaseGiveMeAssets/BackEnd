@@ -1,18 +1,20 @@
 # 1. Gradle 빌드를 위한 기본 이미지 설정 (multi-stage build)
-FROM gradle:7.5-jdk17 AS build
+FROM gradle:8.0-jdk17 AS build
 
-# 2. 캐싱을 위한 종속성 단계 실행
+# 2. Gradle Wrapper 스크립트 복사
+COPY gradlew gradlew.bat /app/
+COPY gradle /app/gradle/
 COPY build.gradle settings.gradle /app/
 WORKDIR /app
 
 # 3. 종속성 캐시 다운로드
-RUN gradle build -x test --no-daemon || return 0
+RUN ./gradlew build -x test --no-daemon || return 0
 
 # 4. 소스 코드 복사
 COPY . /app
 
 # 5. 애플리케이션 빌드
-RUN gradle build --no-daemon -x test
+RUN ./gradlew build --no-daemon -x test
 
 # 6. 실행을 위한 경량 OpenJDK 이미지 사용
 FROM openjdk:17-jdk-slim
