@@ -2,6 +2,7 @@ package com.example.spring.domain;
 
 import com.example.spring.vo.UserAnswerVO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
