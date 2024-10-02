@@ -2,10 +2,14 @@ package com.example.spring.service;
 
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
+import com.example.spring.dto.MemberDTO;
 
 import java.util.Map;
 
 public interface MemberService {
+    // 회원가입
+    int signup(MemberDTO memberDTO);
+
     // 아이디 찾기
     Map<String, Object> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
 

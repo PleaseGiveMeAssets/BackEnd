@@ -1,28 +1,159 @@
 package com.example.spring.service;
 
+import com.example.spring.domain.TermsOfUse;
 import com.example.spring.domain.User;
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
+import com.example.spring.dto.MemberDTO;
+import com.example.spring.exception.EmailVerificationException;
 import com.example.spring.exception.InvalidVerificationCodeException;
 import com.example.spring.exception.PasswordMismatchException;
+import com.example.spring.exception.UserAlreadyExistsException;
+import com.example.spring.mapper.TermsOfUseMapper;
 import com.example.spring.mapper.UserMapper;
+import com.example.spring.util.MemberCodeEnum;
 import com.example.spring.util.ResultCodeEnum;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
-    private final SmsService smsService;
+    private UserMapper userMapper;
+    private TermsOfUseMapper termsOfUseMapper;
+    private PasswordEncoder passwordEncoder;
+    private SmsService smsService;
+
+    @Autowired
+    public MemberServiceImpl(UserMapper userMapper, TermsOfUseMapper termsOfUseMapper, PasswordEncoder passwordEncoder, SmsService smsService) {
+        this.userMapper = userMapper;
+        this.termsOfUseMapper = termsOfUseMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.smsService = smsService;
+    }
+
+    /**
+     * 회원가입
+     * <p>
+     * 회원가입을 위한 필수체크 및 유저 정보를 입력하는 메소드이다.
+     *
+     * @param memberDTO
+     * @return
+     */
+    @Override
+    public int signup(MemberDTO memberDTO) {
+        if (log.isInfoEnabled()) {
+            log.info("signup memberDTO : {}", memberDTO);
+        }
+
+        // 이용약관 필수 체크
+        checkTermsOfUse(memberDTO);
+
+        // 휴대폰 인증 체크
+        checkVerifyCodeForSignup(memberDTO);
+
+        // 아이디 중복 체크
+        checkDuplicatedUserId(memberDTO.getUserId());
+
+        // 비밀번호 체크
+        checkPassword(memberDTO);
+
+        // 이메일 체크
+        checkEmailVerificationCode(memberDTO.getEmailVerificationCode());
+
+        // 회원가입
+        memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+        memberDTO.setPhoneLast(passwordEncoder.encode(memberDTO.getPhoneLast()));
+        return userMapper.insertUser(memberDTO);
+    }
+
+    /**
+     * 이용약관 체크
+     * <p>
+     * 이용약관 필수값들을 체크하는 메소드이다.
+     *
+     * @param memberDTO
+     */
+    private void checkTermsOfUse(MemberDTO memberDTO) {
+        List<TermsOfUse> termsOfUseList = termsOfUseMapper.selectListTermsOfUseByRequired(MemberCodeEnum.Y.getValue());
+
+        if (termsOfUseList == null || termsOfUseList.isEmpty() || memberDTO.getTermsAgreementDTOList() == null || memberDTO.getTermsAgreementDTOList().isEmpty()) {
+            throw new ApplicationContextException(ResultCodeEnum.NO_EXIST_TERMS_OF_USE.getMessage());
+        }
+
+        Set<Long> requiredTermsOfUseIds = termsOfUseList.stream().map(TermsOfUse::getTermsOfUseId).collect(Collectors.toSet());
+
+        memberDTO.getTermsAgreementDTOList().stream().forEach(termsAgreementDTO -> {
+            if (!requiredTermsOfUseIds.contains(termsAgreementDTO.getTermsOfUseId())) {
+                throw new ApplicationContextException(ResultCodeEnum.NO_EXIST_TERMS_OF_USE.getMessage());
+            }
+        });
+    }
+
+    /**
+     * 휴대폰인증 확인
+     * <p>
+     * 휴대폰인증 API 호출하는 메소드이다.
+     *
+     * @param memberDTO
+     */
+    private void checkVerifyCodeForSignup(MemberDTO memberDTO) {
+        boolean isVerified = smsService.checkVerifyCodeForFindSignup(memberDTO);
+        if (!isVerified) {
+            throw new ApplicationContextException(ResultCodeEnum.INVALID_VERIFICATION_CODE.getMessage());
+        }
+    }
+
+    /**
+     * 아이디중복 체크
+     * <p>
+     * 아이디로 중복 체크하는 메소드이다.
+     *
+     * @param userId
+     */
+    private void checkDuplicatedUserId(String userId) {
+        int userCount = userMapper.selectUserById(userId);
+
+        if (userCount > 0) {
+            throw new UserAlreadyExistsException(ResultCodeEnum.DUPLICATED_MEMBER_ID.getMessage());
+        }
+    }
+
+    /**
+     * 비밀번호 체크
+     * <p>
+     * 비밀번호와 비밀번호
+     *
+     * @param memberDTO
+     */
+    private static void checkPassword(MemberDTO memberDTO) {
+        if (!memberDTO.getPassword().equals(memberDTO.getPasswordConfirmation())) {
+            throw new PasswordMismatchException(ResultCodeEnum.PASSWORD_MISMATCH.getMessage());
+        }
+    }
+
+    /**
+     * 이메일 체크
+     * <p>
+     * 이메일 인증번호를 체크하는 메소드이다.
+     *
+     * @param emailVerificationCode
+     */
+    private void checkEmailVerificationCode(String emailVerificationCode) {
+        boolean isVerified = smsService.checkEmailVerificationCode(emailVerificationCode);
+        if (!isVerified) {
+            throw new EmailVerificationException(ResultCodeEnum.INVALID_EMAIL_VERIFICATION.getMessage());
+        }
+    }
 
     // 아이디 찾기
     @Override
