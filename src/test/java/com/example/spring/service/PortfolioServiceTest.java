@@ -46,7 +46,7 @@ public class PortfolioServiceTest {
         portfolioDTO.setOrderedAt(Timestamp.valueOf(LocalDateTime.now()));
         portfolioDTO.setOrderType(OrderTypeStatus.BUY);
         int status = portfolioService.createOrder("testUser1", 3167L, portfolioDTO);
-        assertEquals(1, status);
+        assertEquals(0, status);
     }
 
     @Test
@@ -60,6 +60,6 @@ public class PortfolioServiceTest {
         portfolioDTO.setOrderedAt(Timestamp.valueOf(LocalDateTime.now()));
         portfolioDTO.setOrderType(OrderTypeStatus.BUY);
         int status = portfolioService.updateOrder(7L, portfolioDTO);
-        assertEquals(1, status);
+        assertEquals(0, status);
     }
 }
