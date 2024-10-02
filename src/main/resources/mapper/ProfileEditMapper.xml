@@ -22,7 +22,7 @@
     </select>
 
     <!-- 특정 사용자 ID로 프로필 정보를 업데이트하는 SQL -->
-    <update id="updateProfile">
+    <update id="updateProfile" parameterType="map">
         UPDATE USER
         SET name = #{profileEditVO.name},
         nickname = #{profileEditVO.nickname},
@@ -33,5 +33,4 @@
         birth_date = #{profileEditVO.birthDate}
         WHERE user_id = #{userId}
     </update>
-
 </mapper>

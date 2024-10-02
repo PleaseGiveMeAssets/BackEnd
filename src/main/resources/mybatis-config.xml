@@ -34,5 +34,6 @@
         <mapper resource="mapper/DailyReportMapper.xml"/>
         <mapper resource="mapper/QuestionMapper.xml"/>
         <mapper resource="mapper/UserAnswerMapper.xml"/>
+        <mapper resource="mapper/ProfileEditMapper.xml"/>
     </mappers>
 </configuration>

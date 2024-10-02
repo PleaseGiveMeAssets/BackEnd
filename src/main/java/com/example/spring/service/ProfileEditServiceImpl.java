@@ -6,6 +6,7 @@ import com.example.spring.service.ProfileEditService;
 import com.example.spring.vo.ProfileEditVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,9 @@ public class ProfileEditServiceImpl implements ProfileEditService {
 
     @Autowired
     private ProfileEditMapper profileEditMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ProfileEditDTO getProfile(String userId) {
@@ -47,13 +51,18 @@ public class ProfileEditServiceImpl implements ProfileEditService {
     public void updateProfile(String userId, ProfileEditDTO profileEditDTO) {
         log.info("프로필 업데이트 시작 - 사용자 ID: {}, 업데이트할 데이터: {}", userId, profileEditDTO);
 
-        // DTO -> VO 변환
+        // 핸드폰 번호 마지막 부분 암호화 처리
+        log.info("핸드폰 번호 마지막 부분 암호화 시작 - 원본: {}", profileEditDTO.getPhoneLast());
+        String encryptedPhoneLast = passwordEncoder.encode(profileEditDTO.getPhoneLast());
+        log.info("핸드폰 번호 마지막 부분 암호화 완료 - 암호화된 값: {}", encryptedPhoneLast);
+
+        // DTO -> VO 변환 (여기서는 암호화된 값을 VO에만 설정)
         ProfileEditVO profileEditVO = new ProfileEditVO(
                 profileEditDTO.getName(),
                 profileEditDTO.getNickname(),
                 profileEditDTO.getPhoneFirst(),
                 profileEditDTO.getPhoneMiddle(),
-                profileEditDTO.getPhoneLast(),
+                encryptedPhoneLast,  // 암호화된 값 사용
                 profileEditDTO.getProfileImageUrl(),
                 profileEditDTO.getBirthDate()
         );
