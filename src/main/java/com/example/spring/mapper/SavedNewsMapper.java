@@ -1,15 +1,17 @@
 package com.example.spring.mapper;
 
+import com.example.spring.domain.News;
 import com.example.spring.domain.SavedNews;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface SavedNewsMapper {
-    List<SavedNews> getSavedNewsByUserId(String userId);
+    List<News> findAllSavedNewsByUserId(String userId);
 
-    void insertSavedNews(SavedNews savedNews);
+    void save(SavedNews savedNews);
 
-    void deleteSavedNews(int savedNewsId);
+    void deleteByUserIdAndSavedNewsId(@Param("userId") String userId, @Param("savedNewsId") Long savedNewsId);
 }

@@ -2,31 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.mapper.SavedReportMapper">
+<mapper namespace="com.example.spring.mapper.SavedReportMapper">
 
-    <!-- ResultMap 설정: DB에서 조회한 결과를 VO에 매핑 -->
-    <resultMap id="SavedReportMap" type="SavedReport">
-        <id property="savedReportId" column="SAVED_REPORT_ID"/>
-        <result property="userId" column="USER_ID"/>
-        <result property="dailyReportId" column="DAILY_REPORT_ID"/>
-        <result property="createdAt" column="CREATED_AT"/>
-        <result property="updatedAt" column="UPDATED_AT"/>
-    </resultMap>
-
-    <!-- 특정 사용자의 저장된 리포트 목록 조회 -->
-    <select id="getSavedReportsByUserId" resultMap="SavedReportMap" parameterType="String">
-        SELECT * FROM SAVED_REPORT WHERE USER_ID = #{userId}
+    <!-- 유저의 저장된 리포트 목록을 불러옴 -->
+    <select id="findAllSavedReportsByUserId" parameterType="String" resultType="com.example.spring.domain.DailyReport">
+        SELECT dr.daily_report_id, dr.recent_trend_title, dr.created_at, dr.updated_at,
+               sr.saved_report_id, sr.created_at as saved_at
+        FROM DAILY_REPORT dr
+                 JOIN SAVED_REPORT sr ON dr.daily_report_id = sr.daily_report_id
+        WHERE sr.user_id = #{userId}
+        ORDER BY sr.created_at DESC
     </select>
 
     <!-- 리포트 저장 -->
-    <insert id="insertSavedReport" parameterType="SavedReport">
-        INSERT INTO SAVED_REPORT (SAVED_REPORT_ID, USER_ID, DAILY_REPORT_ID, CREATED_AT, UPDATED_AT)
-        VALUES (#{savedReportId}, #{userId}, #{dailyReportId}, #{createdAt}, #{updatedAt})
+    <insert id="save" parameterType="com.example.spring.domain.SavedReport">
+        INSERT INTO SAVED_REPORT (daily_report_id, user_id, created_at, updated_at)
+        VALUES (#{dailyReportId}, #{userId}, NOW(), NOW())
     </insert>
 
-    <!-- 리포트 삭제 -->
-    <delete id="deleteSavedReport" parameterType="int">
-        DELETE FROM SAVED_REPORT WHERE SAVED_REPORT_ID = #{savedReportId}
+    <!-- 특정 유저의 특정 저장된 리포트 삭제 -->
+    <delete id="deleteByUserIdAndSavedReportId" parameterType="map">
+        DELETE FROM SAVED_REPORT
+        WHERE user_id = #{userId}
+          AND saved_report_id = #{savedReportId}
     </delete>
-
 </mapper>
+
+
