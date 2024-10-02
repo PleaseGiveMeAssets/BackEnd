@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
+          distribution: 'temurin'  # 'temurin', 'zulu', 'adopt', etc. 중 하나 선택
 
       # 3. Docker 버전 확인 (디버깅용)
       - name: Check Docker version
