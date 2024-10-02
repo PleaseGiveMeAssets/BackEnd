@@ -9,7 +9,6 @@ build/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
-.idea/
 *.iws
 *.iml
 *.ipr
@@ -17,8 +16,6 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-/src/main/resources/application.properties
-
 
 ### Eclipse ###
 .apt_generated
