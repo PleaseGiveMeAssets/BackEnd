@@ -21,6 +21,7 @@ sourceCompatibility = '17'
 targetCompatibility = '17'
 
 tasks.withType(JavaCompile) {
+    options.release = 17
     options.encoding = 'UTF-8'
 }
 
@@ -77,6 +78,17 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    // 메일
+    implementation "org.springframework:spring-context-support:${springVersion}"
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+
+    // SMS
+    implementation 'net.nurigo:sdk:4.3.0'
+
+    // 암호화
+    implementation 'org.jasypt:jasypt:1.9.3'
+
 }
 
 test {

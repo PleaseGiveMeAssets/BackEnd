@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spring.mapper.PortfolioMapper">
+
+    <!-- 특정 사용자에 대한 주문 정보 조회 -->
+    <select id="selectOrdersByUserId" parameterType="string" resultType="Portfolio">
+        SELECT USER_ID AS userId, PRICE AS price, QUANTITY AS quantity
+        FROM `PORTFOLIO`
+        WHERE USER_ID = #{userId}
+    </select>
+    <select id="findByUserIdAndStockId" parameterType="map" resultType="Portfolio">
+        SELECT *
+        FROM PORTFOLIO
+        WHERE STOCK_ID = #{stockId}
+        AND USER_ID = #{userId}
+    </select>
+    <insert id="insert" parameterType="map">
+        INSERT INTO PORTFOLIO
+        ( USER_ID, STOCK_ID, SHORT_CODE, PRICE, QUANTITY, MEMO, ORDER_TYPE, ORDERED_AT)
+        VALUES
+        ( #{userId}, #{stockId}, #{shortCode}, #{portfolioDTO.price}, #{portfolioDTO.quantity},
+        #{portfolioDTO.memo}, #{portfolioDTO.orderType}, #{portfolioDTO.orderedAt})
+    </insert>
+    <update id="update" parameterType="map">
+        UPDATE PORTFOLIO
+        SET
+        PRICE = #{portfolioDTO.price},
+        QUANTITY = #{portfolioDTO.quantity},
+        MEMO = #{portfolioDTO.memo},
+        ORDER_TYPE = #{portfolioDTO.orderType},
+        ORDERED_AT = #{portfolioDTO.orderedAt}
+        WHERE
+        PORTFOLIO_ID = #{portfolioId}
+    </update>
+</mapper>

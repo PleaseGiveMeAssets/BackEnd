@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spring.mapper.SavedNewsMapper">
+
+    <!-- 유저의 저장된 뉴스 목록을 불러옴 -->
+    <select id="findAllSavedNewsByUserId" parameterType="String" resultType="com.example.spring.domain.News">
+        SELECT n.news_id, n.title, n.link, n.created_at, n.updated_at,
+               sn.saved_news_id, sn.created_at as saved_at
+        FROM NEWS n
+                 JOIN SAVED_NEWS sn ON n.news_id = sn.news_id
+        WHERE sn.user_id = #{userId}
+        ORDER BY sn.created_at DESC
+    </select>
+
+    <!-- 저장된 뉴스 저장 -->
+    <insert id="save" parameterType="com.example.spring.domain.SavedNews">
+        INSERT INTO SAVED_NEWS (news_id, user_id, created_at, updated_at)
+        VALUES (#{newsId}, #{userId}, NOW(), NOW())
+    </insert>
+
+    <!-- 특정 유저의 특정 저장된 뉴스 삭제 -->
+    <delete id="deleteByUserIdAndSavedNewsId" parameterType="map">
+        DELETE FROM SAVED_NEWS
+        WHERE user_id = #{userId}
+          AND saved_news_id = #{savedNewsId}
+    </delete>
+</mapper>
+
