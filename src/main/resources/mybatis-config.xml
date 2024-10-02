@@ -15,6 +15,8 @@
         <typeAlias type="com.example.spring.vo.UserVO" alias="UserVO"/>
         <typeAlias type="com.example.spring.vo.DailyReportVO" alias="DailyReportVO"/>
         <typeAlias type="com.example.spring.vo.PortfolioVO" alias="PortfolioVO"/>
+        <typeAlias type="com.example.spring.dto.MyStockDTOTest" alias="MyStockDTOTest"/>
+<!--        <typeAlias type="com.example.spring.vo.PortfolioHistoryVO" alias="PortfolioHistoryVO"/>-->
     </typeAliases>
 
     <mappers>
@@ -23,5 +25,6 @@
         <mapper resource="mapper/OrderMapper.xml"/>
         <mapper resource="mapper/InterestCategoryMapper.xml"/>
         <mapper resource="mapper/DailyReportMapper.xml"/>
+        <mapper resource="mapper/PortfolioHistoryMapper.xml"/>
     </mappers>
 </configuration>

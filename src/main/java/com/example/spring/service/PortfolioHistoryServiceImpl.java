@@ -1,0 +1,164 @@
+package com.example.spring.service;
+
+import com.example.spring.dto.*;
+import com.example.spring.mapper.PortfolioHistoryMapper;
+import com.example.spring.mapper.UserMapper;
+import com.example.spring.vo.OrderVO;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
+    private SqlSessionFactory sqlSessionFactory;
+
+    public PortfolioHistoryServiceImpl(SqlSessionFactory sqlSessionFactory) {
+        this.sqlSessionFactory = sqlSessionFactory;
+    }
+
+    @Override
+    public List<TotalStockInfoDTO> saveStockPortfolioInfo() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        PortfolioHistoryMapper portfolioHistoryMapper = sqlSession.getMapper(PortfolioHistoryMapper.class);
+        List<TotalStockInfoDTO> totalStockInfoDTOList = new ArrayList<>();
+
+        // 모든 사용자 조회
+        List<String> userIdList = portfolioHistoryMapper.selectAllUserIds();
+
+        for (String userId : userIdList) {
+            TotalStockInfoDTO totalStockInfoDTO = new TotalStockInfoDTO();
+            totalStockInfoDTO.setUserId(userId);
+            // 해당 사용자의 모든 거래 내역 가져오기 (날짜 오름차순 정렬)
+            List<OrderVO> orders = portfolioHistoryMapper.getOrdersByUserAndStock(userId);
+
+            // 모든 거래 날짜 목록 추출 (날짜 오름차순, 중복 제거)
+            TreeSet<LocalDate> allDates = orders.stream()
+                    .map(order -> order.getOrderedAt().toLocalDateTime().toLocalDate())
+                    .collect(Collectors.toCollection(TreeSet::new));
+            log.info("allDate : {}",allDates.toString());
+
+            // 주식 ID 목록 추출 (사용자가 보유한 모든 주식)
+            Set<Integer> stockIdSet = orders.stream()
+                    .map(OrderVO::getStockId)
+                    .collect(Collectors.toSet());
+            log.info("stockIdSet : {}", stockIdSet.toString());
+
+            // 주식별로 누적 포지션을 저장하기 위한 맵
+            Map<Integer, Integer> totalQuantityMap = new HashMap<>();
+            Map<Integer, Long> totalBuyAmountMap = new HashMap<>();
+
+            Map<Integer, Long> totalBuyAveragePriceMap = new HashMap<>();
+            Map<Integer, Long> totalProfitMap = new HashMap<>();
+
+
+            // 날짜별로 순회
+            for (LocalDate date : allDates) {
+                log.info("=====================  date:{}", date);
+
+                // 해당 날짜까지의 모든 거래 내역 필터링
+                List<OrderVO> ordersUpToDate = orders.stream()
+                        .filter(order -> !order.getOrderedAt().toLocalDateTime().toLocalDate().isBefore(date))
+                        .collect(Collectors.toList());
+                log.info("ordersUpToDate : {}", ordersUpToDate);
+
+                // 해당 날짜까지의 주식별 누적 포지션 계산
+                for (Integer stockId : stockIdSet) {
+                    log.info("===========stockId:{}", stockId);
+                    int totalQuantity = totalQuantityMap.getOrDefault(stockId, 0);
+                    long totalBuyAveragePrice = totalBuyAveragePriceMap.getOrDefault(stockId, 0L);
+                    long totalBuyAmount = totalBuyAmountMap.getOrDefault(stockId, 0L);
+                    long totalProfit = totalProfitMap.getOrDefault(stockId, 0L);
+
+                    // 해당 주식의 거래 내역 필터링
+                    List<OrderVO> stockOrders = ordersUpToDate.stream()
+                            .filter(order -> order.getStockId() == stockId && order.getOrderedAt().toLocalDateTime().toLocalDate().equals(date))
+                            .collect(Collectors.toList());
+                    log.info("stockOrders : {}", stockOrders);
+
+//                    로직 수정 필요
+                    for (OrderVO order : stockOrders) {
+                        if ('S' == (order.getOrderType())) { // 매도
+                            totalQuantity -= order.getQuantity();
+                            totalProfit += (order.getPrice() - totalBuyAveragePrice) * order.getQuantity();
+                            totalBuyAmount -= totalBuyAveragePriceMap.get(order.getStockId()) * order.getQuantity();
+                            log.info("======판매 발생======");
+                            log.info("totalQuantity(누적) : {}", totalQuantity);
+                            log.info("totalProfit(수익률발생) : {}", totalProfit);
+
+                        } else if ('B' == (order.getOrderType())) { // 매수
+                            totalQuantity += order.getQuantity();
+                            totalBuyAmount += order.getPrice() * order.getQuantity();
+                            // 살때마다 매수 평균가 갱신
+                            totalBuyAveragePrice = totalBuyAmount / totalQuantity;
+                            log.info("======구매 발생======");
+                            log.info("totalQuantity(누적) : {}", totalQuantity);
+                            log.info("totalBuyAmount : {}", totalBuyAmount);
+                            log.info("totalBuyAveragePrice(매수 평균가 갱신): {}", totalBuyAveragePrice);
+                        }
+                    }
+
+                    // 누적 포지션 업데이트
+                    totalQuantityMap.put(stockId, totalQuantity);
+                    totalProfitMap.put(stockId, totalProfit);
+                    totalBuyAveragePriceMap.put(stockId, totalBuyAveragePrice);
+                    totalBuyAmountMap.put(stockId, totalBuyAmount);
+
+                    log.info("totalQuantityMap : {}", totalQuantityMap.get(stockId));
+                    log.info("totalBuyAmountMap : {}", totalBuyAmountMap.get(stockId));
+                    log.info("totalBuyAveragePriceMap : {}", totalBuyAveragePriceMap.get(stockId));
+                    log.info("totalProfitMap : {}", totalProfitMap.get(stockId));
+
+
+                    if (totalQuantityMap.get(stockId) <= 0) {
+                        continue; // 보유한 주식이 없으면 계산하지 않음
+                    }
+
+                    // 종가 가져오기
+                    Long closingPrice = portfolioHistoryMapper.getStockClosingPrice(stockId, date);
+                    log.info("closingPrice:{}", closingPrice);
+
+                    if (closingPrice == null) {
+                        closingPrice = totalBuyAveragePriceMap.get(stockId);
+
+                    }
+
+                    // 수익 및 수익률 계산
+                    double profit = totalProfitMap.get(stockId)
+                            + (closingPrice - totalBuyAveragePriceMap.get(stockId)) * totalQuantityMap.get(stockId);
+                    double profitRate = (profit / totalBuyAmountMap.get(stockId)) *  100 ;
+                    log.info("profit:{}", profit);
+                    log.info("profitRate:{}", profitRate);
+
+                    // 결과 저장 또는 처리
+                    log.info("================수익률 저장 : profit = {}, profitRate = {}", profit, profitRate);
+
+                }
+            }
+
+            long totalAmount = totalBuyAmountMap.values()
+                    .stream() // 스트림 생성
+                    .mapToLong(Long::longValue) // Long 값을 기본형으로 변환
+                    .sum(); // 합계 계산
+            log.info("********************** totalAmount : {}", totalAmount);
+            totalStockInfoDTO.setTotalAmount(totalAmount);
+            // Value 값들의 합을 구하기
+            long totalProfit = totalProfitMap.values()
+                    .stream() // 스트림 생성
+                    .mapToLong(Long::longValue) // Long 값을 기본형으로 변환
+                    .sum(); // 합계 계산
+            log.info("********************** totalProfit : {}", totalProfit);
+            totalStockInfoDTO.setTotalProfit(totalProfit);
+
+            totalStockInfoDTOList.add(totalStockInfoDTO);
+        }
+        return totalStockInfoDTOList;
+    }
+}

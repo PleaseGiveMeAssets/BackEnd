@@ -2,6 +2,7 @@ package com.example.spring.vo;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,7 +16,7 @@ public class OrderVO {
     private int quantity;         // 수량
     private String memo;          // 메모
     private char orderType;       // 주문 타입
-    private LocalDateTime orderedAt; // 주문 일시
-    private LocalDateTime createdAt; // 생성 일시
-    private LocalDateTime updatedAt; // 수정 일시
+    private Timestamp orderedAt; // 주문 일시
+    private Timestamp createdAt; // 생성 일시
+    private Timestamp updatedAt; // 수정 일시
 }
