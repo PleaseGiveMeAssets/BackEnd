@@ -1,5 +1,5 @@
 # 1. Gradle 빌드를 위한 기본 이미지 설정 (multi-stage build)
-FROM gradle:7.5-jdk17 AS build
+FROM gradle:8.0-jdk17 AS build
 
 # 2. Gradle Wrapper 스크립트 복사
 COPY gradlew gradlew.bat /app/
