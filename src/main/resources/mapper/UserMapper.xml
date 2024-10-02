@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.UserMapper">
-    <resultMap id="usrResultMap" type="User">
+    <resultMap id="userResultMap" type="User">
         <id property="userId" column="USER_ID"/>
         <result property="password" column="PASSWORD"/>
         <result property="phoneFirst" column="PHONE_FIRST"/>
@@ -21,7 +21,7 @@
     </resultMap>
 
     <!-- User 정보를 가져오는 resultMap -->
-    <resultMap id="selectUserProfileResultMap" type="com.example.spring.domain.User" autoMapping="false">
+    <resultMap id="selectUserProfileResultMap" type="User" autoMapping="false">
         <constructor>
             <idArg column="user_id" javaType="String"/>
             <arg column="profile_image_url" javaType="String"/>
@@ -37,6 +37,19 @@
         FROM USER u
         WHERE u.USER_ID = #{userId}
     </select>
+
+    <select id="selectUserById" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM USER
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <insert id="insertUser" parameterType="MemberDTO">
+        INSERT INTO USER (USER_ID, PASSWORD, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, PHONE_VERIFICATION_CODE, NAME,
+        EMAIL, EMAIL_VERIFICATION_CODE)
+        VALUES (#{userId}, #{password}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{phoneVerificationCode}, #{name},
+        #{email}, #{emailVerificationCode})
+    </insert>
 
     <!--아이디와 휴대폰 번호로 회원찾기-->
     <select id="findMemberByNameAndPhone" parameterType="FindIdRequestDTO" resultType="User">

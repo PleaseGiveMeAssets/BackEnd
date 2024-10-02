@@ -2,6 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
+import com.example.spring.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,17 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
+    public boolean checkEmailVerificationCode(String emailVerificationCode) {
+        return true;
+    }
+
+    @Override
     public boolean checkVerifyCodeForFindPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
         return true;
     }
 
-
+    @Override
+    public boolean checkVerifyCodeForFindSignup(MemberDTO memberDTO) {
+        return true;
+    }
 }
