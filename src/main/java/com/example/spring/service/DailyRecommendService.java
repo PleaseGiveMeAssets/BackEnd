@@ -1,9 +1,9 @@
 package com.example.spring.service;
 
-import com.example.spring.dto.StockDTO;
+import com.example.spring.dto.DailyStockDTO;
 
 import java.util.List;
 
 public interface DailyRecommendService {
-    public List<StockDTO> getDailyRecommendStockInfo(String userId, String date);
+    public List<DailyStockDTO> getDailyRecommendStockInfo(String userId, String date);
 }

@@ -1,8 +1,8 @@
 package com.example.spring.service;
 
+import com.example.spring.domain.Notification;
 import com.example.spring.dto.NotificationDTO;
 import com.example.spring.mapper.NotificationMapper;
-import com.example.spring.vo.NotificationVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<NotificationDTO> getNotificationsByUserId(String userId) {
-        List<NotificationVO> notifications = notificationMapper.getNotificationsByUserId(userId);
-        if (log.isInfoEnabled()){
+        List<Notification> notifications = notificationMapper.getNotificationsByUserId(userId);
+        if (log.isInfoEnabled()) {
             log.info("hi : {}", notifications.get(0).getMessageType());
         }
         return notifications.stream()
@@ -43,15 +43,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     // VO를 DTO로 변환하는 메서드
-    private NotificationDTO convertToDTO(NotificationVO notificationVO) {
+    private NotificationDTO convertToDTO(Notification notification) {
         NotificationDTO notificationDTO = new NotificationDTO();
-        notificationDTO.setNotificationId(notificationVO.getNotificationId());
-        notificationDTO.setUserId(notificationVO.getUserId());
-        notificationDTO.setMessage(notificationVO.getMessage());
-        notificationDTO.setMessageType(notificationVO.getMessageType());
-        notificationDTO.setReaded(notificationVO.getReaded());
-        notificationDTO.setCreatedAt(notificationVO.getCreatedAt());
-        notificationDTO.setUpdatedAt(notificationVO.getUpdatedAt());
+        notificationDTO.setNotificationId(notification.getNotificationId());
+        notificationDTO.setUserId(notification.getUserId());
+        notificationDTO.setMessage(notification.getMessage());
+        notificationDTO.setMessageType(notification.getMessageType());
+        notificationDTO.setReaded(notification.getReaded());
+        notificationDTO.setCreatedAt(notification.getCreatedAt());
+        notificationDTO.setUpdatedAt(notification.getUpdatedAt());
         return notificationDTO;
     }
 }

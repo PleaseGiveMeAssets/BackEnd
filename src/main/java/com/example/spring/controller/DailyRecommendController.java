@@ -1,6 +1,6 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.StockDTO;
+import com.example.spring.dto.DailyStockDTO;
 import com.example.spring.service.DailyRecommendService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class DailyRecommendController {
      * @return
      */
     @GetMapping({"", "{date}"})
-    public ResponseEntity<List<StockDTO>> getDailyRecommendStockInfo(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(value = "date", required = false) String date) {
+    public ResponseEntity<List<DailyStockDTO>> getDailyRecommendStockInfo(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(value = "date", required = false) String date) {
         if (log.isInfoEnabled()) {
             log.info("getDailyRecommendStockInfo userDetails : {}, date : {}", userDetails, date);
         }
