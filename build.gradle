@@ -85,6 +85,9 @@ dependencies {
     // SMS
     implementation 'net.nurigo:sdk:4.3.0'
 
+    // 암호화
+    implementation 'org.jasypt:jasypt:1.9.3'
+
 }
 
 test {

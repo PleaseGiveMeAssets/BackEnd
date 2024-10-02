@@ -9,7 +9,6 @@ import com.example.spring.mapper.UserMapper;
 import com.example.spring.util.ResultCodeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ public class MemberServiceImpl implements MemberService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final SmsService smsService;
-//    private final JavaMailSender mailSender;
 
     // 아이디 찾기
     @Override
