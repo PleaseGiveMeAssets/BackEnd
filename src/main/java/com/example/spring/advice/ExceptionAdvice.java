@@ -11,6 +11,7 @@ import javax.naming.AuthenticationException;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> badCredentialsException(BadCredentialsException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -59,6 +60,16 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } // 인증 코드x - INVALID_VERIFICAITION_CODE
 
+    @ExceptionHandler(UserAnswerProcessingException.class)
+    public ResponseEntity<String> handleUserAnswerProcessingException(UserAnswerProcessingException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()); //옵션 선택값 입력/수정 실패
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> resourceNotFoundException(ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // DB 리소스를 찾을 수 없음 (404)
+    }
+
     @ExceptionHandler(EmailVerificationException.class)
     public ResponseEntity<String> emailVerificationException(EmailVerificationException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -69,13 +80,4 @@ public class ExceptionAdvice {
     public ResponseEntity<String> exception(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
-//
-//    //공동 예외 처리
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<String> handleAllExceptions(Exception e) {
-//        log.error("Unhandled exception: ", e);
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
-//    }
-
-
 }

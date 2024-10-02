@@ -6,8 +6,8 @@ import com.example.spring.dto.UserAnswerDTO;
 public interface SurveyService {
 
 
-    QuestionDTO getSurveyQuestion(int questionId);
+    QuestionDTO getSurveyQuestion(long questionId);
 
-    int insertOrUpdateUserAnswer(String userId, int questionId, UserAnswerDTO userAnswerDTO);
+    int insertOrUpdateUserAnswer(String userId, long questionId, UserAnswerDTO userAnswerDTO);
 
 }
