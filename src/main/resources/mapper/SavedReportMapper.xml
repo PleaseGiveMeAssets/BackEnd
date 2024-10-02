@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.SavedReportMapper">
 
     <!-- ResultMap 설정: DB에서 조회한 결과를 VO에 매핑 -->
-    <resultMap id="SavedReportMap" type="com.example.vo.SavedReportVO">
+    <resultMap id="SavedReportMap" type="SavedReport">
         <id property="savedReportId" column="SAVED_REPORT_ID"/>
         <result property="userId" column="USER_ID"/>
         <result property="dailyReportId" column="DAILY_REPORT_ID"/>
@@ -19,7 +19,7 @@
     </select>
 
     <!-- 리포트 저장 -->
-    <insert id="insertSavedReport" parameterType="com.example.vo.SavedReportVO">
+    <insert id="insertSavedReport" parameterType="SavedReport">
         INSERT INTO SAVED_REPORT (SAVED_REPORT_ID, USER_ID, DAILY_REPORT_ID, CREATED_AT, UPDATED_AT)
         VALUES (#{savedReportId}, #{userId}, #{dailyReportId}, #{createdAt}, #{updatedAt})
     </insert>

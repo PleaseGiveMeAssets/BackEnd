@@ -10,5 +10,28 @@
         FROM `PORTFOLIO`
         WHERE USER_ID = #{userId}
     </select>
-
+    <select id="findByUserIdAndStockId" parameterType="map" resultType="Portfolio">
+        SELECT *
+        FROM PORTFOLIO
+        WHERE STOCK_ID = #{stockId}
+        AND USER_ID = #{userId}
+    </select>
+    <insert id="insert" parameterType="map">
+        INSERT INTO PORTFOLIO
+        ( USER_ID, STOCK_ID, SHORT_CODE, PRICE, QUANTITY, MEMO, ORDER_TYPE, ORDERED_AT)
+        VALUES
+        ( #{userId}, #{stockId}, #{shortCode}, #{portfolioDTO.price}, #{portfolioDTO.quantity},
+        #{portfolioDTO.memo}, #{portfolioDTO.orderType}, #{portfolioDTO.orderedAt})
+    </insert>
+    <update id="update" parameterType="map">
+        UPDATE PORTFOLIO
+        SET
+        PRICE = #{portfolioDTO.price},
+        QUANTITY = #{portfolioDTO.quantity},
+        MEMO = #{portfolioDTO.memo},
+        ORDER_TYPE = #{portfolioDTO.orderType},
+        ORDERED_AT = #{portfolioDTO.orderedAt}
+        WHERE
+        PORTFOLIO_ID = #{portfolioId}
+    </update>
 </mapper>

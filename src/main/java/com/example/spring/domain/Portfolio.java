@@ -15,7 +15,7 @@ public class Portfolio {
     private Long stockId;
     private String shortCode;
     private Long price;
-    private Integer quantity;
+    private Long quantity;
     private String memo;
     private Character orderType;
     private Timestamp orderedAt;

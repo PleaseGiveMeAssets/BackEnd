@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spring.mapper.ProfileEditMapper">
+
+    <resultMap id="ProfileEditVOResultMap" type="com.example.spring.vo.ProfileEditVO">
+        <result property="name" column="name" />
+        <result property="nickname" column="nickname" />
+        <result property="phoneFirst" column="phone_first" />
+        <result property="phoneMiddle" column="phone_middle" />
+        <result property="phoneLast" column="phone_last" />
+        <result property="profileImageUrl" column="profile_image_url" />
+        <result property="birthDate" column="birth_date" />
+    </resultMap>
+
+    <!-- 특정 사용자 ID로 프로필 정보를 조회하는 SQL -->
+    <select id="getProfileByUserId" parameterType="string" resultMap="ProfileEditVOResultMap">
+        SELECT name, nickname, phone_first, phone_middle, phone_last, profile_image_url, birth_date
+        FROM USER
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 특정 사용자 ID로 프로필 정보를 업데이트하는 SQL -->
+    <update id="updateProfile" parameterType="map">
+        UPDATE USER
+        SET name = #{profileEditVO.name},
+        nickname = #{profileEditVO.nickname},
+        phone_first = #{profileEditVO.phoneFirst},
+        phone_middle = #{profileEditVO.phoneMiddle},
+        phone_last = #{profileEditVO.phoneLast},
+        profile_image_url = #{profileEditVO.profileImageUrl},
+        birth_date = #{profileEditVO.birthDate}
+        WHERE user_id = #{userId}
+    </update>
+</mapper>

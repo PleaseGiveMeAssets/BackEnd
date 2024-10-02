@@ -8,7 +8,9 @@ import java.util.List;
 
 @Mapper
 public interface StockMapper {
-    List<Stock> selectListRecommendStockByUserId(@Param("userId") String userId, @Param("date") String date);
-
+    Stock findByStockId(Long stockId);
+    int insert(Stock stock);
+    String findShortCodeByStockId(Long stockId);
     List<Stock> selectListPortfolioByUserId(String userId);
+    List<Stock> selectListRecommendStockByUserId(@Param("userId") String userId, @Param("date") String date);
 }

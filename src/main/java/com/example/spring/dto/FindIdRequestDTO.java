@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPortfolioDTO {
-    private Long portfolioId;
-    private String userId;
-    private Long price;
-    private Long quantity;
-    private Character orderType;
+public class FindIdRequestDTO {
+    private String name;
+    private String phoneFirst;
+    private String phoneMiddle;
+    private String phoneLast;
+    private String phoneVerificationCode;
 }

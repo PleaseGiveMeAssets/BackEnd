@@ -1,18 +1,21 @@
 package com.example.spring.dto;
 
+import com.example.spring.util.OrderTypeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPortfolioDTO {
-    private Long portfolioId;
-    private String userId;
+public class PortfolioDTO {
     private Long price;
     private Long quantity;
-    private Character orderType;
+    private String memo;
+    private OrderTypeStatus orderType;
+    private Timestamp orderedAt;
 }

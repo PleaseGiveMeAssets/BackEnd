@@ -6,27 +6,37 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <setting name="logImpl" value="SLF4J"/>
     </settings>
 
     <typeAliases>
         <typeAlias type="com.example.spring.domain.RecommendStock" alias="RecommendStock"/>
         <typeAlias type="com.example.spring.domain.Stock" alias="Stock"/>
         <typeAlias type="com.example.spring.domain.Portfolio" alias="Portfolio"/>
+        <typeAlias type="com.example.spring.domain.Notification" alias="Notification"/>
         <typeAlias type="com.example.spring.domain.User" alias="User"/>
         <typeAlias type="com.example.spring.domain.DailyReport" alias="DailyReport"/>
         <typeAlias type="com.example.spring.domain.Question" alias="Question"/>
         <typeAlias type="com.example.spring.domain.QuestionOption" alias="QuestionOption"/>
         <typeAlias type="com.example.spring.vo.UserAnswerVO" alias="UserAnswerVO"/>
+        <typeAlias type="com.example.spring.domain.SavedNews" alias="SavedNews"/>
+        <typeAlias type="com.example.spring.dto.FindIdRequestDTO" alias="FindIdRequestDTO"/>
+        <typeAlias type="com.example.spring.dto.FindPasswordRequestDTO" alias="FindPasswordRequestDTO"/>
+        <typeAlias type="com.example.spring.domain.SelectedTerms" alias="SelectedTerms"/>
+        <typeAlias type="com.example.spring.domain.SavedReport" alias="SavedReport"/>
     </typeAliases>
 
     <mappers>
-        <mapper resource="mapper/StockMapper.xml"/>
-        <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/DailyReportMapper.xml"/>
+        <mapper resource="mapper/InterestCategoryMapper.xml"/>
+        <mapper resource="mapper/NotificationMapper.xml"/>
         <mapper resource="mapper/PortfolioMapper.xml"/>
+        <mapper resource="mapper/QuestionMapper.xml"/>
+        <mapper resource="mapper/SavedNewsMapper.xml"/>
+        <mapper resource="mapper/SavedReportMapper.xml"/>
+        <mapper resource="mapper/StockMapper.xml"/>
+        <mapper resource="mapper/UserAnswerMapper.xml"/>
+        <mapper resource="mapper/UserMapper.xml"/>
         <mapper resource="mapper/InterestCategoryMapper.xml"/>
         <mapper resource="mapper/DailyReportMapper.xml"/>
-        <mapper resource="mapper/QuestionMapper.xml"/>
-        <mapper resource="mapper/UserAnswerMapper.xml"/>
     </mappers>
 </configuration>

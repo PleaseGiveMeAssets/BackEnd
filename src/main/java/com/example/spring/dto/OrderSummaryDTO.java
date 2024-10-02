@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPortfolioDTO {
-    private Long portfolioId;
-    private String userId;
+public class OrderSummaryDTO {
+    private String name;
     private Long price;
     private Long quantity;
-    private Character orderType;
 }
