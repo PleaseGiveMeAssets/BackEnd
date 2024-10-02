@@ -31,7 +31,7 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public QuestionDTO getSurveyQuestion(int questionId) {
+    public QuestionDTO getSurveyQuestion(long questionId) {
         // 설문 질문 가져오기
         Question question = questionMapper.selectSurveyQuestion(questionId);
 
@@ -65,7 +65,7 @@ public class SurveyServiceImpl implements SurveyService {
 
 
     @Override
-    public int insertOrUpdateUserAnswer(String userId, int questionId, UserAnswerDTO userAnswerDTO) {
+    public int insertOrUpdateUserAnswer(String userId, long questionId, UserAnswerDTO userAnswerDTO) {
         try {
             // 기존 답변 확인
             UserAnswerVO existingAnswer = userAnswerMapper.selectUserAnswer(userId, questionId);

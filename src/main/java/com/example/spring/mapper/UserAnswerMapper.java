@@ -12,5 +12,5 @@ public interface UserAnswerMapper {
     int updateUserAnswer(UserAnswerVO userAnswerVO);
 
     // 추가: 사용자 답변 조회 메소드(중복에 따라 update insert 구분하기 위해)
-    UserAnswerVO selectUserAnswer(@Param("userId") String userId, @Param("questionId") int questionId);
+    UserAnswerVO selectUserAnswer(@Param("userId") String userId, @Param("questionId") long questionId);
 }
