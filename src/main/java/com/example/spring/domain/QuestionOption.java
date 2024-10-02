@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionOption {
-    private Integer questionOptionId;
-    private Integer questionId;
+    private Long questionOptionId;
+    private Long questionId;
     private String content;
     private Double score;
     private Timestamp createdAt;

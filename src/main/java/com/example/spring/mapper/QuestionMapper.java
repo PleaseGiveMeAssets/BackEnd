@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 public interface QuestionMapper {
     //특정 질문 조회
-    Question selectSurveyQuestion(@Param("questionId") int questionId);
+    Question selectSurveyQuestion(@Param("questionId") long questionId);
 
     // 특정 질문에 대한 옵션들 조회
-    List<QuestionOption> selectOptionsByQuestionId(@Param("questionId") int questionId);
+    List<QuestionOption> selectOptionsByQuestionId(@Param("questionId") long questionId);
 }

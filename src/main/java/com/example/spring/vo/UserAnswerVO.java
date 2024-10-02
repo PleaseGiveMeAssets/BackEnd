@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 @Data
 public class UserAnswerVO {
     private String userId;
-    private int questionId;
-    private int questionOptionId;
+    private Long questionId;
+    private Long questionOptionId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

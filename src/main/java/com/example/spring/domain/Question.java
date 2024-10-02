@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Question {
-    private Integer questionId;
+    private Long questionId;
     private String content;
     private Timestamp createdAt;
     private Timestamp updatedAt;
