@@ -9,8 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DailyRecommendStockDTO {
-    private Long recommendStockId;
-    private String userId;
-    private String content;
+public class FindIdRequestDTO {
+    private String name;
+    private String phoneFirst;
+    private String phoneMiddle;
+    private String phoneLast;
+    private String phoneVerificationCode;
 }

@@ -6,6 +6,7 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="SLF4J"/>
     </settings>
 
     <typeAliases>
@@ -14,13 +15,24 @@
         <typeAlias type="com.example.spring.domain.Portfolio" alias="Portfolio"/>
         <typeAlias type="com.example.spring.domain.User" alias="User"/>
         <typeAlias type="com.example.spring.domain.DailyReport" alias="DailyReport"/>
+        <typeAlias type="com.example.spring.domain.Question" alias="Question"/>
+        <typeAlias type="com.example.spring.domain.QuestionOption" alias="QuestionOption"/>
+        <typeAlias type="com.example.spring.vo.UserAnswerVO" alias="UserAnswerVO"/>
+        <typeAlias type="com.example.spring.dto.FindIdRequestDTO" alias="FindIdRequestDTO"/>
+        <typeAlias type="com.example.spring.dto.FindPasswordRequestDTO" alias="FindPasswordRequestDTO"/>
+        <typeAlias type="com.example.spring.domain.SelectedTerms" alias="SelectedTerms"/>
+        <typeAlias type="com.example.spring.domain.TermsOfUse" alias="TermsOfUse"/>
+        <typeAlias type="com.example.spring.dto.MemberDTO" alias="MemberDTO"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/StockMapper.xml"/>
         <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/TermsOfUseMapper.xml"/>
         <mapper resource="mapper/PortfolioMapper.xml"/>
         <mapper resource="mapper/InterestCategoryMapper.xml"/>
         <mapper resource="mapper/DailyReportMapper.xml"/>
+        <mapper resource="mapper/QuestionMapper.xml"/>
+        <mapper resource="mapper/UserAnswerMapper.xml"/>
     </mappers>
 </configuration>

@@ -1,18 +1,14 @@
 package com.example.spring.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.sql.Timestamp;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class UserAnswerVO {
-    private String UserId;
-    private Long QuestionId;
-    private Long QuestionOptionId;
+    private String userId;
+    private int questionId;
+    private int questionOptionId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

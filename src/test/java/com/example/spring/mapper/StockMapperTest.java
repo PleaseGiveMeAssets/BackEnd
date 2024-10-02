@@ -1,6 +1,7 @@
 package com.example.spring.mapper;
 
 import com.example.spring.config.AppConfig;
+import com.example.spring.domain.Stock;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,14 @@ public class StockMapperTest {
     public void selectListRecommendStockByUserId() {
         String userId = "testUser1";
         String date = "2024-09-26";
-        List<StockVO> stockVOList = stockMapper.selectListRecommendStockByUserId(userId, date);
-        assertTrue(stockVOList.size() > 0);
+        List<Stock> stockList = stockMapper.selectListRecommendStockByUserId(userId, date);
+        assertTrue(stockList.size() > 0);
     }
 
     @Test
     public void selectListPortfolioByUserId() {
         String userId = "testUser1";
-        List<StockVO> stockVOList = stockMapper.selectListPortfolioByUserId(userId);
-        assertTrue(stockVOList.size() > 0);
+        List<Stock> stockList = stockMapper.selectListPortfolioByUserId(userId);
+        assertTrue(stockList.size() > 0);
     }
 }
