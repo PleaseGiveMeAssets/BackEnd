@@ -19,8 +19,8 @@ RUN gradle build --no-daemon -x test
 # 7. Tomcat 이미지를 사용하여 서블릿 컨테이너 설정
 FROM tomcat:9.0-jdk17
 
-# 8. WAR 파일을 Tomcat의 webapps 폴더에 복사
-COPY --from=build /app/build/libs/*.war /usr/local/tomcat/webapps/app.war
+# 8. WAR 파일을 Tomcat의 webapps 폴더에 ROOT.war로 복사
+COPY --from=build /app/build/libs/*.war /usr/local/tomcat/webapps/ROOT.war
 
 # 9. Tomcat이 기본적으로 사용하는 포트를 노출
 EXPOSE 8080
