@@ -18,9 +18,9 @@ public class StockHistoryServiceImpl implements StockHistoryService {
     private SqlSessionFactory sqlSessionFactory;
 
     /**
-     * 일일추천종목 조회
+     * 종목 조회
      * <p>
-     * 유저아이디와 날짜를 사용해 추천종목 리스트를 조회하는 메소드이다.
+     * 일주일치의 종목 가격을 조회하는 메소드이다.
      *
      * @param stockId
      * @return List<StockHistoryDTO>
