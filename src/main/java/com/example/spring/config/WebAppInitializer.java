@@ -29,4 +29,3 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         return new String[]{"/"};
     }
 }
-
