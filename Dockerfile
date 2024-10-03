@@ -16,17 +16,14 @@ COPY . .
 # 6. 애플리케이션 빌드
 RUN gradle build --no-daemon -x test
 
-# 7. 실행을 위한 경량 OpenJDK 이미지 사용
-FROM openjdk:17-jdk-slim
+# 7. Tomcat 이미지를 사용하여 서블릿 컨테이너 설정
+FROM tomcat:9.0-jdk17
 
-# 8. 작업 디렉토리 설정
-WORKDIR /app
+# 8. WAR 파일을 Tomcat의 webapps 폴더에 복사
+COPY --from=build /app/build/libs/*.war /usr/local/tomcat/webapps/app.war
 
-# 9. 빌드된 JAR 또는 WAR 파일을 복사
-COPY --from=build /app/build/libs/*.war /app/app.war
-
-# 10. 컨테이너에서 사용할 포트 설정
+# 9. Tomcat이 기본적으로 사용하는 포트를 노출
 EXPOSE 8080
 
-# 11. WAR 파일 실행
-ENTRYPOINT ["java", "-jar", "/app/app.war"]
+# 10. Tomcat 서버를 실행
+CMD ["catalina.sh", "run"]
