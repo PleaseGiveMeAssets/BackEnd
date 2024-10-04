@@ -12,17 +12,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/portfolio")
+@RequestMapping("/api/v1")
 @Slf4j
 @RequiredArgsConstructor
 public class PortfolioController {
-    private final PortfolioService portfolioService;
+
+    public PortfolioService portfolioService;
+
+    @Autowired
+    public PortfolioController(PortfolioService portfolioService) {
+        this.portfolioService = portfolioService;
+    }
+
+    @GetMapping("/portfolio/{stockId}")
+    public ResponseEntity<OrderSummaryDTO> getOrderSummary(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long stockId) {
+        OrderSummaryDTO orderSummary = portfolioService.getOrderSummary(userDetails.getUsername(), stockId);
+        return ResponseEntity.ok(orderSummary);
+    }
+
+    @PostMapping("/portfolio/{stockId}/order")
+    public ResponseEntity createOrder(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long stockId, @RequestBody PortfolioDTO portfolioDTO) {
+        portfolioService.createOrder(userDetails.getUsername(), stockId, portfolioDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/portfolio/order/{orderId}")
+    public ResponseEntity updateOrder(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long orderId, @RequestBody PortfolioDTO portfolioDTO) {
+        portfolioService.updateOrder(orderId, portfolioDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+
     /**
      *
      * @param userDetails
      * @return
      */
-    @GetMapping()
+    @GetMapping("/portfolio")
     public ResponseEntity<List<ForChartDTO>> getPortfolio(@RequestParam String userDetails) {
         List<ForChartDTO> forChartDTOList = portfolioService.getOrderList(userDetails);
         return ResponseEntity.ok(forChartDTOList);
