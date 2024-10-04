@@ -12,20 +12,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/portfolio")
 @Slf4j
 @RequiredArgsConstructor
 public class PortfolioController {
     private final PortfolioService portfolioService;
-
     /**
-     * 유저 Order 내역 조회
-     * UserId으로 User가 가진 총 자산 현황을 조회.
+     *
+     * @param userDetails
+     * @return
      */
-
-    @GetMapping("/portfolio")
-    public ResponseEntity<List<ForChartDTO>> getPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
-        List<ForChartDTO> forChartDTOList = portfolioService.getOrderList(userDetails.getUsername());
+    @GetMapping()
+    public ResponseEntity<List<ForChartDTO>> getPortfolio(@RequestParam String userDetails) {
+        List<ForChartDTO> forChartDTOList = portfolioService.getOrderList(userDetails);
         return ResponseEntity.ok(forChartDTOList);
     }
 }
