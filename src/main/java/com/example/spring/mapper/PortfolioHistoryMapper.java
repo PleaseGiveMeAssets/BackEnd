@@ -14,7 +14,7 @@ public interface PortfolioHistoryMapper {
     List<OrderVO> getOrdersByUserAndStock(@Param("userId") String userId);
 
     // 특정 종목의 종가 가져오기
-    Long getStockClosingPrice(@Param("stockId") int stockId, @Param("date") LocalDate date);
+    Integer getStockClosingPrice(@Param("stockId") int stockId, @Param("date") LocalDate date);
 
     // Portfolio_history에 데이터 삽입
     void insertPortfolioHistory(PortfolioHistoryDTO historyDTO);

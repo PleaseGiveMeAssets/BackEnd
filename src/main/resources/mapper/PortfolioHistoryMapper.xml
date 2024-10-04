@@ -28,7 +28,7 @@
     </select>
 
     <!-- 특정 종목의 종가 가져오기 -->
-    <select id="getStockClosingPrice" resultType="long" parameterType="map">
+    <select id="getStockClosingPrice" resultType="integer" parameterType="map">
         SELECT
             CURRENT_PRICE
         FROM

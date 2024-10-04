@@ -2,8 +2,9 @@ package com.example.spring.service;
 
 import com.example.spring.dto.TotalStockInfoDTO;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Map;
 
 public interface PortfolioHistoryService {
-    public List<TotalStockInfoDTO> saveStockPortfolioInfo();
+    Map<String, Map<LocalDate, TotalStockInfoDTO>> saveStockPortfolioInfo();
 }
