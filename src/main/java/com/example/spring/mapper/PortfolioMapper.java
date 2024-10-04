@@ -1,5 +1,8 @@
 package com.example.spring.mapper;
 
+import com.example.spring.domain.Portfolio;
+import com.example.spring.dto.ForChartDTO;
+import com.example.spring.dto.PortfolioDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

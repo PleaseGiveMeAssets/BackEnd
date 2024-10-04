@@ -34,6 +34,7 @@
         WHERE
         PORTFOLIO_ID = #{portfolioId}
     </update>
+
     <select id="findByUserId" resultType="ForChartDTO">
         SELECT
         s.STOCK_NAME,

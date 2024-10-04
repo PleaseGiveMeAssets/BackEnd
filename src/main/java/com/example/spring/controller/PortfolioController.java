@@ -1,22 +1,25 @@
 package com.example.spring.controller;
 
 import com.example.spring.dto.ForChartDTO;
+import com.example.spring.dto.OrderSummaryDTO;
+import com.example.spring.dto.PortfolioDTO;
 import com.example.spring.service.PortfolioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
 @Slf4j
-@RequiredArgsConstructor
 public class PortfolioController {
-
     public PortfolioService portfolioService;
 
     @Autowired
@@ -40,6 +43,7 @@ public class PortfolioController {
     public ResponseEntity updateOrder(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long orderId, @RequestBody PortfolioDTO portfolioDTO) {
         portfolioService.updateOrder(orderId, portfolioDTO);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
     /**
      *
@@ -47,8 +51,8 @@ public class PortfolioController {
      * @return
      */
     @GetMapping("/portfolio")
-    public ResponseEntity<List<ForChartDTO>> getPortfolio(@RequestParam String userDetails) {
-        List<ForChartDTO> forChartDTOList = portfolioService.getOrderList(userDetails);
-        return ResponseEntity.ok(forChartDTOList);
+    public ResponseEntity<?> getPortfolio(@RequestParam("userId") String userDetails) {
+        Map<String, List<ForChartDTO>> forChartDTOListMap = portfolioService.getOrderList(userDetails);
+        return ResponseEntity.ok(forChartDTOListMap);
     }
 }

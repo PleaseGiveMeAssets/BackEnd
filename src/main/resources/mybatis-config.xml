@@ -21,6 +21,7 @@
         <typeAlias type="com.example.spring.vo.UserAnswerVO" alias="UserAnswerVO"/>
         <typeAlias type="com.example.spring.domain.SavedNews" alias="SavedNews"/>
         <typeAlias type="com.example.spring.dto.FindIdRequestDTO" alias="FindIdRequestDTO"/>
+        <typeAlias type="com.example.spring.dto.ForChartDTO" alias="ForChartDTO"/>
         <typeAlias type="com.example.spring.dto.FindPasswordRequestDTO" alias="FindPasswordRequestDTO"/>
         <typeAlias type="com.example.spring.domain.SelectedTerms" alias="SelectedTerms"/>
         <typeAlias type="com.example.spring.domain.SavedReport" alias="SavedReport"/>

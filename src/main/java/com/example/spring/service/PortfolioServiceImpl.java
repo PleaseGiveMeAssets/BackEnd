@@ -2,17 +2,21 @@ package com.example.spring.service;
 
 import com.example.spring.domain.Portfolio;
 import com.example.spring.domain.Stock;
+import com.example.spring.dto.ForChartDTO;
 import com.example.spring.dto.OrderSummaryDTO;
 import com.example.spring.dto.PortfolioDTO;
 import com.example.spring.mapper.PortfolioMapper;
 import com.example.spring.mapper.StockMapper;
 import com.example.spring.util.OrderTypeStatus;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -21,14 +25,15 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final SqlSessionFactory sqlSessionFactory;
 
     @Override
-    public List<ForChartDTO> getOrderList(String userId) {
+    public Map<String, List<ForChartDTO>> getOrderList(String userId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
+        Map<String, List<ForChartDTO>> forchartDTOListMap = new HashMap<>();
         List<ForChartDTO> forChartDTOList = portfolioMapper.findByUserId(userId);
-
+        forchartDTOListMap.put(userId, forChartDTOList);
         log.info("ForChartDTOList : {}", forChartDTOList);
         log.info(System.getProperty("user.dir"));
-        return forChartDTOList;
+        return forchartDTOListMap;
     }
 
     @Override
