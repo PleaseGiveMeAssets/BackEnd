@@ -6,6 +6,7 @@ import com.example.spring.mapper.StockHistoryMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +17,10 @@ import java.util.List;
 public class StockHistoryServiceImpl implements StockHistoryService {
 
     private SqlSessionFactory sqlSessionFactory;
-
+    @Autowired
+    public StockHistoryServiceImpl(SqlSessionFactory sqlSessionFactory) {
+        this.sqlSessionFactory = sqlSessionFactory;
+    }
     /**
      * 종목 조회
      * <p>
