@@ -1,6 +1,7 @@
 package com.example.spring.mapper;
 
-import com.example.spring.vo.StockVO;
+import com.example.spring.domain.Stock;
+import com.example.spring.dto.StockIndexDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,7 +9,9 @@ import java.util.List;
 
 @Mapper
 public interface StockMapper {
-    List<StockVO> selectListRecommendStockByUserId(@Param("userId") String userId, @Param("date") String date);
-
-    List<StockVO> selectListPortfolioByUserId(String userId);
+    Stock findByStockId(Long stockId);
+    int insert(Stock stock);
+    String findShortCodeByStockId(Long stockId);
+    List<Stock> selectListPortfolioByUserId(String userId);
+    List<Stock> selectListRecommendStockByUserId(@Param("userId") String userId, @Param("date") String date);
 }

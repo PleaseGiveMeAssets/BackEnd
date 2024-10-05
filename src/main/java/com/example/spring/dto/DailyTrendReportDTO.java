@@ -12,16 +12,16 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DailyTrendReportDTO {
-    private long dailyReportId;
+    private Long dailyReportId;
     private String userId;
     private String recentTrendTitle;
     private String recentTrendContent;
     private String stockTrendTitle;
     private String stockTrendContent;
-    private int kosdaqPrice;
-    private int kosdaqProfitRate;
-    private int kospiPrice;
-    private int kospiProfitRate;
+    private Integer kosdaqPrice;
+    private Integer kosdaqProfitRate;
+    private Integer kospiPrice;
+    private Integer kospiProfitRate;
     private String dailyTrendSummarizedTitle;
     private String dailyTrendSummarizedContent;
     private Timestamp createdAt;

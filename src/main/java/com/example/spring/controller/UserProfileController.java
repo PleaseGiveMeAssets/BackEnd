@@ -2,9 +2,7 @@ package com.example.spring.controller;
 
 import com.example.spring.dto.UserDTO;
 import com.example.spring.service.UserProfileService;
-import com.example.spring.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

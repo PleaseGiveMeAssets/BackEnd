@@ -1,7 +1,7 @@
 package com.example.spring.mapper;
 
 import com.example.spring.config.AppConfig;
-import com.example.spring.vo.DailyReportVO;
+import com.example.spring.domain.DailyReport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class DailyReportMapperTest {
     @Test
     public void selectDailyReportByUserId() {
         String userId = "testUser1";
-        List<DailyReportVO> dailyReportVOList = dailyReportMapper.selectDailyReportByUserId(userId);
-        assertTrue(dailyReportVOList.size() > 0);
+        List<DailyReport> dailyReportList = dailyReportMapper.selectDailyReportByUserId(userId);
+        assertTrue(dailyReportList.size() > 0);
     }
 }

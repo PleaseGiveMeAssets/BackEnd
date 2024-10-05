@@ -1,9 +1,9 @@
 package com.example.spring.service;
 
+import com.example.spring.domain.Stock;
 import com.example.spring.dto.OrderPortfolioDTO;
 import com.example.spring.dto.StockPortfolioDTO;
 import com.example.spring.mapper.StockMapper;
-import com.example.spring.vo.StockVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -25,31 +25,35 @@ public class StockPortfolioServiceImpl implements StockPortfolioService {
     public List<StockPortfolioDTO> getStockPortfolioInfo(String userId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
-        List<StockVO> stockVOList = stockMapper.selectListPortfolioByUserId(userId);
+        List<Stock> stockList = stockMapper.selectListPortfolioByUserId(userId);
+
+        if (log.isInfoEnabled()) {
+            log.info("getStockPortfolioInfo stockList : {}", stockList);
+        }
 
         List<StockPortfolioDTO> stockPortfolioDTOList = new ArrayList<>();
-        if (!stockVOList.isEmpty()) {
-            stockVOList.stream().forEach(stockVO -> {
+        if (!stockList.isEmpty()) {
+            stockList.stream().forEach(stock -> {
                 StockPortfolioDTO stockPortfolioDTO = new StockPortfolioDTO();
-                stockPortfolioDTO.setStockId(stockVO.getStockId());
-                stockPortfolioDTO.setShortCode(stockVO.getShortCode());
+                stockPortfolioDTO.setStockId(stock.getStockId());
+                stockPortfolioDTO.setShortCode(stock.getShortCode());
 
                 List<OrderPortfolioDTO> orderPortfolioDTOList = new ArrayList<>();
-                if (!stockVO.getPortfolioVOList().isEmpty()) {
-                    stockVO.getPortfolioVOList().stream().forEach(portfolioVO -> {
+                if (!stock.getPortfolioList().isEmpty()) {
+                    stock.getPortfolioList().stream().forEach(portfolio -> {
                         OrderPortfolioDTO orderPortfolioDTO = new OrderPortfolioDTO();
-                        orderPortfolioDTO.setPortfolioId(portfolioVO.getPortfolioId());
-                        orderPortfolioDTO.setUserId(portfolioVO.getUserId());
-                        orderPortfolioDTO.setPrice(portfolioVO.getPrice());
-                        orderPortfolioDTO.setQuantity(portfolioVO.getQuantity());
-                        orderPortfolioDTO.setOrderType(portfolioVO.getOrderType());
+                        orderPortfolioDTO.setPortfolioId(portfolio.getPortfolioId());
+                        orderPortfolioDTO.setUserId(portfolio.getUserId());
+                        orderPortfolioDTO.setPrice(portfolio.getPrice());
+                        orderPortfolioDTO.setQuantity(portfolio.getQuantity());
+                        orderPortfolioDTO.setOrderType(portfolio.getOrderType());
                         orderPortfolioDTOList.add(orderPortfolioDTO);
                     });
                 }
 
                 stockPortfolioDTO.setOrderPortfolioDTOList(orderPortfolioDTOList);
-                stockPortfolioDTO.setStockName(stockVO.getStockName());
-                stockPortfolioDTO.setStockTradeStatus(stockVO.getStockTradeStatus());
+                stockPortfolioDTO.setStockName(stock.getStockName());
+                stockPortfolioDTO.setStockTradeStatus(stock.getStockTradeStatus());
                 stockPortfolioDTOList.add(stockPortfolioDTO);
             });
         }

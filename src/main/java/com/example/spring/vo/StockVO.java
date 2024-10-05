@@ -5,26 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockVO {
-    private long stockId;
-    private String shortCode;
-    private int subCategoryId;
-    private List<RecommendStockVO> recommendStockVOList;
-    private List<PortfolioVO> portfolioVOList;
-    private String stockName;
+    private int stockId;
     private String standardCode;
+    private int subCategoryId;
+    private String stockName;
+    private String shortCode;
     private char stockExchangeMarket;
     private String marketCapitalization;
-    private int openPrice;
-    private int closedPrice;
-    private int highPrice;
-    private int lowPrice;
     private char stockTradeStatus;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Timestamp createAt;
+    private Timestamp updateAt;
+
 }

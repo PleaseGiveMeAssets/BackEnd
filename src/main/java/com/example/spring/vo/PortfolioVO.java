@@ -4,22 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PortfolioVO {
-    private int portfolioId;
-    private String userId;
+
+    private int orderId;
+    private int userId;
     private int stockId;
-    private String shortCode;
-    private int price;
+    private BigDecimal price;
     private int quantity;
     private String memo;
     private char orderType;
-    private Date orderedAt;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+
+    private LocalDateTime orderedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
