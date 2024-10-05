@@ -27,6 +27,12 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정
                 .csrf((csrf) -> csrf.disable()) // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/v2/api-docs",
+                                "/webjars/**").permitAll()
                         .requestMatchers("/api/v1/**").permitAll() // 해당 경로에 대한 접근 허용
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 );
