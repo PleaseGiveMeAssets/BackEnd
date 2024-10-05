@@ -2,6 +2,7 @@ package com.example.spring.controller;
 
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
+import com.example.spring.dto.LoginRequestDTO;
 import com.example.spring.dto.MemberDTO;
 import com.example.spring.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,18 @@ public class MemberController {
             log.info("signup memberDTO : {}", memberDTO);
         }
         return ResponseEntity.ok(memberService.signup(memberDTO));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequest) {
+        String token = memberService.login(loginRequest);
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(value = "Authorization") String token) {
+        memberService.logout(token);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/find-id")
