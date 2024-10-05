@@ -22,7 +22,9 @@ public enum ResultCodeEnum {
     INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "인증번호가 올바르지 않습니다."),
     INVALID_EMAIL_VERIFICATION(HttpStatus.BAD_REQUEST, "유효하지 않은 인증 코드입니다."),
 
-    NO_EXIST_TERMS_OF_USE(HttpStatus.BAD_REQUEST, "이용약관이 존재하지 않습니다.");
+    NO_EXIST_TERMS_OF_USE(HttpStatus.BAD_REQUEST, "이용약관이 존재하지 않습니다."),
+
+    SESSION_EXPIRATION(HttpStatus.BAD_REQUEST, "세션이 만료되었습니다.");
 
     private HttpStatus httpStatus;
     private String message;

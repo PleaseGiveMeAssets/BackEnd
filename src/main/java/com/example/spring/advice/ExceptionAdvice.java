@@ -1,9 +1,11 @@
 package com.example.spring.advice;
 
 import com.example.spring.exception.*;
+import com.example.spring.util.ResultCodeEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -74,6 +76,11 @@ public class ExceptionAdvice {
     public ResponseEntity<String> emailVerificationException(EmailVerificationException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } // 이메일 인증x - INVALID_EMAIL_VERIFICATION
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> usernameNotFoundException(UsernameNotFoundException e) {
+        return ResponseEntity.status(ResultCodeEnum.SESSION_EXPIRATION.getHttpStatus()).body(e.getMessage());
+    }
 
     //내부 서버 오류
     @ExceptionHandler(Exception.class)
