@@ -20,18 +20,45 @@
         INSERT INTO PORTFOLIO
         ( USER_ID, STOCK_ID, SHORT_CODE, PRICE, QUANTITY, MEMO, ORDER_TYPE, ORDERED_AT)
         VALUES
-        ( #{userId}, #{stockId}, #{shortCode}, #{portfolioDTO.price}, #{portfolioDTO.quantity},
-        #{portfolioDTO.memo}, #{portfolioDTO.orderType}, #{portfolioDTO.orderedAt})
+        ( #{userId}, #{stockId}, #{shortCode}, #{orderDTO.price}, #{orderDTO.quantity},
+        #{orderDTO.memo}, #{orderDTO.orderType}, #{orderDTO.orderedAt})
     </insert>
     <update id="update" parameterType="map">
         UPDATE PORTFOLIO
         SET
-        PRICE = #{portfolioDTO.price},
-        QUANTITY = #{portfolioDTO.quantity},
-        MEMO = #{portfolioDTO.memo},
-        ORDER_TYPE = #{portfolioDTO.orderType},
-        ORDERED_AT = #{portfolioDTO.orderedAt}
+        PRICE = #{orderDTO.price},
+        QUANTITY = #{orderDTO.quantity},
+        MEMO = #{orderDTO.memo},
+        ORDER_TYPE = #{orderDTO.orderType},
+        ORDERED_AT = #{orderDTO.orderedAt}
         WHERE
         PORTFOLIO_ID = #{portfolioId}
     </update>
+    <delete id="deleteOrdersByIds" parameterType="list">
+        DELETE FROM PORTFOLIO
+        WHERE PORTFOLIO_ID IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteAllOrder" parameterType="map">
+        DELETE FROM PORTFOLIO
+        WHERE USERID_ID = #{userID} AND
+        STOCK_ID = #{stockId}
+    </delete>
+
+    <select id="findByUserId" resultType="ForChartDTO">
+        SELECT
+        s.STOCK_NAME,
+        SUM(CASE WHEN o.ORDER_TYPE = 'B' THEN o.QUANTITY ELSE -o.QUANTITY END) AS total_quantity,
+        SUM(CASE WHEN o.ORDER_TYPE = 'B' THEN o.QUANTITY * o.PRICE ELSE -o.QUANTITY * o.PRICE END) AS total_price
+        FROM
+        `PORTFOLIO` o
+        JOIN
+        `STOCK` s ON o.STOCK_ID = s.STOCK_ID
+        WHERE
+        o.USER_ID =#{userId}
+        GROUP BY
+        s.STOCK_NAME;
+    </select>
 </mapper>

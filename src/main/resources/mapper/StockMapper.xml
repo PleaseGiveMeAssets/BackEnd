@@ -14,7 +14,6 @@
         <collection property="portfolioList" ofType="Portfolio" autoMapping="true">
         </collection>
     </resultMap>
-
     <select id="selectListRecommendStockByUserId" parameterType="map"
             resultMap="selectListRecommendStockByUserIdResultMap">
         SELECT s.STOCK_ID AS stockId
