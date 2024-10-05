@@ -3,7 +3,6 @@ package com.example.spring.mapper;
 import com.example.spring.dto.MyStockDTOTest;
 import com.example.spring.dto.PortfolioHistoryDTO;
 import com.example.spring.vo.OrderVO;
-import com.example.spring.vo.UserVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;

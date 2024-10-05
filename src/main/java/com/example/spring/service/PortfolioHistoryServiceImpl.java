@@ -2,16 +2,13 @@ package com.example.spring.service;
 
 import com.example.spring.dto.*;
 import com.example.spring.mapper.PortfolioHistoryMapper;
-import com.example.spring.mapper.UserMapper;
 import com.example.spring.vo.OrderVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 

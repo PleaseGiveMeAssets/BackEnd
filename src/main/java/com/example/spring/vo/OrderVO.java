@@ -3,7 +3,6 @@ package com.example.spring.vo;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Data
 public class OrderVO {

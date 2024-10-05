@@ -21,7 +21,6 @@
         <typeAlias type="com.example.spring.vo.UserAnswerVO" alias="UserAnswerVO"/>
         <typeAlias type="com.example.spring.vo.StockVO" alias="StockVO"/>
         <typeAlias type="com.example.spring.vo.OrderVO" alias="OrderVO"/>
-        <typeAlias type="com.example.spring.vo.UserVO" alias="UserVO"/>
         <typeAlias type="com.example.spring.vo.DailyReportVO" alias="DailyReportVO"/>
         <typeAlias type="com.example.spring.vo.PortfolioVO" alias="PortfolioVO"/>
         <typeAlias type="com.example.spring.dto.MyStockDTOTest" alias="MyStockDTOTest"/>
