@@ -1,6 +1,7 @@
 package com.example.spring.config;
 
 import com.example.spring.security.filter.JwtAuthenticationFilter;
+import com.example.spring.security.filter.TemporaryUserFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,7 +44,12 @@ public class SecurityConfig {
                         .requestMatchers( "/api/v1/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                /** NOTE
+                 * API 테스트 퍈의를 위한 임시 user 등록
+                 * 로그인 로직 구현 완료되면 삭제 하셔야 됩니다!
+                 */
+                .addFilterBefore(new TemporaryUserFilter(), JwtAuthenticationFilter.class);
         return http.build();
     }
 
