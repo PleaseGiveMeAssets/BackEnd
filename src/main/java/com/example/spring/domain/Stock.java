@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -17,7 +18,11 @@ public class Stock {
     private String stockName;
     private String standardCode;
     private Character stockExchangeMarket;
-    private String marketCapitalization;
+    private Long marketCapitalization;
+    private BigDecimal eps;
+    private BigDecimal per;
+    private BigDecimal bps;
+    private BigDecimal pbr;
     private Integer openPrice;
     private Integer closedPrice;
     private Integer highPrice;

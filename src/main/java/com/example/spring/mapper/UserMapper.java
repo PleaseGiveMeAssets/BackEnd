@@ -24,4 +24,11 @@ public interface UserMapper {
     User selectUserByIdAndNameAndPhone(FindPasswordRequestDTO findPasswordRequestDTO);
 
     int updatePasswordById(@Param("userId") String userId, @Param("password") String password);
+
+    // ID로 사용자 정보를 조회
+    User findByUserId(@Param("userId") String userId);
+
+    void incrementPasswordFailureCount(String userId);
+
+    void resetPasswordFailureCount(String userId);
 }

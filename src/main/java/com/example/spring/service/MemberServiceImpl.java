@@ -4,25 +4,26 @@ import com.example.spring.domain.TermsOfUse;
 import com.example.spring.domain.User;
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
+import com.example.spring.dto.LoginRequestDTO;
 import com.example.spring.dto.MemberDTO;
-import com.example.spring.exception.EmailVerificationException;
-import com.example.spring.exception.InvalidVerificationCodeException;
-import com.example.spring.exception.PasswordMismatchException;
-import com.example.spring.exception.UserAlreadyExistsException;
+import com.example.spring.exception.*;
 import com.example.spring.mapper.TermsOfUseMapper;
 import com.example.spring.mapper.UserMapper;
+import com.example.spring.security.util.JwtProcessor;
 import com.example.spring.util.MemberCodeEnum;
 import com.example.spring.util.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,13 +33,18 @@ public class MemberServiceImpl implements MemberService {
     private TermsOfUseMapper termsOfUseMapper;
     private PasswordEncoder passwordEncoder;
     private SmsService smsService;
+    private JwtProcessor jwtProcessor;
 
     @Autowired
-    public MemberServiceImpl(UserMapper userMapper, TermsOfUseMapper termsOfUseMapper, PasswordEncoder passwordEncoder, SmsService smsService) {
+    private EncryptionService encryptionService;
+
+    @Autowired
+    public MemberServiceImpl(UserMapper userMapper, TermsOfUseMapper termsOfUseMapper, PasswordEncoder passwordEncoder, SmsService smsService, JwtProcessor jwtProcessor) {
         this.userMapper = userMapper;
         this.termsOfUseMapper = termsOfUseMapper;
         this.passwordEncoder = passwordEncoder;
         this.smsService = smsService;
+        this.jwtProcessor = jwtProcessor;
     }
 
     /**
@@ -71,9 +77,162 @@ public class MemberServiceImpl implements MemberService {
         checkEmailVerificationCode(memberDTO.getEmailVerificationCode());
 
         // 회원가입
+        log.info("핸드폰 번호 마지막 부분 암호화 시작 - 원본: {}", memberDTO.getPhoneLast());
+        String encryptedPhoneLast = encryptionService.encrypt(memberDTO.getPhoneLast());
+        log.info("핸드폰 번호 마지막 부분 암호화 완료 - 암호화된 값: {}", encryptedPhoneLast);
+
         memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
-        memberDTO.setPhoneLast(passwordEncoder.encode(memberDTO.getPhoneLast()));
+        memberDTO.setPhoneLast(encryptedPhoneLast);
+
         return userMapper.insertUser(memberDTO);
+    }
+
+
+    // 아이디 찾기
+    @Override
+    public Map<String, Object> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO) {
+        if (log.isInfoEnabled()) {
+            log.info("findIdByNameAndPhone findIdRequestDTO : {}", findIdRequestDTO.toString());
+        }
+
+        //응답코드 확인
+        checkVerifyCodeForFindId(findIdRequestDTO);
+
+        // DB에서 이름, phoneFirst, phoneMiddle로 회원 정보 조회
+        List<User> users = userMapper.findMemberByNameAndPhone(findIdRequestDTO);
+        if (users.isEmpty()) {
+            // TODO 익셉션이랑 결과메시지 변경할 것
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage()); // 일치하는 회원이 없는 경우
+        }
+
+        // 핸드폰 번호 마지막 부분 복호화
+        String decryptedPhoneLast = encryptionService.decrypt(users.get(0).getPhoneLast());
+        log.info("입력한 핸드폰 번호 마지막 자리: {}", findIdRequestDTO.getPhoneLast());
+        log.info("USER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
+
+        if (!findIdRequestDTO.getPhoneLast().equals(decryptedPhoneLast)) {
+            // TODO 익셉션이랑 결과메시지 변경할 것
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+
+        // 회원 목록에서 입력된 phoneLast와 일치하는 회원 찾기
+        Map<String, Object> result = null;
+        for (User user : users) {
+            // 일치하는 회원 정보 반환
+            result = new HashMap<>();
+            result.put("userId", user.getUserId());
+            result.put("createdAt", user.getCreatedAt());
+        }
+        return result;
+    }
+
+    // 비밀번호 찾기
+    @Override
+    public int findPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
+        if (log.isInfoEnabled()) {
+            log.info("findPassword findPasswordRequestDTO : {}", findPasswordRequestDTO.toString());
+        }
+
+        //응답코드 확인
+        checkVerifyCodeForFindPassword(findPasswordRequestDTO);
+
+        // 아이디, 이름, 휴대폰번호로 유저 정보가 존재하는지 조회
+        User user = userMapper.selectUserByIdAndNameAndPhone(findPasswordRequestDTO);
+        if (user == null) {
+            // TODO 익셉션이랑 결과메시지 변경할 것
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+//
+//        // 휴대폰번호 뒷자리 암호화 검사
+//        boolean isMatches = passwordEncoder.matches(findPasswordRequestDTO.getPhoneLast(), user.getPhoneLast());
+//        if (!isMatches) {
+//            // TODO 익셉션이랑 결과메시지 변경할 것
+//            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+//        }
+
+        // 핸드폰 번호 마지막 부분 복호화
+        String decryptedPhoneLast = encryptionService.decrypt(user.getPhoneLast());
+        log.info("입력한 핸드폰 번호 마지막 자리: {}", findPasswordRequestDTO.getPhoneLast());
+        log.info("USER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
+
+        if (!findPasswordRequestDTO.getPhoneLast().equals(decryptedPhoneLast)) {
+            // TODO 익셉션이랑 결과메시지 변경할 것
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+
+        if (!findPasswordRequestDTO.getPassword().equals(findPasswordRequestDTO.getPasswordConfirmation())) {
+            // TODO 익셉션이랑 결과메시지 변경할 것
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+
+        // DB에서 아이디, 이름, 휴대폰번호로 비밀번호 변경
+        return userMapper.updatePasswordById(findPasswordRequestDTO.getUserId(), passwordEncoder.encode(findPasswordRequestDTO.getPassword()));
+    }
+
+    // 로그인
+    @Override
+    public String login(LoginRequestDTO loginRequestDTO) {
+        // 사용자 정보 조회
+        User user = userMapper.findByUserId(loginRequestDTO.getUserId());
+        if (user == null) {
+            System.out.println("유저없음");
+            throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+
+        // 계정 잠금 여부 확인
+        int maxFailureCount = 5;
+        if (user.getPasswordFailureCount() >= maxFailureCount) {
+            System.out.println("로그인횟수초과");
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+
+        System.out.println("비밀번호: " + loginRequestDTO.getPassword());
+        System.out.println("있는 비번: " + user.getPassword());
+
+        // 비밀번호 검증
+        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
+            userMapper.incrementPasswordFailureCount(user.getUserId());
+            System.out.println("비밀번호틀림");
+            throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+
+        userMapper.resetPasswordFailureCount(user.getUserId()); // 비밀번호 입력 횟수 리셋~~~
+
+        // 인증 객체 생성
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                user.getUserId(),
+                loginRequestDTO.getPassword(),
+                authorities
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return jwtProcessor.generateToken(authentication.getName());
+    }
+
+    @Override
+    public void logout(String token) {
+
+    }
+
+
+    // 아이디 찾기
+    // 인증코드 확인 여부x
+    private void checkVerifyCodeForFindId(FindIdRequestDTO findIdRequestDTO) {
+        boolean isVerified = smsService.checkVerifyCodeForFindId(findIdRequestDTO);
+        if (!isVerified) {
+            throw new InvalidVerificationCodeException(ResultCodeEnum.INVALID_VERIFICATION_CODE.getMessage());
+        }
+    }
+
+    // 비멀번호 찾기
+    // 인증코드 확인 여부x
+    private void checkVerifyCodeForFindPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
+        boolean isVerified = smsService.checkVerifyCodeForFindPassword(findPasswordRequestDTO);
+        if (!isVerified) {
+            throw new InvalidVerificationCodeException(ResultCodeEnum.INVALID_VERIFICATION_CODE.getMessage());
+        }
     }
 
     /**
@@ -152,92 +311,6 @@ public class MemberServiceImpl implements MemberService {
         boolean isVerified = smsService.checkEmailVerificationCode(emailVerificationCode);
         if (!isVerified) {
             throw new EmailVerificationException(ResultCodeEnum.INVALID_EMAIL_VERIFICATION.getMessage());
-        }
-    }
-
-    // 아이디 찾기
-    @Override
-    public Map<String, Object> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO) {
-        if (log.isInfoEnabled()) {
-            log.info("findIdByNameAndPhone findIdRequestDTO : {}", findIdRequestDTO.toString());
-        }
-
-        //응답코드 확인
-        checkVerifyCodeForFindId(findIdRequestDTO);
-
-        // DB에서 이름, phoneFirst, phoneMiddle로 회원 정보 조회
-        List<User> users = userMapper.findMemberByNameAndPhone(findIdRequestDTO);
-        if (users.isEmpty()) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage()); // 일치하는 회원이 없는 경우
-        }
-
-        // 휴대폰번호 뒷자리 암호화 검사
-        boolean isMatches = passwordEncoder.matches(findIdRequestDTO.getPhoneLast(), users.get(0).getPhoneLast());
-
-        if (!isMatches) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
-        }
-
-        // 회원 목록에서 입력된 phoneLast와 일치하는 회원 찾기
-        Map<String, Object> result = null;
-        for (User user : users) {
-            // 일치하는 회원 정보 반환
-            result = new HashMap<>();
-            result.put("userId", user.getUserId());
-            result.put("createdAt", user.getCreatedAt());
-        }
-        return result;
-    }
-
-    @Override
-    public int findPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
-        if (log.isInfoEnabled()) {
-            log.info("findPassword findPasswordRequestDTO : {}", findPasswordRequestDTO.toString());
-        }
-
-        //응답코드 확인
-        checkVerifyCodeForFindPassword(findPasswordRequestDTO);
-
-        // 아이디, 이름, 휴대폰번호로 유저 정보가 존재하는지 조회
-        User user = userMapper.selectUserByIdAndNameAndPhone(findPasswordRequestDTO);
-        if (user == null) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
-        }
-
-        // 휴대폰번호 뒷자리 암호화 검사
-        boolean isMatches = passwordEncoder.matches(findPasswordRequestDTO.getPhoneLast(), user.getPhoneLast());
-        if (!isMatches) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
-        }
-
-        if (!findPasswordRequestDTO.getPassword().equals(findPasswordRequestDTO.getPasswordConfirmation())) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
-        }
-
-        // DB에서 아이디, 이름, 휴대폰번호로 비밀번호 변경
-        return userMapper.updatePasswordById(findPasswordRequestDTO.getUserId(), passwordEncoder.encode(findPasswordRequestDTO.getPassword()));
-    }
-
-    // 아이디 찾기
-    // 인증코드 확인 여부x
-    private void checkVerifyCodeForFindId(FindIdRequestDTO findIdRequestDTO) {
-        boolean isVerified = smsService.checkVerifyCodeForFindId(findIdRequestDTO);
-        if (!isVerified) {
-            throw new InvalidVerificationCodeException(ResultCodeEnum.INVALID_VERIFICATION_CODE.getMessage());
-        }
-    }
-
-    // 비멀번호 찾기
-    // 인증코드 확인 여부x
-    private void checkVerifyCodeForFindPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
-        boolean isVerified = smsService.checkVerifyCodeForFindPassword(findPasswordRequestDTO);
-        if (!isVerified) {
-            throw new InvalidVerificationCodeException(ResultCodeEnum.INVALID_VERIFICATION_CODE.getMessage());
         }
     }
 }
