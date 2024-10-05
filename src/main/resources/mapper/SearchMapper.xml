@@ -4,8 +4,8 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.SearchStockMapper">
     <select id="findByStockName" resultType="StockVO">
-        SELECT *
+        SELECT SHORT_CODE, STOCK_NAME
         FROM STOCK
-        where stock_Name=#{stockName}
+        WHERE STOCK_NAME LIKE CONCAT(#{stockName}, '%')
     </select>
 </mapper>

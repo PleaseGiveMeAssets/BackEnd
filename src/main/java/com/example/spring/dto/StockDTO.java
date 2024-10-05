@@ -14,13 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockDTO {
-    private int stockId;
     private String shortCode;
     private String stockName;
 
     public static StockDTO of(StockVO stockVO) {
         return new StockDTO(
-                stockVO.getStockId(),
                 stockVO.getShortCode(),
                 stockVO.getStockName()
         );

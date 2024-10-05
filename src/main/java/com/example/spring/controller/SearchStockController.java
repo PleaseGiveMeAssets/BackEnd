@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/stock/search")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -21,16 +21,15 @@ public class SearchStockController {
     private final SearchStockService searchStockService;
 
     /**
-     *
      * @param searchStock
      * @return
      */
-    @GetMapping("/stock/search")
-    public ResponseEntity<List<StockDTO>> getStockList(@RequestParam(value = "searchStock",required = false) String searchStock){
-        if(searchStock == null){
+    @GetMapping
+    public ResponseEntity<List<StockDTO>> getStockList(@RequestParam(value = "searchStock", required = false) String searchStock) {
+        if (searchStock == null) {
+            log.info("searchStock is null");
             return ResponseEntity.noContent().build();
         }
-        List<StockDTO> stockList = searchStockService.getStocksList(searchStock);
-        return ResponseEntity.ok(stockList);
+        return ResponseEntity.ok(searchStockService.getStocksList(searchStock));
     }
 }

@@ -19,7 +19,6 @@ public class SearchStockServiceImpl implements SearchStockService {
     private final SqlSessionFactory sqlSessionFactory;
 
     /**
-     *
      * @param stockName
      * @return
      */
@@ -30,7 +29,8 @@ public class SearchStockServiceImpl implements SearchStockService {
         List<StockVO> stockVOList = searchStockMapper.findByStockName(stockName);
         List<StockDTO> stockDTOList = new ArrayList<>();
 
-        for(StockVO stockVO : stockVOList){
+        for (StockVO stockVO : stockVOList) {
+            log.info(stockVO.getStockName());
             stockDTOList.add(StockDTO.of(stockVO));
         }
         log.info("stockDTOList : {}", stockDTOList);
