@@ -32,10 +32,11 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
     public Map<String, Map<LocalDate, TotalStockInfoDTO>> saveStockPortfolioInfo() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         PortfolioHistoryMapper portfolioHistoryMapper = sqlSession.getMapper(PortfolioHistoryMapper.class);
-        Map<String, Map<LocalDate, TotalStockInfoDTO>> totalStockInfoMap = new HashMap<>();
 
         // 모든 사용자 조회
         List<String> userIdList = portfolioHistoryMapper.selectAllUserIds();
+
+        Map<String, Map<LocalDate, TotalStockInfoDTO>> totalStockInfoMap = new HashMap<>();
 
         for (String userId : userIdList) {
             // 해당 사용자의 모든 거래 내역 가져오기 (날짜 오름차순 정렬)

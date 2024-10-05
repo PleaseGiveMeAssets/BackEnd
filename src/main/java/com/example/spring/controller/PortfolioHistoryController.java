@@ -18,7 +18,6 @@ import java.util.Map;
 @RequestMapping("/api/v1/saveProfit")
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
 public class PortfolioHistoryController {
     private final PortfolioHistoryService portfolioHistoryService;
 
