@@ -20,16 +20,22 @@ import java.util.List;
 public class StockController {
 
     private final StockService stockService;
-    private final StockHistoryService stockHistoryService;
     @Autowired
-    public StockController(StockHistoryService stockHistoryService, StockService stockService) {
+    public StockController(StockService stockService) {
         this.stockService = stockService;
-        this.stockHistoryService = stockHistoryService;
     }
 
+    /**
+     * 종목 조회
+     * <p>
+     * 일주일치의 종목 가격을 조회하는 메소드이다.
+     *
+     * @param stockId
+     * @return List<StockHistoryDTO>
+     */
     @GetMapping("/{stockId}")
     public ResponseEntity<List<StockHistoryDTO>> getStockHistories(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long stockId) {
-        return ResponseEntity.ok(stockHistoryService.findByStockId(stockId));
+        return ResponseEntity.ok(stockService.findByStockId(stockId));
     }
 
     @GetMapping("/{stockId}/index")
