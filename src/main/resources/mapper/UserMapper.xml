@@ -72,4 +72,20 @@
     <update id="updatePasswordById" parameterType="map">
         UPDATE USER SET PASSWORD = #{password} WHERE USER_ID = #{userId}
     </update>
+
+    <select id="findByUserId" resultType="User">
+        SELECT * FROM USER WHERE USER_ID = #{userId}
+    </select>
+
+    <update id="incrementPasswordFailureCount" parameterType="String">
+        UPDATE USER
+        SET PASSWORD_FAILURE_COUNT = PASSWORD_FAILURE_COUNT + 1, UPDATED_AT = CURRENT_TIMESTAMP()
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="resetPasswordFailureCount" parameterType="String">
+        UPDATE USER
+        SET PASSWORD_FAILURE_COUNT = 0, UPDATED_AT = CURRENT_TIMESTAMP()
+        WHERE USER_ID = #{userId}
+    </update>
 </mapper>

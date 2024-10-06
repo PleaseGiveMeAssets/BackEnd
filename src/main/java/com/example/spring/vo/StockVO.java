@@ -1,7 +1,14 @@
 package com.example.spring.vo;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StockVO {
     private int stockId;
     private String standardCode;
@@ -11,7 +18,7 @@ public class StockVO {
     private char stockExchangeMarket;
     private String marketCapitalization;
     private char stockTradeStatus;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private Timestamp createAt;
+    private Timestamp updateAt;
 
 }

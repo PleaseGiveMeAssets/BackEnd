@@ -19,6 +19,7 @@
         <typeAlias type="com.example.spring.domain.Question" alias="Question"/>
         <typeAlias type="com.example.spring.domain.QuestionOption" alias="QuestionOption"/>
         <typeAlias type="com.example.spring.vo.UserAnswerVO" alias="UserAnswerVO"/>
+        <typeAlias type="com.example.spring.vo.StockVO" alias="StockVO"/>
         <typeAlias type="com.example.spring.domain.SavedNews" alias="SavedNews"/>
         <typeAlias type="com.example.spring.dto.FindIdRequestDTO" alias="FindIdRequestDTO"/>
         <typeAlias type="com.example.spring.dto.ForChartDTO" alias="ForChartDTO"/>
@@ -38,6 +39,7 @@
         <mapper resource="mapper/QuestionMapper.xml"/>
         <mapper resource="mapper/SavedNewsMapper.xml"/>
         <mapper resource="mapper/SavedReportMapper.xml"/>
+        <mapper resource="mapper/SearchMapper.xml"/>
         <mapper resource="mapper/StockMapper.xml"/>
         <mapper resource="mapper/UserAnswerMapper.xml"/>
         <mapper resource="mapper/UserMapper.xml"/>
