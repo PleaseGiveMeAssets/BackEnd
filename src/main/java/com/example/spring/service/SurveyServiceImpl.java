@@ -6,6 +6,7 @@ import com.example.spring.dto.QuestionDTO;
 import com.example.spring.dto.QuestionOptionDTO;
 import com.example.spring.dto.UserAnswerDTO;
 import com.example.spring.exception.ResourceNotFoundException;
+import com.example.spring.exception.TotalScoreCalculationException;
 import com.example.spring.exception.UserAnswerProcessingException;
 import com.example.spring.mapper.QuestionMapper;
 import com.example.spring.mapper.UserAnswerMapper;
@@ -80,7 +81,7 @@ public class SurveyServiceImpl implements SurveyService {
                 // 새 답변 삽입
                 int insertResult = userAnswerMapper.insertUserAnswer(userAnswerVO);
                 if (insertResult <= 0) {
-                    log.error("Failed to insert answer for userId: {}, questionId: {}", userId, questionId);
+                    log.info("Failed to insert answer for userId: {}, questionId: {}", userId, questionId);
                     throw new UserAnswerProcessingException("Failed to insert answer for userId: " + userId);
                 }
                 log.info("New answer inserted for userId: {}, questionId: {}, optionId: {}", userId, questionId, userAnswerDTO.getOptionId());
@@ -89,15 +90,29 @@ public class SurveyServiceImpl implements SurveyService {
                 // 기존 답변 업데이트
                 int updateResult = userAnswerMapper.updateUserAnswer(userAnswerVO);
                 if (updateResult <= 0) {
-                    log.error("Failed to update answer for userId: {}, questionId: {}", userId, questionId);
+                    log.info("Failed to update answer for userId: {}, questionId: {}", userId, questionId);
                     throw new UserAnswerProcessingException("Failed to update answer for userId: " + userId);
                 }
                 log.info("Answer updated for userId: {}, questionId: {}, optionId: {}", userId, questionId, userAnswerDTO.getOptionId());
                 return updateResult;
             }
         } catch (Exception e) {
-            log.error("Error while inserting/updating user answer for userId: {}, questionId: {}", userId, questionId, e);
-            throw new UserAnswerProcessingException("Error while inserting/updating user answer", e);
+            log.info("Error while inserting/updating user answer for userId: {}, questionId: {}", userId, questionId, e);
+            throw new UserAnswerProcessingException("Error while inserting/updating user answer");
         }
     }
+
+    @Override
+    public int getTotalScore(String userId) {
+        try {
+            int totalScore = userAnswerMapper.getTotalScore(userId);
+            log.info("Total score calculated for userId: {} is {}", userId, totalScore);
+            return totalScore;
+        } catch (Exception e) {
+            log.info("Error calculating total score for userId: {}", userId, e);
+            throw new TotalScoreCalculationException("Error calculating total score");
+        }
+    }
+
+
 }

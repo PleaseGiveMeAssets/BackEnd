@@ -21,15 +21,22 @@ public class SurveyController {
     }
 
     @GetMapping("/question/{questionId}")
-    public ResponseEntity<QuestionDTO> getSurveyQuestion(@PathVariable int questionId) {
+    public ResponseEntity<QuestionDTO> getSurveyQuestion(@PathVariable long questionId) {
         QuestionDTO questionDTO = surveyService.getSurveyQuestion(questionId);
         return ResponseEntity.ok(questionDTO);  // 질문을 성공적으로 반환
     }
 
     @PostMapping("/answer/{questionId}")
-    public ResponseEntity<String> insertOrUpdateUserAnswer(@PathVariable int questionId, @RequestBody UserAnswerDTO userAnswerDTO) {
+    public ResponseEntity<String> insertOrUpdateUserAnswer(@PathVariable long questionId, @RequestBody UserAnswerDTO userAnswerDTO) {
         String userId = "testUser1";  // 임시 userId 사용
         surveyService.insertOrUpdateUserAnswer(userId, questionId, userAnswerDTO); // 성공 시 예외 처리로 인해 추가 확인 불필요
         return ResponseEntity.status(201).body("Answer Inserted/Updated Successfully");
+    }
+
+    // 사용자 총 점수 계산
+    @GetMapping("/total-score/{userId}")
+    public ResponseEntity<Integer> getTotalScore(@PathVariable String userId) {
+        int totalScore = surveyService.getTotalScore(userId);
+        return ResponseEntity.ok(totalScore);
     }
 }

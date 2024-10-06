@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spring.mapper.SurveyResultMapper">
+
+    <!-- 총 점수 계산 쿼리 -->
+    <select id="getTotalScore" resultType="int" parameterType="string">
+        SELECT SUM(qo.SCORE)
+        FROM USER_ANSWER ua
+        JOIN QUESTION_OPTION qo ON ua.QUESTION_OPTION_ID = qo.QUESTION_OPTION_ID
+        WHERE ua.USER_ID = #{userId}
+    </select>
+
+    <!-- 점수에 따른 투자 유형 조회 쿼리 -->
+    <select id="getInvestmentTypeByScore" resultType="com.example.spring.dto.InvestmentTypeDTO" parameterType="int">
+        SELECT *
+        FROM INVESTMENT_TYPE
+        WHERE
+        (INVESTMENT_TYPE_ID = 1 AND #{totalScore} &lt;= 20)
+        OR (INVESTMENT_TYPE_ID = 2 AND #{totalScore} &gt; 20 AND #{totalScore} &lt;= 40)
+        OR (INVESTMENT_TYPE_ID = 3 AND #{totalScore} &gt; 40 AND #{totalScore} &lt;= 60)
+        OR (INVESTMENT_TYPE_ID = 4 AND #{totalScore} &gt; 60 AND #{totalScore} &lt;= 80)
+        OR (INVESTMENT_TYPE_ID = 5 AND #{totalScore} &gt; 80)
+    </select>
+
+</mapper>

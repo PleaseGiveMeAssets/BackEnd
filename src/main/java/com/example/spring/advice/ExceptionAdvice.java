@@ -65,12 +65,19 @@ public class ExceptionAdvice {
     @ExceptionHandler(UserAnswerProcessingException.class)
     public ResponseEntity<String> handleUserAnswerProcessingException(UserAnswerProcessingException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()); //옵션 선택값 입력/수정 실패
-    }
+    } //설문지 옵션값 insert update 오류
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> resourceNotFoundException(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // DB 리소스를 찾을 수 없음 (404)
+    } //설문지 질문 옵션 데이터 가져올 때 오류
+
+    @ExceptionHandler(TotalScoreCalculationException.class)
+    public ResponseEntity<String> handleTotalScoreCalculationException(TotalScoreCalculationException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()); // 총 점수 계산 실패
     }
+
+
 
     @ExceptionHandler(EmailVerificationException.class)
     public ResponseEntity<String> emailVerificationException(EmailVerificationException e) {
