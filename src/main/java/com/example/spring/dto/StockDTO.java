@@ -1,13 +1,9 @@
 package com.example.spring.dto;
 
-import com.example.spring.vo.StockVO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,11 +12,4 @@ import java.time.LocalDateTime;
 public class StockDTO {
     private String shortCode;
     private String stockName;
-
-    public static StockDTO of(StockVO stockVO) {
-        return new StockDTO(
-                stockVO.getShortCode(),
-                stockVO.getStockName()
-        );
-    }
 }

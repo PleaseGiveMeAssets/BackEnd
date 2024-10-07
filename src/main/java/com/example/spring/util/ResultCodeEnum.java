@@ -24,7 +24,9 @@ public enum ResultCodeEnum {
 
     NO_EXIST_TERMS_OF_USE(HttpStatus.BAD_REQUEST, "이용약관이 존재하지 않습니다."),
 
-    SESSION_EXPIRATION(HttpStatus.BAD_REQUEST, "세션이 만료되었습니다.");
+    SESSION_EXPIRATION(HttpStatus.BAD_REQUEST, "세션이 만료되었습니다."),
+
+    NO_EXIST_DATA(HttpStatus.BAD_REQUEST, "데이터가 존재하지 않습니다.");
 
     private HttpStatus httpStatus;
     private String message;

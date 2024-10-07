@@ -19,7 +19,7 @@
         <typeAlias type="com.example.spring.domain.Question" alias="Question"/>
         <typeAlias type="com.example.spring.domain.QuestionOption" alias="QuestionOption"/>
         <typeAlias type="com.example.spring.vo.UserAnswerVO" alias="UserAnswerVO"/>
-        <typeAlias type="com.example.spring.vo.StockVO" alias="StockVO"/>
+        <typeAlias type="com.example.spring.dto.StockDTO" alias="StockDTO"/>
         <typeAlias type="com.example.spring.domain.SavedNews" alias="SavedNews"/>
         <typeAlias type="com.example.spring.dto.FindIdRequestDTO" alias="FindIdRequestDTO"/>
         <typeAlias type="com.example.spring.dto.ForChartDTO" alias="ForChartDTO"/>
@@ -48,5 +48,7 @@
         <mapper resource="mapper/TermsOfUseMapper.xml"/>
         <mapper resource="mapper/DailyReportMapper.xml"/>
         <mapper resource="mapper/StockHistoryMapper.xml"/>
+        <mapper resource="mapper/MarketHolidayMapper.xml"/>
+        <mapper resource="mapper/SearchDetailStockMapper.xml"/>
     </mappers>
 </configuration>
