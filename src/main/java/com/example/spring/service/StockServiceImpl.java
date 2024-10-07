@@ -52,15 +52,23 @@ public class StockServiceImpl implements StockService{
         LocalDate prevNthBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
 
         StockHistoryMapper stockHistoryMapper = sqlSession.getMapper(StockHistoryMapper.class);
+        DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
         List<StockHistory> byStockId = stockHistoryMapper.findByStockId(stockId,
-                nearestPrevBusinessDay.format(formatter),
-                prevNthBusinessDay.format(formatter)
+                prevNthBusinessDay.format(nonLineFormatter),
+                nearestPrevBusinessDay.format(nonLineFormatter)
         );
 
         List<StockHistoryDTO> stockHistoryDTOList = new ArrayList<>();
         for (StockHistory stockHistory : byStockId) {
-            stockHistoryDTOList.add(new StockHistoryDTO(stockHistory.getStockHistoryId(), stockHistory.getCurrentPrice()));
+            stockHistoryDTOList.add(
+                    new StockHistoryDTO(
+                            stockHistory.getStockHistoryId(),
+                            stockHistory.getOpenPrice(),
+                            stockHistory.getClosedPrice(),
+                            stockHistory.getHighPrice(),
+                            stockHistory.getLowPrice()
+                            ));
         }
         return stockHistoryDTOList;
     }

@@ -32,7 +32,7 @@ public class StockHistoryMapperTest {
     private MarketHolidayMapper marketHolidayMapper;
     @Test
     public void selectStockHistoryByStockId(){
-        Long stockId = 1L;
+        Long stockId = 27179L;
         List<String> marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear("2024");
         KRXBusinessDayCalculator businessDayCalculator = new KRXBusinessDayCalculator();
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
@@ -43,13 +43,17 @@ public class StockHistoryMapperTest {
                 .collect(Collectors.toSet());
 
         LocalDate nearestPrevBusinessDay = businessDayCalculator.getNearestPrevBusinessDay(today.toLocalDate(), holidays);
-        LocalDate nthPrevBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
+        LocalDate prevNthBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
+        DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        log.info("prevNthBusinessDayFormat: {}", prevNthBusinessDay.format(nonLineFormatter));
+        log.info("nearestPrevBusinessDayFormat: {}", nearestPrevBusinessDay.format(nonLineFormatter));
         List<StockHistory> stockHistories = stockHistoryMapper.findByStockId(stockId,
-                nearestPrevBusinessDay.format(formatter),
-                nthPrevBusinessDay.format(formatter)
+                prevNthBusinessDay.format(nonLineFormatter),
+                nearestPrevBusinessDay.format(nonLineFormatter)
         );
-
-        log.info("stockHistories = {}", stockHistories.toString());
+        for (StockHistory stockHistory : stockHistories) {
+            log.info("stockHistories = {}", stockHistory.getStockHistoryId());
+        }
         assertTrue(!stockHistories.isEmpty());
     }
 }
