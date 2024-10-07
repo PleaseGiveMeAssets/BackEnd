@@ -2,8 +2,10 @@ package com.example.spring.service;
 
 import com.example.spring.domain.Stock;
 import com.example.spring.domain.StockHistory;
+import com.example.spring.domain.UserStockPortfolio;
 import com.example.spring.dto.StockHistoryDTO;
 import com.example.spring.dto.StockIndexDTO;
+import com.example.spring.dto.UserTotalStockPortfolioPowerDTO;
 import com.example.spring.mapper.MarketHolidayMapper;
 import com.example.spring.mapper.StockHistoryMapper;
 import com.example.spring.mapper.StockMapper;
@@ -22,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 @Service
 @Slf4j
 public class StockServiceImpl implements StockService {
@@ -31,14 +32,6 @@ public class StockServiceImpl implements StockService {
     @Autowired
     public StockServiceImpl(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
-    }
-
-    @Override
-    public StockIndexDTO findIndexByStockId(Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
-        Stock stock = stockMapper.findByStockId(stockId);
-        return new StockIndexDTO(stock.getMarketCapitalization(), stock.getEps(), stock.getPer(), stock.getBps(), stock.getPbr());
     }
 
     @Override
@@ -84,5 +77,40 @@ public class StockServiceImpl implements StockService {
                         stockHistory.getLowPrice()
                 ))
                 .collect(Collectors.toList());
+    }
+    @Override
+    public StockIndexDTO findIndexByStockId(Long stockId) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
+        Stock stock = stockMapper.findByStockId(stockId);
+        return new StockIndexDTO(stock.getMarketCapitalization(), stock.getEps(), stock.getPer(), stock.getBps(), stock.getPbr());
+    }
+    @Override
+    public List<UserStockPortfolio> getUserStockPortfolio(String userId){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
+        List<UserStockPortfolio> userStockPortfolioList = stockMapper.getUserStockPortfolio(userId);
+        return userStockPortfolioList;
+    }
+
+    @Override
+    public UserTotalStockPortfolioPowerDTO getUserTotalStockPortfolio(String userId){
+        // 같은 클래스 내의 getUserStockPortfolio 메서드를 호출
+        List<UserStockPortfolio> userStockPortfolioList = this.getUserStockPortfolio(userId);
+
+        double totalInvestedAmount = 0.0; // 총 투자 금액
+        double totalProfitLossAmount = 0.0; // 현재가 기준 손익금(평가손익)
+
+        // for-each 루프를 통해 모든 totalInvestedAmount 값을 더함
+        for (UserStockPortfolio portfolio : userStockPortfolioList) {
+            totalInvestedAmount += portfolio.getTotalInvestedAmount(); // 값을 더함
+            totalProfitLossAmount += portfolio.getTotalProfitLossAmount();
+        }
+        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount)-1) * 100;
+        UserTotalStockPortfolioPowerDTO userTotalStockPortfolioPowerDTO = new UserTotalStockPortfolioPowerDTO();
+        userTotalStockPortfolioPowerDTO.setTotalInvestedAmount(totalInvestedAmount);
+        userTotalStockPortfolioPowerDTO.setTotalProfitLossAmount(totalProfitLossAmount);
+        userTotalStockPortfolioPowerDTO.setTotalProfitLossPercentage(totalProfitLossPercentage);
+        return userTotalStockPortfolioPowerDTO;
     }
 }
