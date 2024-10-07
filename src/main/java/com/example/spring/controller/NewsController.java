@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class NewsController {
 
-    private NewsService newsService;
+    private final NewsService newsService;
 
     @Autowired
     public NewsController(NewsService newsService){

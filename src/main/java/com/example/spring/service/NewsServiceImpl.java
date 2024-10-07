@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class NewsServiceImpl implements NewsService{
-    private SqlSessionFactory sqlSessionFactory;
+    private final SqlSessionFactory sqlSessionFactory;
 
     @Autowired
     public NewsServiceImpl(SqlSessionFactory sqlSessionFactory){
