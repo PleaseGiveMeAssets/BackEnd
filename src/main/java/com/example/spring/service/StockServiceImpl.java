@@ -2,6 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.domain.Stock;
 import com.example.spring.domain.StockHistory;
+import com.example.spring.domain.UserStockPortfolio;
 import com.example.spring.dto.StockHistoryDTO;
 import com.example.spring.dto.StockIndexDTO;
 import com.example.spring.mapper.MarketHolidayMapper;
@@ -71,8 +72,13 @@ public class StockServiceImpl implements StockService{
         Stock stock = stockMapper.findByStockId(stockId);
         return new StockIndexDTO(stock.getMarketCapitalization(), stock.getEps(), stock.getPer(), stock.getBps(), stock.getPbr());
     }
-
-
+    @Override
+    public List<UserStockPortfolio> getUserStockPortfolio(String userId){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
+        List<UserStockPortfolio> userStockPortfolioList = stockMapper.getUserStockPortfolio(userId);
+        return userStockPortfolioList;
+    }
 
 
 }

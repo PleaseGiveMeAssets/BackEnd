@@ -1,5 +1,6 @@
 package com.example.spring.controller;
 
+import com.example.spring.domain.UserStockPortfolio;
 import com.example.spring.dto.StockHistoryDTO;
 import com.example.spring.dto.StockIndexDTO;
 import com.example.spring.service.StockHistoryService;
@@ -8,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,5 +39,11 @@ public class StockController {
     @GetMapping("/{stockId}/index")
     public ResponseEntity<StockIndexDTO> getStockIndex(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long stockId) {
         return ResponseEntity.ok(stockService.findIndexByStockId(stockId));
+    }
+    @GetMapping()
+    public ResponseEntity<List<UserStockPortfolio>> getUserStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
+        String userName = userDetails.getUsername();
+        userName = "testUser1";
+        return ResponseEntity.ok(stockService.getUserStockPortfolio(userName));
     }
 }

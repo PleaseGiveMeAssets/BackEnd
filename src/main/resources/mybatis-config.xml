@@ -49,5 +49,6 @@
         <mapper resource="mapper/DailyReportMapper.xml"/>
         <mapper resource="mapper/StockHistoryMapper.xml"/>
         <mapper resource="mapper/MarketHolidayMapper.xml"/>
+        <mapper resource="mapper/SearchDetailStockMapper.xml"/>
     </mappers>
 </configuration>
