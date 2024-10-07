@@ -42,8 +42,6 @@ public class StockController {
     }
     @GetMapping()
     public ResponseEntity<List<UserStockPortfolio>> getUserStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
-        String userName = userDetails.getUsername();
-        userName = "testUser1";
-        return ResponseEntity.ok(stockService.getUserStockPortfolio(userName));
+        return ResponseEntity.ok(stockService.getUserStockPortfolio(userDetails.getUsername()));
     }
 }
