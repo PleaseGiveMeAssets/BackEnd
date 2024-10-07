@@ -2,14 +2,11 @@ package com.example.spring.service;
 
 import com.example.spring.domain.Portfolio;
 import com.example.spring.domain.Stock;
-import com.example.spring.dto.ForChartDTO;
-import com.example.spring.dto.OrderDTO;
-import com.example.spring.dto.OrderDeleteDTO;
-import com.example.spring.dto.OrderHistoryDTO;
-import com.example.spring.dto.OrderSummaryDTO;
+import com.example.spring.dto.*;
 import com.example.spring.mapper.PortfolioMapper;
 import com.example.spring.mapper.StockMapper;
 import com.example.spring.util.OrderTypeStatus;
+import com.example.spring.util.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -17,9 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -27,20 +23,53 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final SqlSessionFactory sqlSessionFactory;
 
     @Autowired
-    public PortfolioServiceImpl(SqlSessionFactory sqlSessionFactory){
+    public PortfolioServiceImpl(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
+
     @Override
-    public Map<String, List<ForChartDTO>> getOrderList(String userId) {
+    public List<ForChartDTO> getOrderList(String userId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
-        Map<String, List<ForChartDTO>> forchartDTOListMap = new HashMap<>();
-        List<ForChartDTO> forChartDTOList = portfolioMapper.findByUserId(userId);
-        forchartDTOListMap.put(userId, forChartDTOList);
-        log.info("ForChartDTOList : {}", forChartDTOList);
-        log.info(System.getProperty("user.dir"));
-        return forchartDTOListMap;
+        List<Stock> stockList = portfolioMapper.selectListPortfolioByUserId(userId);
+
+        if (stockList.isEmpty()) {
+            throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
+        }
+
+        if (log.isInfoEnabled()) {
+            log.info("getOrderList stockList {}", stockList.toString());
+        }
+
+        List<ForChartDTO> forChartDTOList = new ArrayList<>();
+        stockList.forEach(stock -> {
+            ForChartDTO forChartDTO = new ForChartDTO();
+            forChartDTO.setStockId(stock.getStockId());
+            forChartDTO.setShortCode(stock.getShortCode());
+            forChartDTO.setStockName(stock.getStockName());
+            forChartDTO.setStockTradeStatus(stock.getStockTradeStatus());
+
+            if (stock.getPortfolioList().isEmpty()) {
+                throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
+            }
+
+            Long totalBuyQuantity = stock.getPortfolioList().stream()
+                    .filter(portfolio -> OrderTypeStatus.BUY.getCode() == portfolio.getOrderType())
+                    .mapToLong(Portfolio::getQuantity)
+                    .sum();
+
+            Long totalSellQuantity = stock.getPortfolioList().stream()
+                    .filter(portfolio -> OrderTypeStatus.SELL.getCode() == portfolio.getOrderType())
+                    .mapToLong(Portfolio::getQuantity)
+                    .sum();
+
+            forChartDTO.setTotalQuantity(totalBuyQuantity - totalSellQuantity);
+            forChartDTO.setTotalPrice((totalBuyQuantity - totalSellQuantity) * stock.getClosedPrice());
+            forChartDTOList.add(forChartDTO);
+        });
+        return forChartDTOList;
     }
+
     /**
      * 포트폴리오 특정 종목 조회
      * <p>
@@ -82,7 +111,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
 
         String shortCode = stockMapper.findShortCodeByStockId(stockId);
-        if(shortCode == null)
+        if (shortCode == null)
             return 0;
         return portfolioMapper.insert(userId, stockId, shortCode, orderDTO);
     }

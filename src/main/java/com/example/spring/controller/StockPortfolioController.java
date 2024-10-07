@@ -1,7 +1,7 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.StockPortfolioDTO;
-import com.example.spring.service.StockPortfolioService;
+import com.example.spring.dto.ForChartDTO;
+import com.example.spring.service.PortfolioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +17,15 @@ import java.util.List;
 @RequestMapping("/api/v1/stockportfolio")
 @Slf4j
 public class StockPortfolioController {
-    private final StockPortfolioService stockPortfolioService;
+    private final PortfolioService portfolioService;
 
     @Autowired
-    public StockPortfolioController(StockPortfolioService stockPortfolioService) {
-        this.stockPortfolioService = stockPortfolioService;
+    public StockPortfolioController(PortfolioService portfolioService) {
+        this.portfolioService = portfolioService;
     }
 
     @GetMapping
-    public ResponseEntity<List<StockPortfolioDTO>> getStockPortfolioInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(stockPortfolioService.getStockPortfolioInfo(userDetails.getUsername()));
+    public ResponseEntity<List<ForChartDTO>> getStockPortfolioInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(portfolioService.getOrderList(userDetails.getUsername()));
     }
 }
