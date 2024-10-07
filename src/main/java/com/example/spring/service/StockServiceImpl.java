@@ -5,6 +5,7 @@ import com.example.spring.domain.StockHistory;
 import com.example.spring.domain.UserStockPortfolio;
 import com.example.spring.dto.StockHistoryDTO;
 import com.example.spring.dto.StockIndexDTO;
+import com.example.spring.dto.UserTotalStockPortfolioPowerDTO;
 import com.example.spring.mapper.MarketHolidayMapper;
 import com.example.spring.mapper.StockHistoryMapper;
 import com.example.spring.mapper.StockMapper;
@@ -80,5 +81,26 @@ public class StockServiceImpl implements StockService{
         return userStockPortfolioList;
     }
 
+    @Override
+    public UserTotalStockPortfolioPowerDTO getUserTotalStockPortfolio(String userId){
+        // 같은 클래스 내의 getUserStockPortfolio 메서드를 호출
+        List<UserStockPortfolio> userStockPortfolioList = this.getUserStockPortfolio(userId);
+
+        double totalInvestedAmount = 0.0; // 총 투자 금액
+        double totalProfitLossAmount = 0.0; // 현재가 기준 손익금(평가손익)
+
+        // for-each 루프를 통해 모든 totalInvestedAmount 값을 더함
+        for (UserStockPortfolio portfolio : userStockPortfolioList) {
+            totalInvestedAmount += portfolio.getTotalInvestedAmount(); // 값을 더함
+            totalProfitLossAmount += portfolio.getTotalProfitLossAmount();
+        }
+        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount)-1) * 100;
+        UserTotalStockPortfolioPowerDTO userTotalStockPortfolioPowerDTO = new UserTotalStockPortfolioPowerDTO();
+        userTotalStockPortfolioPowerDTO.setTotalInvestedAmount(totalInvestedAmount);
+        userTotalStockPortfolioPowerDTO.setTotalProfitLossAmount(totalProfitLossAmount);
+        userTotalStockPortfolioPowerDTO.setTotalProfitLossPercentage(totalProfitLossPercentage);
+        return userTotalStockPortfolioPowerDTO;
+
+    }
 
 }

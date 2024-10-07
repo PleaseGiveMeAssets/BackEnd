@@ -3,6 +3,7 @@ package com.example.spring.controller;
 import com.example.spring.domain.UserStockPortfolio;
 import com.example.spring.dto.StockHistoryDTO;
 import com.example.spring.dto.StockIndexDTO;
+import com.example.spring.dto.UserTotalStockPortfolioPowerDTO;
 import com.example.spring.service.StockHistoryService;
 import com.example.spring.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,10 @@ public class StockController {
     @GetMapping()
     public ResponseEntity<List<UserStockPortfolio>> getUserStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(stockService.getUserStockPortfolio(userDetails.getUsername()));
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<UserTotalStockPortfolioPowerDTO> getUserTotalStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(stockService.getUserTotalStockPortfolio(userDetails.getUsername()));
     }
 }

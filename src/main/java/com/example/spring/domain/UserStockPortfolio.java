@@ -14,7 +14,7 @@ public class UserStockPortfolio {
     private int quantity;
     private double averagePurchasePrice;
     private double totalInvestedAmount;
-    private double currentPrice;
+    private double closedPrice;
     private double totalProfitLossAmount;
     private double profitLossPercentage;
 }
