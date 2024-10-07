@@ -6,6 +6,6 @@
     <select id="selectMarketHolidaysByYear" resultType="string">
         SELECT MARKET_HOLIDAY_DATE
         FROM MARKET_HOLIDAY
-        WHERE MARKET_HOLIDAY_DATE LIKE #{year} || '%'
+        WHERE MARKET_HOLIDAY_DATE LIKE CONCAT(#{year}, '%')
     </select>
 </mapper>

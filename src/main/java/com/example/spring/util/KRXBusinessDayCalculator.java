@@ -1,24 +1,28 @@
 package com.example.spring.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Set;
 
+@Slf4j
 public class KRXBusinessDayCalculator {
     public LocalDate getNthPrevBusinessDay(LocalDate startDate, int n, Set<LocalDate> marketHolidays) {
         LocalDate currentDate = startDate;
         int businessDays = 0;
 
         while (businessDays < n) {
-            currentDate = currentDate.minusDays(1);
-
             if (!(currentDate.getDayOfWeek() == DayOfWeek.SATURDAY ||
                     currentDate.getDayOfWeek() == DayOfWeek.SUNDAY ||
                     marketHolidays.contains(currentDate))) {
                 businessDays++;
             }
+            if(businessDays == n){
+                return currentDate;
+            }
+            currentDate = currentDate.minusDays(1);
         }
-
         return currentDate;
     }
 
@@ -42,6 +46,7 @@ public class KRXBusinessDayCalculator {
             if (!(currentDate.getDayOfWeek() == DayOfWeek.SATURDAY ||
                     currentDate.getDayOfWeek() == DayOfWeek.SUNDAY ||
                     holidays.contains(currentDate))) {
+
                 businessDays++;
             }
             currentDate = currentDate.plusDays(1);
