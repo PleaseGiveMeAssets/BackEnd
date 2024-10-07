@@ -32,7 +32,7 @@ public class StockHistoryMapperTest {
     private MarketHolidayMapper marketHolidayMapper;
     @Test
     public void selectStockHistoryByStockId(){
-        Long stockId = 27179L;
+        Long stockId = 27491L;
         List<String> marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear("2024");
         KRXBusinessDayCalculator businessDayCalculator = new KRXBusinessDayCalculator();
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));

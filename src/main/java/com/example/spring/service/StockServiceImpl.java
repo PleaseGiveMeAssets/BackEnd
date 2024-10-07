@@ -24,23 +24,38 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @Service
 @Slf4j
-public class StockServiceImpl implements StockService{
+public class StockServiceImpl implements StockService {
     private SqlSessionFactory sqlSessionFactory;
+
     @Autowired
     public StockServiceImpl(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
     @Override
-    public List<StockHistoryDTO> findByStockId(Long stockId) {
+    public StockIndexDTO findIndexByStockId(Long stockId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        MarketHolidayMapper marketHolidaymapper = sqlSession.getMapper(MarketHolidayMapper.class);
+        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
+        Stock stock = stockMapper.findByStockId(stockId);
+        return new StockIndexDTO(stock.getMarketCapitalization(), stock.getEps(), stock.getPer(), stock.getBps(), stock.getPbr());
+    }
 
-        String currentYear = LocalDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyy"));
-        List<String> marketHolidays = marketHolidaymapper.selectMarketHolidaysByYear(currentYear);
+    @Override
+    public List<StockHistoryDTO> findByStockId(Long stockId) {
+        List<String> marketHolidays;
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            MarketHolidayMapper marketHolidayMapper = sqlSession.getMapper(MarketHolidayMapper.class);
+
+            String currentYear = today.format(DateTimeFormatter.ofPattern("yyyy"));
+
+            marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear(currentYear);
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         Set<LocalDate> holidays = marketHolidays.stream()
@@ -51,36 +66,25 @@ public class StockServiceImpl implements StockService{
         LocalDate nearestPrevBusinessDay = businessDayCalculator.getNearestPrevBusinessDay(today.toLocalDate(), holidays);
         LocalDate prevNthBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
 
-        StockHistoryMapper stockHistoryMapper = sqlSession.getMapper(StockHistoryMapper.class);
-        DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        List<StockHistory> stockHistoryList;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            StockHistoryMapper stockHistoryMapper = sqlSession.getMapper(StockHistoryMapper.class);
+            DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-        List<StockHistory> byStockId = stockHistoryMapper.findByStockId(stockId,
-                prevNthBusinessDay.format(nonLineFormatter),
-                nearestPrevBusinessDay.format(nonLineFormatter)
-        );
-
-        List<StockHistoryDTO> stockHistoryDTOList = new ArrayList<>();
-        for (StockHistory stockHistory : byStockId) {
-            stockHistoryDTOList.add(
-                    new StockHistoryDTO(
-                            stockHistory.getStockHistoryId(),
-                            stockHistory.getOpenPrice(),
-                            stockHistory.getClosedPrice(),
-                            stockHistory.getHighPrice(),
-                            stockHistory.getLowPrice()
-                            ));
+            stockHistoryList = stockHistoryMapper.findByStockId(stockId,
+                    prevNthBusinessDay.format(nonLineFormatter),
+                    nearestPrevBusinessDay.format(nonLineFormatter)
+            );
         }
-        return stockHistoryDTOList;
+
+        return stockHistoryList.stream()
+                .map(stockHistory -> new StockHistoryDTO(
+                        stockHistory.getStockHistoryId(),
+                        stockHistory.getOpenPrice(),
+                        stockHistory.getClosedPrice(),
+                        stockHistory.getHighPrice(),
+                        stockHistory.getLowPrice()
+                ))
+                .collect(Collectors.toList());
     }
-    @Override
-    public StockIndexDTO findIndexByStockId(Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
-        Stock stock = stockMapper.findByStockId(stockId);
-        return new StockIndexDTO(stock.getMarketCapitalization(), stock.getEps(), stock.getPer(), stock.getBps(), stock.getPbr());
-    }
-
-
-
-
 }
