@@ -10,7 +10,7 @@
         FROM `PORTFOLIO`
         WHERE USER_ID = #{userId}
     </select>
-    <select id="findByUserIdAndStockId" parameterType="map" resultType="Portfolio">
+    <select id="selectOrdersByUserIdAndStockId" parameterType="map" resultType="Portfolio">
         SELECT *
         FROM PORTFOLIO
         WHERE STOCK_ID = #{stockId}
