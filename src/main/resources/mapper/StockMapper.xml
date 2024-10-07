@@ -50,19 +50,4 @@
         FROM STOCK
         WHERE STOCK_ID = #{stockId}
     </select>
-    <select id="selectListPortfolioByUserId" parameterType="string" resultMap="selectListPortfolioByUserIdResultMap">
-        SELECT s.STOCK_ID AS stockId
-        , s.SHORT_CODE AS shortCode
-        , s.STOCK_NAME AS stockName
-        , s.STOCK_TRADE_STATUS AS stockTradeStatus
-        , p.PORTFOLIO_ID AS portfolioId
-        , p.USER_ID AS userId
-        , p.PRICE AS price
-        , p.QUANTITY AS quantity
-        , p.ORDER_TYPE AS orderType
-        FROM STOCK s
-        JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
-        AND s.SHORT_CODE = p.SHORT_CODE
-        AND p.USER_ID = #{userId}
-    </select>
 </mapper>
