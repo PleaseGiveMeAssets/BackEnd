@@ -24,7 +24,7 @@
     <delete id="deleteByUserIdAndSavedNewsId" parameterType="map">
         DELETE FROM SAVED_NEWS
         WHERE user_id = #{userId}
-          AND saved_news_id = #{savedNewsId}
+          AND news_id = #{newsId}
     </delete>
 </mapper>
 

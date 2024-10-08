@@ -32,10 +32,10 @@ public class SavedNewsServiceImpl implements SavedNewsService {
     }
     // 저장된 뉴스 삭제
     @Override
-    public void deleteNews(String userId, Long savedNewsId) {
-        log.info("유저 ID {}의 저장된 뉴스 ID {}를 삭제합니다.", userId, savedNewsId);
-        savedNewsMapper.deleteByUserIdAndSavedNewsId(userId, savedNewsId);
-        log.info("유저 ID {}의 뉴스 ID {}를 성공적으로 삭제했습니다.", userId, savedNewsId);
+    public void deleteNews(String userId, Long newsId) {
+        log.info("유저 ID {}의 저장된 뉴스 ID {}를 삭제합니다.", userId, newsId);
+        savedNewsMapper.deleteByUserIdAndSavedNewsId(userId, newsId);
+        log.info("유저 ID {}의 뉴스 ID {}를 성공적으로 삭제했습니다.", userId, newsId);
     }
 
 }
