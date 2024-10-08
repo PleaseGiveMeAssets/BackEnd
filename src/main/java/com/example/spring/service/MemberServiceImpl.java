@@ -2,10 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.domain.TermsOfUse;
 import com.example.spring.domain.User;
-import com.example.spring.dto.FindIdRequestDTO;
-import com.example.spring.dto.FindPasswordRequestDTO;
-import com.example.spring.dto.LoginRequestDTO;
-import com.example.spring.dto.MemberDTO;
+import com.example.spring.dto.*;
 import com.example.spring.exception.*;
 import com.example.spring.mapper.TermsOfUseMapper;
 import com.example.spring.mapper.UserMapper;
@@ -87,6 +84,10 @@ public class MemberServiceImpl implements MemberService {
         return userMapper.insertUser(memberDTO);
     }
 
+    @Override
+    public int socialSignup(SocialMemberDTO socialMemberDTO) {
+        return userMapper.insertSocialUser(socialMemberDTO);
+    }
 
     // 아이디 찾기
     @Override
@@ -171,7 +172,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 로그인
     @Override
-    public String login(LoginRequestDTO loginRequestDTO) {
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         // 사용자 정보 조회
         User user = userMapper.findByUserId(loginRequestDTO.getUserId());
         if (user == null) {
@@ -208,8 +209,44 @@ public class MemberServiceImpl implements MemberService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtProcessor.generateToken(authentication.getName());
+        // 인증 성공 시 액세스 토큰과 리프레시 토큰 생성
+        String accessToken = jwtProcessor.generateToken(authentication.getName());
+        String refreshToken = jwtProcessor.generateRefreshToken(authentication.getName());
+
+
+        return new LoginResponseDTO(accessToken, refreshToken);
     }
+
+    // 소셜로그인
+    @Override
+    public LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO) {
+        // 사용자 정보 조회
+        User user = userMapper.findByUserId(loginRequestDTO.getUserId());
+        if (user == null) {
+            System.out.println("유저없음");
+            throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        }
+
+        // 인증 객체 생성
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                user.getUserId(),
+                null, // 비밀번호x - null
+                authorities
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 액세스 토큰과 리프레시 토큰 생성
+        String accessToken = jwtProcessor.generateToken(authentication.getName());
+        String refreshToken = jwtProcessor.generateRefreshToken(authentication.getName());
+
+        System.out.println("accessToken: " + accessToken);
+        System.out.println("refreshToken: " + refreshToken);
+
+        return new LoginResponseDTO(accessToken, refreshToken);
+    }
+
 
     @Override
     public void logout(String token) {
@@ -312,5 +349,15 @@ public class MemberServiceImpl implements MemberService {
         if (!isVerified) {
             throw new EmailVerificationException(ResultCodeEnum.INVALID_EMAIL_VERIFICATION.getMessage());
         }
+    }
+
+    // 핸드폰 번호로 회원 찾기
+    public User findByPhoneNumber(String phoneFirst, String phoneMiddle) {
+        return userMapper.findMemberByPhoneNumber(phoneFirst, phoneMiddle);
+    }
+
+    // 임시 비밀번호 생성
+    private String generateTempPassword() {
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 }

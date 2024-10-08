@@ -51,6 +51,11 @@
         #{email}, #{emailVerificationCode})
     </insert>
 
+    <insert id="insertSocialUser" parameterType="SocialMemberDTO">
+        INSERT INTO USER (USER_ID, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, NAME, EMAIL, SNS)
+        VALUES (#{userId}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{name}, #{email}, #{sns})
+    </insert>
+
     <!--아이디와 휴대폰 번호로 회원찾기-->
     <select id="findMemberByNameAndPhone" parameterType="FindIdRequestDTO" resultType="User">
         SELECT *
@@ -75,6 +80,12 @@
 
     <select id="findByUserId" resultType="User">
         SELECT * FROM USER WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="findMemberByPhoneNumber" resultType="User">
+        SELECT * FROM USER
+        WHERE PHONE_FIRST = #{phoneFirst}
+        AND PHONE_MIDDLE = #{phoneMiddle}
     </select>
 
     <update id="incrementPasswordFailureCount" parameterType="String">

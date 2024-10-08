@@ -6,7 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MemberCodeEnum {
-    Y("Y");
+    Y("Y"),
+    NAVER("naver"),
+    KAKAO("kakao");
 
     private String value;
 }

@@ -27,6 +27,7 @@
         <typeAlias type="com.example.spring.domain.SelectedTerms" alias="SelectedTerms"/>
         <typeAlias type="com.example.spring.domain.SavedReport" alias="SavedReport"/>
         <typeAlias type="com.example.spring.dto.MemberDTO" alias="MemberDTO"/>
+        <typeAlias type="com.example.spring.dto.SocialMemberDTO" alias="SocialMemberDTO"/>
         <typeAlias type="com.example.spring.domain.TermsOfUse" alias="TermsOfUse"/>
         <typeAlias type="com.example.spring.domain.StockHistory" alias="StockHistory"/>
     </typeAliases>

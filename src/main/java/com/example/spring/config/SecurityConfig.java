@@ -56,8 +56,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // 허용할 출처
-        configuration.setAllowedOrigins(Arrays.asList("https://pleasegivemeassets.github.io"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://pleasegivemeassets.github.io")); // 허용할 출처
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
         configuration.setAllowCredentials(true); // 자격 증명 허용
