@@ -4,6 +4,7 @@ import com.example.spring.domain.User;
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
 import com.example.spring.dto.MemberDTO;
+import com.example.spring.dto.SocialMemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,6 +19,8 @@ public interface UserMapper {
 
     int insertUser(MemberDTO memberDTO);
 
+    int insertSocialUser(SocialMemberDTO socialMemberDTO);
+
     // 아이디찾기
     List<User> findMemberByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
 
@@ -27,6 +30,9 @@ public interface UserMapper {
 
     // ID로 사용자 정보를 조회
     User findByUserId(@Param("userId") String userId);
+
+    // 핸드폰 번호로 사용자 정보 조회
+    User findMemberByPhoneNumber(@Param("phoneFirst") String phoneFirst, @Param("phoneMiddle") String phoneMiddle);
 
     void incrementPasswordFailureCount(String userId);
 

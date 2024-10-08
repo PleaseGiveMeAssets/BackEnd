@@ -47,4 +47,5 @@ public class User {
     private List<InterestCategory> interestCategoryList;
     private List<SelectedTerms> selectedTermsList;
     private Setting setting;
+    private String sns;
 }

@@ -1,9 +1,6 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.FindIdRequestDTO;
-import com.example.spring.dto.FindPasswordRequestDTO;
-import com.example.spring.dto.LoginRequestDTO;
-import com.example.spring.dto.MemberDTO;
+import com.example.spring.dto.*;
 import com.example.spring.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +37,9 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequest) {
-        String token = memberService.login(loginRequest);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
+        LoginResponseDTO loginResponseDTO = memberService.login(loginRequest);
+        return ResponseEntity.ok(loginResponseDTO);
     }
 
     @PostMapping("/logout")

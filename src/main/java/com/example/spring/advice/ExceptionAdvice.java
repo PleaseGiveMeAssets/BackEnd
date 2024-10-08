@@ -19,6 +19,11 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     } //로그인 실패 - LOGIN_FAIL
 
+    @ExceptionHandler(SocialOauthException.class)
+    public ResponseEntity<String> socialOauthException(SocialOauthException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    } //소셜로그인 실패
+
     //로그아웃
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<String> authenticationException(AuthenticationException e) {

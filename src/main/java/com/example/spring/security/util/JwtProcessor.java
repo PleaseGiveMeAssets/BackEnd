@@ -26,7 +26,17 @@ public class JwtProcessor {
                 .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND))
                 .signWith(key)
                 .compact();
-    }
+    } // 쿠키
+
+    // refresh token 생성
+    public String generateRefreshToken(String subject) {
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND * 24 * 15)) // 15일
+                .signWith(key)
+                .compact();
+    } // 로컬스토리지
 
     // JWT Subject(username) 추출 - 해석 불가인 경우 예외 발생
     // 예외 ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException,
