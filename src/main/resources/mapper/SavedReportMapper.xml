@@ -24,7 +24,7 @@
     <delete id="deleteByUserIdAndSavedReportId" parameterType="map">
         DELETE FROM SAVED_REPORT
         WHERE user_id = #{userId}
-          AND saved_report_id = #{savedReportId}
+          AND daily_report_id = #{dailyReportId}
     </delete>
 </mapper>
 

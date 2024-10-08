@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockDTO {
-    private String shortCode;
-    private String stockName;
+public class UserTotalStockPortfolioPowerDTO {
+    private double totalInvestedAmount;
+    private double totalProfitLossAmount;
+    private double totalProfitLossPercentage;
 }

@@ -12,9 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 public class News {
     private Long newsId;
+    private Long stockId;
     private String title;
     private String content;
     private String link;
+    private String image;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private List<SavedNews> savedNewsList;

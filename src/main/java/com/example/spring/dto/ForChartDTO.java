@@ -10,7 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ForChartDTO {
+    private Long stockId;
+    private String shortCode;
     private String stockName;
-    private int totalQuantity;
-    private double totalPrice;
+    private Character stockTradeStatus;
+    private Long totalQuantity;
+    private Long totalPrice;
 }

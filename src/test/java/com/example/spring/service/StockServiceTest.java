@@ -1,8 +1,10 @@
 package com.example.spring.service;
 
 import com.example.spring.config.AppConfig;
+import com.example.spring.dto.StockHistoryDTO;
 import com.example.spring.mapper.MarketHolidayMapper;
 import com.example.spring.util.KRXBusinessDayCalculator;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @WebAppConfiguration
+@Slf4j
 public class StockServiceTest {
     @Autowired
     private MarketHolidayMapper marketHolidayMapper;
+
+    @Autowired
+    StockService stockService;
 
     @Test
     public void businessDayTest() {
@@ -45,4 +51,12 @@ public class StockServiceTest {
         assertTrue(businessDayDifference == 7);
     }
 
+    @Test
+    public void findByStockIdTest(){
+        List<StockHistoryDTO> byStockId = stockService.findByStockId(27491L);
+        for (StockHistoryDTO stockHistoryDTO : byStockId) {
+            log.info("stockHistoryId: {}",stockHistoryDTO.getStockHistoryId());
+        }
+        assertTrue(!byStockId.isEmpty());
+    }
 }
