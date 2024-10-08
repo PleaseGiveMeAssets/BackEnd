@@ -6,5 +6,8 @@ import lombok.*;
 @AllArgsConstructor
 public class StockHistoryDTO {
     private String stockHistoryId;
-    private Long price;
+    private Long openPrice;
+    private Long closedPrice;
+    private Long highPrice;
+    private Long lowPrice;
 }

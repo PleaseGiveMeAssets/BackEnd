@@ -1,7 +1,8 @@
-package com.example.spring.mapper;
+package com.example.spring.service;
 
 import com.example.spring.config.AppConfig;
-import com.example.spring.domain.StockHistory;
+import com.example.spring.dto.StockHistoryDTO;
+import com.example.spring.mapper.MarketHolidayMapper;
 import com.example.spring.util.KRXBusinessDayCalculator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -25,16 +26,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ContextConfiguration(classes = AppConfig.class)
 @WebAppConfiguration
 @Slf4j
-public class StockHistoryMapperTest {
-    @Autowired
-    private StockHistoryMapper stockHistoryMapper;
+public class StockServiceTest {
     @Autowired
     private MarketHolidayMapper marketHolidayMapper;
+
+    @Autowired
+    StockService stockService;
+
     @Test
-    public void selectStockHistoryByStockId(){
-        Long stockId = 27491L;
-        List<String> marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear("2024");
+    public void businessDayTest() {
         KRXBusinessDayCalculator businessDayCalculator = new KRXBusinessDayCalculator();
+        List<String> marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear("2024");
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -43,17 +45,18 @@ public class StockHistoryMapperTest {
                 .collect(Collectors.toSet());
 
         LocalDate nearestPrevBusinessDay = businessDayCalculator.getNearestPrevBusinessDay(today.toLocalDate(), holidays);
-        LocalDate prevNthBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
-        DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        log.info("prevNthBusinessDayFormat: {}", prevNthBusinessDay.format(nonLineFormatter));
-        log.info("nearestPrevBusinessDayFormat: {}", nearestPrevBusinessDay.format(nonLineFormatter));
-        List<StockHistory> stockHistories = stockHistoryMapper.findByStockId(stockId,
-                prevNthBusinessDay.format(nonLineFormatter),
-                nearestPrevBusinessDay.format(nonLineFormatter)
-        );
-        for (StockHistory stockHistory : stockHistories) {
-            log.info("stockHistories = {}", stockHistory.getStockHistoryId());
+        LocalDate nthPrevBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
+
+        int businessDayDifference = businessDayCalculator.calculateBusinessDaysBetween(nthPrevBusinessDay, nearestPrevBusinessDay, holidays);
+        assertTrue(businessDayDifference == 7);
+    }
+
+    @Test
+    public void findByStockIdTest(){
+        List<StockHistoryDTO> byStockId = stockService.findByStockId(27491L);
+        for (StockHistoryDTO stockHistoryDTO : byStockId) {
+            log.info("stockHistoryId: {}",stockHistoryDTO.getStockHistoryId());
         }
-        assertTrue(!stockHistories.isEmpty());
+        assertTrue(!byStockId.isEmpty());
     }
 }
