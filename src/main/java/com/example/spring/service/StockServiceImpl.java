@@ -12,37 +12,40 @@ import com.example.spring.mapper.StockMapper;
 import com.example.spring.util.KRXBusinessDayCalculator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class StockServiceImpl implements StockService{
-    private SqlSessionFactory sqlSessionFactory;
+public class StockServiceImpl implements StockService {
+    private final MarketHolidayMapper marketHolidayMapper;
+    private final StockHistoryMapper stockHistoryMapper;
+    private final StockMapper stockMapper;
+
     @Autowired
-    public StockServiceImpl(SqlSessionFactory sqlSessionFactory) {
-        this.sqlSessionFactory = sqlSessionFactory;
+    public StockServiceImpl(MarketHolidayMapper marketHolidayMapper, StockHistoryMapper stockHistoryMapper, StockMapper stockMapper) {
+        this.marketHolidayMapper = marketHolidayMapper;
+        this.stockHistoryMapper = stockHistoryMapper;
+        this.stockMapper = stockMapper;
     }
 
     @Override
     public List<StockHistoryDTO> findByStockId(Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        MarketHolidayMapper marketHolidaymapper = sqlSession.getMapper(MarketHolidayMapper.class);
-
-        String currentYear = LocalDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyy"));
-        List<String> marketHolidays = marketHolidaymapper.selectMarketHolidaysByYear(currentYear);
+        List<String> marketHolidays;
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        String currentYear = today.format(DateTimeFormatter.ofPattern("yyyy"));
+
+        marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear(currentYear);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         Set<LocalDate> holidays = marketHolidays.stream()
@@ -53,44 +56,39 @@ public class StockServiceImpl implements StockService{
         LocalDate nearestPrevBusinessDay = businessDayCalculator.getNearestPrevBusinessDay(today.toLocalDate(), holidays);
         LocalDate prevNthBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
 
-        StockHistoryMapper stockHistoryMapper = sqlSession.getMapper(StockHistoryMapper.class);
+        List<StockHistory> stockHistoryList;
         DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-        List<StockHistory> byStockId = stockHistoryMapper.findByStockId(stockId,
+        stockHistoryList = stockHistoryMapper.findByStockId(stockId,
                 prevNthBusinessDay.format(nonLineFormatter),
                 nearestPrevBusinessDay.format(nonLineFormatter)
         );
 
-        List<StockHistoryDTO> stockHistoryDTOList = new ArrayList<>();
-        for (StockHistory stockHistory : byStockId) {
-            stockHistoryDTOList.add(
-                    new StockHistoryDTO(
-                            stockHistory.getStockHistoryId(),
-                            stockHistory.getOpenPrice(),
-                            stockHistory.getClosedPrice(),
-                            stockHistory.getHighPrice(),
-                            stockHistory.getLowPrice()
-                            ));
-        }
-        return stockHistoryDTOList;
+        return stockHistoryList.stream()
+                .map(stockHistory -> new StockHistoryDTO(
+                        stockHistory.getStockHistoryId(),
+                        stockHistory.getOpenPrice(),
+                        stockHistory.getClosedPrice(),
+                        stockHistory.getHighPrice(),
+                        stockHistory.getLowPrice()
+                ))
+                .collect(Collectors.toList());
     }
+
     @Override
     public StockIndexDTO findIndexByStockId(Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         Stock stock = stockMapper.findByStockId(stockId);
         return new StockIndexDTO(stock.getMarketCapitalization(), stock.getEps(), stock.getPer(), stock.getBps(), stock.getPbr());
     }
+
     @Override
-    public List<UserStockPortfolio> getUserStockPortfolio(String userId){
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
+    public List<UserStockPortfolio> getUserStockPortfolio(String userId) {
         List<UserStockPortfolio> userStockPortfolioList = stockMapper.getUserStockPortfolio(userId);
         return userStockPortfolioList;
     }
 
     @Override
-    public UserTotalStockPortfolioPowerDTO getUserTotalStockPortfolio(String userId){
+    public UserTotalStockPortfolioPowerDTO getUserTotalStockPortfolio(String userId) {
         // 같은 클래스 내의 getUserStockPortfolio 메서드를 호출
         List<UserStockPortfolio> userStockPortfolioList = this.getUserStockPortfolio(userId);
 
@@ -102,13 +100,11 @@ public class StockServiceImpl implements StockService{
             totalInvestedAmount += portfolio.getTotalInvestedAmount(); // 값을 더함
             totalProfitLossAmount += portfolio.getTotalProfitLossAmount();
         }
-        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount)-1) * 100;
+        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount) - 1) * 100;
         UserTotalStockPortfolioPowerDTO userTotalStockPortfolioPowerDTO = new UserTotalStockPortfolioPowerDTO();
         userTotalStockPortfolioPowerDTO.setTotalInvestedAmount(totalInvestedAmount);
         userTotalStockPortfolioPowerDTO.setTotalProfitLossAmount(totalProfitLossAmount);
         userTotalStockPortfolioPowerDTO.setTotalProfitLossPercentage(totalProfitLossPercentage);
         return userTotalStockPortfolioPowerDTO;
-
     }
-
 }

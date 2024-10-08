@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/dailytrend")
 @Slf4j
 public class DailyTrendController {
-    private DailyTrendService dailyTrendService;
+    private final DailyTrendService dailyTrendService;
 
     @Autowired
     public DailyTrendController(DailyTrendService dailyTrendService) {
