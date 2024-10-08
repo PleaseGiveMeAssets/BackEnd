@@ -70,7 +70,7 @@
     </select>
 
     <update id="updatePasswordById" parameterType="map">
-        UPDATE USER SET PASSWORD = #{password} WHERE USER_ID = #{userId}
+        UPDATE USER SET PASSWORD = #{password}, UPDATED_AT = CURRENT_TIMESTAMP() WHERE USER_ID = #{userId}
     </update>
 
     <select id="findByUserId" resultType="User">

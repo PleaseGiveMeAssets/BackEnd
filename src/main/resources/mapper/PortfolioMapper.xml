@@ -35,7 +35,8 @@
         QUANTITY = #{orderDTO.quantity},
         MEMO = #{orderDTO.memo},
         ORDER_TYPE = #{orderDTO.orderType},
-        ORDERED_AT = #{orderDTO.orderedAt}
+        ORDERED_AT = #{orderDTO.orderedAt},
+        UPDATED_AT = CURRENT_TIMESTAMP()
         WHERE
         PORTFOLIO_ID = #{portfolioId}
     </update>

@@ -13,7 +13,7 @@
     <!-- 사용자 답변 수정 -->
     <update id="updateUserAnswer" parameterType="com.example.spring.vo.UserAnswerVO">
         UPDATE USER_ANSWER
-        SET QUESTION_OPTION_ID = #{questionOptionId}, UPDATED_AT = NOW()
+        SET QUESTION_OPTION_ID = #{questionOptionId}, UPDATED_AT = CURRENT_TIMESTAMP()
         WHERE USER_ID = #{userId} AND QUESTION_ID = #{questionId}
     </update>
 
