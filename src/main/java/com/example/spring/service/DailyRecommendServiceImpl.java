@@ -5,8 +5,6 @@ import com.example.spring.dto.DailyRecommendStockDTO;
 import com.example.spring.dto.DailyStockDTO;
 import com.example.spring.mapper.StockMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +14,11 @@ import java.util.List;
 @Service
 @Slf4j
 public class DailyRecommendServiceImpl implements DailyRecommendService {
-    private SqlSessionFactory sqlSessionFactory;
+    private final StockMapper stockMapper;
 
     @Autowired
-    public DailyRecommendServiceImpl(SqlSessionFactory sqlSessionFactory) {
-        this.sqlSessionFactory = sqlSessionFactory;
+    public DailyRecommendServiceImpl(StockMapper stockMapper) {
+        this.stockMapper = stockMapper;
     }
 
     /**
@@ -34,9 +32,8 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
      */
     @Override
     public List<DailyStockDTO> getDailyRecommendStockInfo(String userId, String date) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         List<Stock> stockList = stockMapper.selectListRecommendStockByUserId(userId, date);
+
         if (log.isInfoEnabled()) {
             log.info("getDailyRecommendStockInfo stockList : {}", stockList);
         }

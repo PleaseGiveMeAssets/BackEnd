@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/dailyrecommend")
 @Slf4j
 public class DailyRecommendController {
-    private DailyRecommendService dailyRecommendService;
+    private final DailyRecommendService dailyRecommendService;
 
     @Autowired
     public DailyRecommendController(DailyRecommendService dailyRecommendService) {

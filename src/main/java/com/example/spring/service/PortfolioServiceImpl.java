@@ -8,8 +8,6 @@ import com.example.spring.mapper.StockMapper;
 import com.example.spring.util.OrderTypeStatus;
 import com.example.spring.util.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +18,17 @@ import java.util.NoSuchElementException;
 @Service
 @Slf4j
 public class PortfolioServiceImpl implements PortfolioService {
-    private final SqlSessionFactory sqlSessionFactory;
+    private final PortfolioMapper portfolioMapper;
+    private final StockMapper stockMapper;
 
     @Autowired
-    public PortfolioServiceImpl(SqlSessionFactory sqlSessionFactory) {
-        this.sqlSessionFactory = sqlSessionFactory;
+    public PortfolioServiceImpl(PortfolioMapper portfolioMapper, StockMapper stockMapper) {
+        this.portfolioMapper = portfolioMapper;
+        this.stockMapper = stockMapper;
     }
 
     @Override
     public List<ForChartDTO> getOrderList(String userId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
         List<Stock> stockList = portfolioMapper.selectListPortfolioByUserId(userId);
 
         if (stockList.isEmpty()) {
@@ -81,13 +79,11 @@ public class PortfolioServiceImpl implements PortfolioService {
      */
     @Override
     public OrderSummaryDTO getOrderSummary(String userId, Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         Stock stock = stockMapper.findByStockId(stockId);
+
         if (stock == null)
             throw new IllegalArgumentException("Stock not found");
 
-        PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
         List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByUserIdAndStockId(userId, stock.getStockId());
         OrderSummaryDTO OrderSummary = makeSummary(stock, symbolTradeHistory, null);
 
@@ -98,18 +94,11 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public int updateOrder(Long orderId, OrderDTO orderDTO) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
-
         return portfolioMapper.update(orderId, orderDTO);
     }
 
     @Override
     public int createOrder(String userId, Long stockId, OrderDTO orderDTO) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
-        PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
-
         String shortCode = stockMapper.findShortCodeByStockId(stockId);
         if (shortCode == null)
             return 0;
@@ -118,27 +107,20 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public int deleteOrders(OrderDeleteDTO orderDeleteDTO) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
         return portfolioMapper.deleteOrdersByIds(orderDeleteDTO.getOrderId());
     }
 
     @Override
     public int deleteALlOrder(String userId, Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
         return portfolioMapper.deleteAllOrder(userId, stockId);
     }
 
     @Override
     public OrderHistoryDTO getOrders(String userId, Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         Stock stock = stockMapper.findByStockId(stockId);
         if (stock == null)
             throw new IllegalArgumentException("Stock not found");
 
-        PortfolioMapper portfolioMapper = sqlSession.getMapper(PortfolioMapper.class);
         List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByUserIdAndStockId(userId, stock.getStockId());
         List<OrderDTO> orders = new ArrayList<>();
         OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, orders);

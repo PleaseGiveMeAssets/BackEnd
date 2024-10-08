@@ -12,7 +12,6 @@ import com.example.spring.mapper.StockMapper;
 import com.example.spring.util.KRXBusinessDayCalculator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +26,15 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class StockServiceImpl implements StockService {
-    private final SqlSessionFactory sqlSessionFactory;
+    private final MarketHolidayMapper marketHolidayMapper;
+    private final StockHistoryMapper stockHistoryMapper;
+    private final StockMapper stockMapper;
 
     @Autowired
-    public StockServiceImpl(SqlSessionFactory sqlSessionFactory) {
-        this.sqlSessionFactory = sqlSessionFactory;
+    public StockServiceImpl(MarketHolidayMapper marketHolidayMapper, StockHistoryMapper stockHistoryMapper, StockMapper stockMapper) {
+        this.marketHolidayMapper = marketHolidayMapper;
+        this.stockHistoryMapper = stockHistoryMapper;
+        this.stockMapper = stockMapper;
     }
 
     @Override
@@ -39,13 +42,9 @@ public class StockServiceImpl implements StockService {
         List<String> marketHolidays;
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            MarketHolidayMapper marketHolidayMapper = sqlSession.getMapper(MarketHolidayMapper.class);
+        String currentYear = today.format(DateTimeFormatter.ofPattern("yyyy"));
 
-            String currentYear = today.format(DateTimeFormatter.ofPattern("yyyy"));
-
-            marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear(currentYear);
-        }
+        marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear(currentYear);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -58,15 +57,12 @@ public class StockServiceImpl implements StockService {
         LocalDate prevNthBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
 
         List<StockHistory> stockHistoryList;
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            StockHistoryMapper stockHistoryMapper = sqlSession.getMapper(StockHistoryMapper.class);
-            DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter nonLineFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-            stockHistoryList = stockHistoryMapper.findByStockId(stockId,
-                    prevNthBusinessDay.format(nonLineFormatter),
-                    nearestPrevBusinessDay.format(nonLineFormatter)
-            );
-        }
+        stockHistoryList = stockHistoryMapper.findByStockId(stockId,
+                prevNthBusinessDay.format(nonLineFormatter),
+                nearestPrevBusinessDay.format(nonLineFormatter)
+        );
 
         return stockHistoryList.stream()
                 .map(stockHistory -> new StockHistoryDTO(
@@ -78,23 +74,21 @@ public class StockServiceImpl implements StockService {
                 ))
                 .collect(Collectors.toList());
     }
+
     @Override
     public StockIndexDTO findIndexByStockId(Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
         Stock stock = stockMapper.findByStockId(stockId);
         return new StockIndexDTO(stock.getMarketCapitalization(), stock.getEps(), stock.getPer(), stock.getBps(), stock.getPbr());
     }
+
     @Override
-    public List<UserStockPortfolio> getUserStockPortfolio(String userId){
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        StockMapper stockMapper = sqlSession.getMapper(StockMapper.class);
+    public List<UserStockPortfolio> getUserStockPortfolio(String userId) {
         List<UserStockPortfolio> userStockPortfolioList = stockMapper.getUserStockPortfolio(userId);
         return userStockPortfolioList;
     }
 
     @Override
-    public UserTotalStockPortfolioPowerDTO getUserTotalStockPortfolio(String userId){
+    public UserTotalStockPortfolioPowerDTO getUserTotalStockPortfolio(String userId) {
         // 같은 클래스 내의 getUserStockPortfolio 메서드를 호출
         List<UserStockPortfolio> userStockPortfolioList = this.getUserStockPortfolio(userId);
 
@@ -106,7 +100,7 @@ public class StockServiceImpl implements StockService {
             totalInvestedAmount += portfolio.getTotalInvestedAmount(); // 값을 더함
             totalProfitLossAmount += portfolio.getTotalProfitLossAmount();
         }
-        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount)-1) * 100;
+        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount) - 1) * 100;
         UserTotalStockPortfolioPowerDTO userTotalStockPortfolioPowerDTO = new UserTotalStockPortfolioPowerDTO();
         userTotalStockPortfolioPowerDTO.setTotalInvestedAmount(totalInvestedAmount);
         userTotalStockPortfolioPowerDTO.setTotalProfitLossAmount(totalProfitLossAmount);

@@ -4,8 +4,6 @@ import com.example.spring.domain.News;
 import com.example.spring.dto.NewsDTO;
 import com.example.spring.mapper.NewsMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +12,17 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class NewsServiceImpl implements NewsService{
-    private final SqlSessionFactory sqlSessionFactory;
+public class NewsServiceImpl implements NewsService {
+    private final NewsMapper newsMapper;
 
     @Autowired
-    public NewsServiceImpl(SqlSessionFactory sqlSessionFactory){
-        this.sqlSessionFactory = sqlSessionFactory;
+    public NewsServiceImpl(NewsMapper newsMapper) {
+        this.newsMapper = newsMapper;
     }
+
     @Override
     public List<NewsDTO> findNewsByStockId(Long stockId) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        NewsMapper mapper = sqlSession.getMapper(NewsMapper.class);
-        List<News> newsList = mapper.selectNewsByStockId(stockId);
+        List<News> newsList = newsMapper.selectNewsByStockId(stockId);
         List<NewsDTO> newsDTOList = new ArrayList<>();
 
         for (News news : newsList) {
