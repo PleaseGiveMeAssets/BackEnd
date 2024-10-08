@@ -31,10 +31,10 @@ public class SavedReportController {
         return ResponseEntity.ok().build();
     }
     // 저장된 리포트를 삭제
-    @DeleteMapping("/{userId}/{savedReportId}")
-    public ResponseEntity<Void> deleteReport(@PathVariable String userId,@PathVariable Long savedReportId) {
-        log.info("유저 ID {}의 저장된 리포트 ID {}를 삭제합니다.", userId, savedReportId);
-        savedReportService.deleteReport(userId,savedReportId);
+    @DeleteMapping("/{userId}/{dailyReportId}")
+    public ResponseEntity<Void> deleteReport(@PathVariable String userId, @PathVariable Long dailyReportId) {
+        log.info("유저 ID {}의 리포트 ID {}를 삭제합니다.", userId, dailyReportId);
+        savedReportService.deleteReport(userId, dailyReportId);
         return ResponseEntity.ok().build();
     }
 }

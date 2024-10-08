@@ -13,4 +13,8 @@ public interface UserAnswerMapper {
 
     // 추가: 사용자 답변 조회 메소드(중복에 따라 update insert 구분하기 위해)
     UserAnswerVO selectUserAnswer(@Param("userId") String userId, @Param("questionId") long questionId);
+
+    // 사용자 총 점수 계산 메서드
+    int getTotalScore(@Param("userId") String userId);
+
 }

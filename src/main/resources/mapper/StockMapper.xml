@@ -7,6 +7,8 @@
         <id property="stockId" column="stockId"/>
         <collection property="recommendStockList" ofType="RecommendStock" autoMapping="true">
         </collection>
+        <collection property="stockHistoryList" ofType="StockHistory" autoMapping="true">
+        </collection>
     </resultMap>
 
     <resultMap id="selectListPortfolioByUserIdResultMap" type="Stock" autoMapping="true">
@@ -20,8 +22,16 @@
         , s.SHORT_CODE AS shortCode
         , s.STOCK_NAME as stockName
         , rs.RECOMMEND_STOCK_ID AS recommendStockId
-        , rs.USER_ID AS userId
         , rs.CONTENT AS content
+        , rs.PRICE AS price
+        , (SELECT CLOSED_PRICE
+        FROM STOCK_HISTORY sh
+        WHERE STOCK_HISTORY_ID = (SELECT MAX(STOCK_HISTORY_ID)
+        FROM STOCK_HISTORY sh
+        WHERE sh.STOCK_ID = s.STOCK_ID
+        AND sh.SHORT_CODE = s.SHORT_CODE)
+        AND sh.STOCK_ID = s.STOCK_ID
+        AND sh.SHORT_CODE = s.SHORT_CODE) AS closedPrice
         FROM RECOMMEND_STOCK rs
         JOIN STOCK s ON rs.STOCK_ID = s.STOCK_ID
         WHERE USER_ID = #{userId}
@@ -41,9 +51,11 @@
     </select>
     <insert id="insert" parameterType="Stock">
         INSERT INTO STOCK
-        (STANDARD_CODE, SUB_CATEGORY_ID, STOCK_NAME, SHORT_CODE, STOCK_EXCHANGE_MARKET, MARKET_CAPITALIZATION, STOCK_TRADE_STATUS)
+        (STANDARD_CODE, SUB_CATEGORY_ID, STOCK_NAME, SHORT_CODE, STOCK_EXCHANGE_MARKET, MARKET_CAPITALIZATION,
+        STOCK_TRADE_STATUS)
         VALUES
-        (#{standardCode}, #{subCategoryId}, #{stockName}, #{shortCode}, #{stockExchangeMarket}, #{marketCapitalization}, #{stockTradeStatus})
+        (#{standardCode}, #{subCategoryId}, #{stockName}, #{shortCode}, #{stockExchangeMarket}, #{marketCapitalization},
+        #{stockTradeStatus})
     </insert>
     <select id="findShortCodeByStockId" parameterType="Long" resultType="string">
         SELECT SHORT_CODE
