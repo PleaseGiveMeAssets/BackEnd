@@ -5,7 +5,4 @@ public class UserAnswerProcessingException extends RuntimeException {
         super(message);
     }
 
-    public UserAnswerProcessingException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }
