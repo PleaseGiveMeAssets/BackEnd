@@ -1,9 +1,8 @@
-package com.example.spring.mapper;
+package com.example.spring.service;
 
 import com.example.spring.config.AppConfig;
-import com.example.spring.domain.StockHistory;
+import com.example.spring.mapper.MarketHolidayMapper;
 import com.example.spring.util.KRXBusinessDayCalculator;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @WebAppConfiguration
-@Slf4j
-public class StockHistoryMapperTest {
-    @Autowired
-    private StockHistoryMapper stockHistoryMapper;
+public class StockServiceTest {
     @Autowired
     private MarketHolidayMapper marketHolidayMapper;
+
     @Test
-    public void selectStockHistoryByStockId(){
-        Long stockId = 1L;
-        List<String> marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear("2024");
+    public void businessDayTest() {
         KRXBusinessDayCalculator businessDayCalculator = new KRXBusinessDayCalculator();
+        List<String> marketHolidays = marketHolidayMapper.selectMarketHolidaysByYear("2024");
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -44,12 +40,9 @@ public class StockHistoryMapperTest {
 
         LocalDate nearestPrevBusinessDay = businessDayCalculator.getNearestPrevBusinessDay(today.toLocalDate(), holidays);
         LocalDate nthPrevBusinessDay = businessDayCalculator.getNthPrevBusinessDay(today.toLocalDate(), 7, holidays);
-        List<StockHistory> stockHistories = stockHistoryMapper.findByStockId(stockId,
-                nearestPrevBusinessDay.format(formatter),
-                nthPrevBusinessDay.format(formatter)
-        );
 
-        log.info("stockHistories = {}", stockHistories.toString());
-        assertTrue(!stockHistories.isEmpty());
+        int businessDayDifference = businessDayCalculator.calculateBusinessDaysBetween(nthPrevBusinessDay, nearestPrevBusinessDay, holidays);
+        assertTrue(businessDayDifference == 7);
     }
+
 }

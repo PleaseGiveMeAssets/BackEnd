@@ -11,10 +11,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class InvestmentType {
     private Long investmentTypeId;
-    private String userId;
     private String investmentTypeName;
     private String content;
+    private String stockAllocationContent;
+    private String stockSelectionContent;
+    private String riskManagementContent;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private InvestmentTypeStrategy investmentTypeStrategy;
+
 }
