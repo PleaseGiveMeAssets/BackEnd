@@ -20,7 +20,8 @@
         phone_middle = #{profileEditDTO.phoneMiddle},
         phone_last = #{profileEditDTO.phoneLast},
         profile_image_url = #{profileEditDTO.profileImageUrl},
-        birth_date = #{profileEditDTO.birthDate}
+        birth_date = #{profileEditDTO.birthDate},
+        UPDATED_AT = CURRENT_TIMESTAMP()
         WHERE user_id = #{userId}
     </update>
 </mapper>
