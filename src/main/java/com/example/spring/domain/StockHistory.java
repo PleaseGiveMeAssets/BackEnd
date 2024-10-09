@@ -13,10 +13,10 @@ public class StockHistory {
     private String stockHistoryId;
     private Long stockId;
     private String shortCode;
-    private Long openPrice;
-    private Long closedPrice;
-    private Long highPrice;
-    private Long lowPrice;
+    private Integer openPrice;
+    private Integer closedPrice;
+    private Integer highPrice;
+    private Integer lowPrice;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

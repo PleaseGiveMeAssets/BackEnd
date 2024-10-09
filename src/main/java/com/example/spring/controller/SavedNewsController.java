@@ -31,10 +31,10 @@ public class SavedNewsController {
         return ResponseEntity.ok().build();
     }
     // 저장된 뉴스를 삭제
-    @DeleteMapping("/{userId}/{savedNewsId}")
-    public ResponseEntity<Void> deleteNews(@PathVariable String userId, @PathVariable Long savedNewsId) {
-        log.info("유저 ID {}의 저장된 뉴스 ID {}를 삭제합니다.", userId, savedNewsId);
-        savedNewsService.deleteNews(userId, savedNewsId);
+    @DeleteMapping("/{userId}/{newsId}")
+    public ResponseEntity<Void> deleteNews(@PathVariable String userId, @PathVariable Long newsId) {
+        log.info("유저 ID {}의 뉴스 ID {}를 삭제합니다.", userId, newsId);
+        savedNewsService.deleteNews(userId, newsId);
         return ResponseEntity.ok().build();
     }
 }

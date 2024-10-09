@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.naming.AuthenticationException;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
@@ -65,12 +66,28 @@ public class ExceptionAdvice {
     @ExceptionHandler(UserAnswerProcessingException.class)
     public ResponseEntity<String> handleUserAnswerProcessingException(UserAnswerProcessingException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()); //옵션 선택값 입력/수정 실패
-    }
+    } //설문지 옵션값 insert update 오류
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> resourceNotFoundException(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // DB 리소스를 찾을 수 없음 (404)
-    }
+    } // 리소스를 찾을 수 없음 - DB에서 데이터 가져올 때 오류
+
+    @ExceptionHandler(TotalScoreCalculationException.class)
+    public ResponseEntity<String> TotalScoreCalculationException(TotalScoreCalculationException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    } // 총 점수 계산 실패
+
+    @ExceptionHandler(InvestmentTypeAnswerProcessingException.class)
+    public ResponseEntity<String> InvestmentTypeAnswerProcessingException(InvestmentTypeAnswerProcessingException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    } // 투자 유형 답변 처리 실패
+
+    @ExceptionHandler(InvestmentTypeRetrievalException.class)
+    public ResponseEntity<String> InvestmentTypeRetrievalException(InvestmentTypeRetrievalException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    } // 투자 유형 조회 실패
+
 
     @ExceptionHandler(EmailVerificationException.class)
     public ResponseEntity<String> emailVerificationException(EmailVerificationException e) {
@@ -80,6 +97,11 @@ public class ExceptionAdvice {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<String> usernameNotFoundException(UsernameNotFoundException e) {
         return ResponseEntity.status(ResultCodeEnum.SESSION_EXPIRATION.getHttpStatus()).body(e.getMessage());
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<String> noSuchElementException(NoSuchElementException e) {
+        return ResponseEntity.status(ResultCodeEnum.NO_EXIST_DATA.getHttpStatus()).body(e.getMessage());
     }
 
     //내부 서버 오류

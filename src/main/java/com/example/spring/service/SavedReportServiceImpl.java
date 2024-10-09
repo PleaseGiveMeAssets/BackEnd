@@ -32,9 +32,9 @@ public class SavedReportServiceImpl implements SavedReportService {
     }
     // 저장된 리포트 삭제
     @Override
-    public void deleteReport(String userId,Long savedReportId) {
-        log.info("유저 ID {}의 저장된 리포트 ID {}를 삭제합니다.",userId, savedReportId);
-        savedReportMapper.deleteByUserIdAndSavedReportId(userId,savedReportId);
-        log.info("유저 ID {}의 리포트 ID {}를 성공적으로 삭제했습니다.", userId, savedReportId);
+    public void deleteReport(String userId,Long dailyReportId) {
+        log.info("유저 ID {}의 저장된 리포트 ID {}를 삭제합니다.",userId, dailyReportId);
+        savedReportMapper.deleteByUserIdAndSavedReportId(userId,dailyReportId);
+        log.info("유저 ID {}의 리포트 ID {}를 성공적으로 삭제했습니다.", userId, dailyReportId);
     }
 }

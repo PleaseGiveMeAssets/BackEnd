@@ -11,6 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DailyRecommendStockDTO {
     private Long recommendStockId;
-    private String userId;
     private String content;
+    private Integer price;
+    private Integer changeAmount;
+    private Double changeAmountRate;
 }

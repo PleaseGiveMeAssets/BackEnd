@@ -8,6 +8,7 @@ public interface SurveyService {
 
     QuestionDTO getSurveyQuestion(long questionId);
 
-    int insertOrUpdateUserAnswer(String userId, long questionId, UserAnswerDTO userAnswerDTO);
+    void insertOrUpdateUserAnswer(String userId, long questionId, UserAnswerDTO userAnswerDTO);
+
 
 }

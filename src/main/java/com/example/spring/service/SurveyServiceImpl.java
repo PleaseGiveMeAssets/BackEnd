@@ -65,7 +65,7 @@ public class SurveyServiceImpl implements SurveyService {
 
 
     @Override
-    public int insertOrUpdateUserAnswer(String userId, long questionId, UserAnswerDTO userAnswerDTO) {
+    public void insertOrUpdateUserAnswer(String userId, long questionId, UserAnswerDTO userAnswerDTO) {
         try {
             // 기존 답변 확인
             UserAnswerVO existingAnswer = userAnswerMapper.selectUserAnswer(userId, questionId);
@@ -84,7 +84,6 @@ public class SurveyServiceImpl implements SurveyService {
                     throw new UserAnswerProcessingException("Failed to insert answer for userId: " + userId);
                 }
                 log.info("New answer inserted for userId: {}, questionId: {}, optionId: {}", userId, questionId, userAnswerDTO.getOptionId());
-                return insertResult;
             } else {
                 // 기존 답변 업데이트
                 int updateResult = userAnswerMapper.updateUserAnswer(userAnswerVO);
@@ -93,11 +92,10 @@ public class SurveyServiceImpl implements SurveyService {
                     throw new UserAnswerProcessingException("Failed to update answer for userId: " + userId);
                 }
                 log.info("Answer updated for userId: {}, questionId: {}, optionId: {}", userId, questionId, userAnswerDTO.getOptionId());
-                return updateResult;
             }
         } catch (Exception e) {
             log.error("Error while inserting/updating user answer for userId: {}, questionId: {}", userId, questionId, e);
-            throw new UserAnswerProcessingException("Error while inserting/updating user answer", e);
+            throw new UserAnswerProcessingException("Error while inserting/updating user answer");
         }
     }
 }
