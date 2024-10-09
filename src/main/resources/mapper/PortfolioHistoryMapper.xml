@@ -4,64 +4,56 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.spring.mapper.PortfolioHistoryMapper">
-    <!-- 사용자 프로필을 조회하는 쿼리 -->
-    <select id="selectAllUserIds" resultType="String">
-        SELECT DISTINCT USER_ID
-        FROM PORTFOLIO
+    <resultMap id="selectListStockPortfolioByUserIdResultMap" type="Stock" autoMapping="true">
+        <id property="stockId" column="stockId"/>
+        <collection property="portfolioList" ofType="Portfolio" autoMapping="true">
+        </collection>
+        <collection property="stockHistoryList" ofType="StockHistory" autoMapping="true">
+        </collection>
+    </resultMap>
 
-    </select>
-    <!-- 사용자별 종목별 거래 내역 가져오기 -->
-    <select id="getOrdersByUserAndStock" parameterType="string" resultType="OrderVO">
-        SELECT
-            USER_ID,
-            STOCK_ID,
-            ORDER_TYPE,
-            PRICE,
-            QUANTITY,
-            ORDERED_AT
-        FROM
-            PORTFOLIO
-        WHERE
-            USER_ID = #{userId}
-        ORDER BY
-            ORDERED_AT ASC
-    </select>
-
-    <!-- 특정 종목의 종가 가져오기 -->
-    <select id="getStockClosingPrice" resultType="integer" parameterType="map">
-        SELECT
-            CURRENT_PRICE
-        FROM
-            STOCK_HISTORY
-        WHERE
-            STOCK_ID = #{stockId}
-          AND DATE(CREATED_AT) = DATE(#{date})
-        ORDER BY
-            CREATED_AT DESC
-            LIMIT 1
-    </select>
-
-    <!-- Portfolio_history에 데이터 삽입 -->
-    <insert id="insertPortfolioHistory">
-        INSERT INTO PORTFOLIO_HISTORY (
-            PORTFOLIO_ID,
-            DAILY_PROFIT,
-            DAILY_PROFIT_RATE
-        ) VALUES (
-                     #{portfolioId},
-                     #{dailyProfit},
-                     #{dailyProfitRate}
-                 )
-    </insert>
-
-    <select id="findByMyStockList" resultType="MyStockDTOTest">
-        SELECT s.stock_Name,
-               SUM(CASE WHEN o.order_type = 'B' THEN o.quantity ELSE 0 END) -
-               SUM(CASE WHEN o.order_type = 'S' THEN o.quantity ELSE 0 END) AS total_quantity
-        FROM `PORTFOLIO` o
-                 JOIN `STOCK` s ON o.stock_Id = s.stock_Id
-        WHERE o.user_Id = #{userId} AND s.stock_Name LIKE CONCAT('%', #{stockName}, '%')
-        GROUP BY s.stock_Name
-        HAVING total_quantity > 0;
+    <select id="selectListStockPortfolioByUserId" parameterType="map" resultMap="selectListStockPortfolioByUserIdResultMap">
+        SELECT *
+        FROM (SELECT s.STOCK_ID AS stockId
+                   , s.SHORT_CODE AS shortCode
+                   , s.STOCK_NAME AS stockName
+                   , sh.CLOSED_PRICE AS closedPrice
+                   , p.PRICE AS price
+                   , p.QUANTITY AS quantity
+                   , p.ORDER_TYPE AS orderType
+                   , SUBSTRING(sh.STOCK_HISTORY_ID, 1, 8) AS stockHistoryId
+              FROM STOCK s
+                       JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
+                  AND s.SHORT_CODE = p.SHORT_CODE
+                  AND p.ORDER_TYPE = 'B'
+                       LEFT JOIN (SELECT STOCK_HISTORY_ID, STOCK_ID, SHORT_CODE, CLOSED_PRICE
+                                  FROM (SELECT RANK() OVER (PARTITION BY SUBSTRING(STOCK_HISTORY_ID, 1, 8) ORDER BY STOCK_HISTORY_ID DESC) AS rk, STOCK_HISTORY_ID, STOCK_ID, SHORT_CODE, CLOSED_PRICE
+                                        FROM STOCK_HISTORY
+                                        WHERE STOCK_HISTORY_ID BETWEEN #{startDateFormat} AND #{endDateFormat}) AS sh
+                                  WHERE rk = 1) AS sh ON s.STOCK_ID = sh.STOCK_ID
+                  AND s.SHORT_CODE = sh.SHORT_CODE
+                  AND p.USER_ID = #{userId}
+              UNION ALL
+              SELECT s.STOCK_ID AS stockId
+                   , s.SHORT_CODE AS shortCode
+                   , s.STOCK_NAME AS stockName
+                   , (SELECT CLOSED_PRICE
+                      FROM STOCK_HISTORY sh
+                      WHERE STOCK_HISTORY_ID = (SELECT MAX(STOCK_HISTORY_ID)
+                                                FROM STOCK_HISTORY sh
+                                                WHERE sh.STOCK_ID = p.STOCK_ID
+                                                  AND sh.SHORT_CODE = p.SHORT_CODE
+                                                  AND SUBSTRING(sh.STOCK_HISTORY_ID, 1, 8) = SUBSTRING(DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s'), 1, 8))) AS closedPrice
+                   , p.PRICE AS price
+                   , p.QUANTITY AS quantity
+                   , p.ORDER_TYPE AS orderType
+                   , SUBSTRING(DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s'), 1, 8) AS stockHistoryId
+              FROM STOCK s
+                       JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
+                  AND s.SHORT_CODE = p.SHORT_CODE
+                  AND p.ORDER_TYPE = 'S'
+                  AND DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s') BETWEEN #{startDateFormat} AND #{endDateFormat}
+                  AND p.USER_ID = #{userId}) tb
+        ORDER BY stockHistoryId;
     </select>
 </mapper>

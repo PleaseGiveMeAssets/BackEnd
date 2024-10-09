@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TotalStockInfoDTO {
-    private long totalAmount;
-    private long totalProfit;
+    private Long totalAmount;
+    private Long totalProfit;
 }
