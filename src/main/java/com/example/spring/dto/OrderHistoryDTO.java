@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderHistoryDTO {
     private String name;
-    private Long price;
-    private Long quantity;
+    private Long totalPrice;
+    private Long totalQuantity;
     private List<OrderDTO> orders;
 }

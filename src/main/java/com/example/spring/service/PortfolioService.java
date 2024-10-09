@@ -7,7 +7,7 @@ import java.util.List;
 public interface PortfolioService {
     public List<ForChartDTO> getOrderList(String userId);
 
-    public OrderHistoryDTO getOrders(String username, Long stockId);
+    public OrderHistoryDTO getOrders(String userId, Long stockId);
 
     public OrderSummaryDTO getOrderSummary(String userId, Long stockId);
 
