@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DailyRecommendStockDTO {
-    private Long recommendStockId;
-    private String content;
-    private Integer price;
-    private Integer changeAmount;
-    private Double changeAmountRate;
+public class MyStockDTOTest {
+    private String stockName;
+    private int totalQuantity;
+
 }

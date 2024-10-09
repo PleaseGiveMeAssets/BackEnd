@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.naming.AuthenticationException;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
@@ -96,6 +97,11 @@ public class ExceptionAdvice {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<String> usernameNotFoundException(UsernameNotFoundException e) {
         return ResponseEntity.status(ResultCodeEnum.SESSION_EXPIRATION.getHttpStatus()).body(e.getMessage());
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<String> noSuchElementException(NoSuchElementException e) {
+        return ResponseEntity.status(ResultCodeEnum.NO_EXIST_DATA.getHttpStatus()).body(e.getMessage());
     }
 
     //내부 서버 오류

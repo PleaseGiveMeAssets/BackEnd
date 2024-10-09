@@ -4,12 +4,16 @@ import com.example.spring.domain.Stock;
 import com.example.spring.dto.DailyRecommendStockDTO;
 import com.example.spring.dto.DailyStockDTO;
 import com.example.spring.mapper.StockMapper;
+import com.example.spring.util.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -34,32 +38,45 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
     public List<DailyStockDTO> getDailyRecommendStockInfo(String userId, String date) {
         List<Stock> stockList = stockMapper.selectListRecommendStockByUserId(userId, date);
 
+        if (stockList.isEmpty()) {
+            throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
+        }
+
         if (log.isInfoEnabled()) {
             log.info("getDailyRecommendStockInfo stockList : {}", stockList);
         }
 
         List<DailyStockDTO> dailyStockDTOList = new ArrayList<>();
-        if (!stockList.isEmpty()) {
-            stockList.stream().forEach(stockVO -> {
-                DailyStockDTO dailyStockDTO = new DailyStockDTO();
-                dailyStockDTO.setStockId(stockVO.getStockId());
-                dailyStockDTO.setShortCode(stockVO.getShortCode());
-                dailyStockDTO.setStockName(stockVO.getStockName());
 
-                List<DailyRecommendStockDTO> dailyRecommendStockDTOList = new ArrayList<>();
-                if (!stockVO.getRecommendStockList().isEmpty()) {
-                    stockVO.getRecommendStockList().stream().forEach(recommendStock -> {
-                        DailyRecommendStockDTO dailyRecommendStockDTO = new DailyRecommendStockDTO();
-                        dailyRecommendStockDTO.setRecommendStockId(recommendStock.getRecommendStockId());
-                        dailyRecommendStockDTO.setUserId(recommendStock.getUserId());
-                        dailyRecommendStockDTO.setContent(recommendStock.getContent());
-                        dailyRecommendStockDTOList.add(dailyRecommendStockDTO);
-                    });
-                }
-                dailyStockDTO.setDailyRecommendStockDTOList(dailyRecommendStockDTOList);
-                dailyStockDTOList.add(dailyStockDTO);
+        stockList.forEach(stock -> {
+            DailyStockDTO dailyStockDTO = new DailyStockDTO();
+            dailyStockDTO.setStockId(stock.getStockId());
+            dailyStockDTO.setShortCode(stock.getShortCode());
+            dailyStockDTO.setStockName(stock.getStockName());
+
+            List<DailyRecommendStockDTO> dailyRecommendStockDTOList = new ArrayList<>();
+
+            if (stock.getRecommendStockList().isEmpty()) {
+                throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
+            }
+
+            stock.getRecommendStockList().forEach(recommendStock -> {
+                stock.getStockHistoryList().stream()
+                        .filter(stockHistory -> stockHistory.getStockId().equals(recommendStock.getStockId()))
+                        .findFirst()
+                        .ifPresent(stockHistory -> {
+                            DailyRecommendStockDTO dailyRecommendStockDTO = new DailyRecommendStockDTO();
+                            dailyRecommendStockDTO.setRecommendStockId(recommendStock.getRecommendStockId());
+                            dailyRecommendStockDTO.setContent(recommendStock.getContent());
+                            dailyRecommendStockDTO.setPrice(recommendStock.getPrice());
+                            dailyRecommendStockDTO.setChangeAmount(recommendStock.getPrice() - stockHistory.getClosedPrice());
+                            dailyRecommendStockDTO.setChangeAmountRate(new BigDecimal(((recommendStock.getPrice() - stockHistory.getClosedPrice()) / recommendStock.getPrice().doubleValue())).setScale(2, RoundingMode.DOWN).doubleValue());
+                            dailyRecommendStockDTOList.add(dailyRecommendStockDTO);
+                        });
             });
-        }
+            dailyStockDTO.setDailyRecommendStockDTOList(dailyRecommendStockDTOList);
+            dailyStockDTOList.add(dailyStockDTO);
+        });
         return dailyStockDTOList;
     }
 }
