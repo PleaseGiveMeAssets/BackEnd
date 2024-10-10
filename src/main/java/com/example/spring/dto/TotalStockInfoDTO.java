@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TotalStockInfoDTO {
+    private String stockDate;
     private Long totalAmount;
     private Long totalProfit;
 }

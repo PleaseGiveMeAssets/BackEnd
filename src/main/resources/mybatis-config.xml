@@ -30,6 +30,7 @@
         <typeAlias type="com.example.spring.domain.TermsOfUse" alias="TermsOfUse"/>
         <typeAlias type="com.example.spring.domain.StockHistory" alias="StockHistory"/>
         <typeAlias type="com.example.spring.domain.News" alias="News"/>
+        <typeAlias type="com.example.spring.dto.TotalStockInfoDTO" alias="TotalStockInfoDTO"/>
     </typeAliases>
 
     <mappers>
