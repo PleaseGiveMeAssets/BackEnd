@@ -22,7 +22,7 @@ public class InterestCategoryServiceImpl implements InterestCategoryService {
 
     // 메인 카테고리 전체 불러오기
     @Override
-    public List<String> getAllMainCategories() {
+    public List<InterestCategoryDTO> getAllMainCategories() {
         return interestCategoryMapper.getAllMainCategories();
     }
 
