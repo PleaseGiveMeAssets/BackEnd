@@ -32,6 +32,7 @@
         AND sh.SHORT_CODE = s.SHORT_CODE)
         AND sh.STOCK_ID = s.STOCK_ID
         AND sh.SHORT_CODE = s.SHORT_CODE) AS closedPrice
+        , rs.CREATED_AT AS createdAt
         FROM RECOMMEND_STOCK rs
         JOIN STOCK s ON rs.STOCK_ID = s.STOCK_ID
         WHERE USER_ID = #{userId}

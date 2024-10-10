@@ -15,4 +15,5 @@ public class DailyRecommendStockDTO {
     private Integer price;
     private Integer changeAmount;
     private Double changeAmountRate;
+    private String day;
 }

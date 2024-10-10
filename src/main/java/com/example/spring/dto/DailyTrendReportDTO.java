@@ -24,5 +24,5 @@ public class DailyTrendReportDTO {
     private Integer kospiProfitRate;
     private String dailyTrendSummarizedTitle;
     private String dailyTrendSummarizedContent;
-    private Timestamp createdAt;
+    private String hour;
 }

@@ -7,6 +7,8 @@ import com.example.spring.exception.*;
 import com.example.spring.mapper.SurveyResultMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +25,15 @@ public class SurveyResultServiceImpl implements SurveyResultService {
         this.surveyResultMapper = surveyResultMapper;
     }
 
+    // JWT 토큰에서 userId를 추출하는 메서드
+    private String getUserIdFromToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();  // JWT 토큰에서 userId 추출
+    }
+
     @Override
-    public int getTotalScore(String userId) {
+    public int getTotalScore() {
+        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
         try {
             int totalScore = surveyResultMapper.getTotalScore(userId);
             log.info("Total score for userId {}: {}", userId, totalScore);
@@ -37,12 +46,13 @@ public class SurveyResultServiceImpl implements SurveyResultService {
 
     @Override
     @Transactional
-    public InvestmentTypeAnswerDTO getInvestmentType(String userId) {
+    public InvestmentTypeAnswerDTO getInvestmentTypeByUserId() {
+        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
         try {
             // 총 점수 계산
-            int totalScore = getTotalScore(userId);
+            int totalScore = getTotalScore();
 
-            // 투자 유형 조회
+            // 점수에 따른 투자 유형 조회
             InvestmentTypeDTO investmentType = surveyResultMapper.getInvestmentTypeByScore(totalScore);
 
             if (investmentType == null) {
@@ -51,7 +61,7 @@ public class SurveyResultServiceImpl implements SurveyResultService {
             }
 
             // 투자 유형 답변 저장 또는 업데이트
-            insertOrUpdateInvestmentTypeAnswer(userId, investmentType.getInvestmentTypeId());
+            insertOrUpdateInvestmentTypeAnswer(investmentType.getInvestmentTypeId());
 
             // InvestmentTypeAnswerDTO로 반환
             InvestmentTypeAnswerDTO answerDTO = new InvestmentTypeAnswerDTO();
@@ -67,13 +77,15 @@ public class SurveyResultServiceImpl implements SurveyResultService {
     }
 
     @Override
-    public void insertOrUpdateInvestmentTypeAnswer(String userId, Long investmentTypeId) {
+    public void insertOrUpdateInvestmentTypeAnswer(Long investmentTypeId) {
+        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
         try {
-            InvestmentTypeAnswer existingAnswer = surveyResultMapper.findInvestmentTypeAnswerByUserId(userId);
+            // 기존 답변이 있는지 확인
+            Long existingInvestmentTypeId = surveyResultMapper.getInvestmentTypeByUserId(userId);
 
-            if (existingAnswer != null) {
-                existingAnswer.setInvestmentTypeId(investmentTypeId);
-                existingAnswer.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            if (existingInvestmentTypeId != null) {
+                // 기존 답변이 있을 경우 updatedAt만 수정
+                InvestmentTypeAnswer existingAnswer = new InvestmentTypeAnswer(userId, investmentTypeId, null, new Timestamp(System.currentTimeMillis()));
                 int result = surveyResultMapper.updateInvestmentTypeAnswer(existingAnswer);
 
                 if (result <= 0) {
@@ -83,6 +95,7 @@ public class SurveyResultServiceImpl implements SurveyResultService {
 
                 log.info("Successfully updated InvestmentTypeAnswer for userId: {}", userId);
             } else {
+                // 기존 답변이 없을 경우 createdAt만 설정하여 새로 삽입
                 InvestmentTypeAnswer newAnswer = new InvestmentTypeAnswer(userId, investmentTypeId, new Timestamp(System.currentTimeMillis()), null);
                 int result = surveyResultMapper.insertInvestmentTypeAnswer(newAnswer);
 
@@ -101,14 +114,17 @@ public class SurveyResultServiceImpl implements SurveyResultService {
     }
 
     @Override
-    public InvestmentTypeDTO getInvestmentTypeDetails(String userId) {
-        Long investmentTypeId = surveyResultMapper.getInvestmentTypeIdByUserId(userId);
+    public InvestmentTypeDTO getInvestmentTypeDetails() {
+        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
+        // Long 타입의 투자 유형 ID 조회
+        Long investmentTypeId = surveyResultMapper.getInvestmentTypeByUserId(userId);
 
         if (investmentTypeId == null) {
             log.info("Investment type ID not found for userId: {}", userId);
             throw new ResourceNotFoundException("Investment type not found for userId: " + userId);
         }
 
+        // 투자 유형 상세 정보 조회
         InvestmentTypeDTO investmentTypeDTO = surveyResultMapper.getInvestmentTypeDetails(investmentTypeId);
 
         if (investmentTypeDTO == null) {
@@ -119,5 +135,4 @@ public class SurveyResultServiceImpl implements SurveyResultService {
         log.info("Investment type details for userId {}: {}", userId, investmentTypeDTO.getInvestmentTypeName());
         return investmentTypeDTO;
     }
-
 }

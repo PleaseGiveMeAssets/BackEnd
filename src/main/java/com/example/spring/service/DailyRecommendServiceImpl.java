@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -71,6 +74,7 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
                             dailyRecommendStockDTO.setPrice(recommendStock.getPrice());
                             dailyRecommendStockDTO.setChangeAmount(recommendStock.getPrice() - stockHistory.getClosedPrice());
                             dailyRecommendStockDTO.setChangeAmountRate(new BigDecimal(((recommendStock.getPrice() - stockHistory.getClosedPrice()) / recommendStock.getPrice().doubleValue())).setScale(2, RoundingMode.DOWN).doubleValue());
+                            dailyRecommendStockDTO.setDay(LocalDateTime.ofInstant(recommendStock.getCreatedAt().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd")));
                             dailyRecommendStockDTOList.add(dailyRecommendStockDTO);
                         });
             });
