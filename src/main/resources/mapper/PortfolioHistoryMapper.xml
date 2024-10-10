@@ -7,7 +7,7 @@
     <select id="selectListStockPortfolioByUserId" parameterType="map" resultType="TotalStockInfoDTO">
         SELECT stockHistoryId                                             AS stockDate
              , SUM((IFNULL(closedPrice, price) - price) * quantity)       AS totalAmount
-             , SUM((IFNULL(closedPrice, price) - price) * quantity) * 100 AS totalProfit
+             , SUM((IFNULL(closedPrice, price) - price) * quantity) / 100 AS totalProfit
         FROM (SELECT s.STOCK_ID                           AS stockId
                    , s.SHORT_CODE                         AS shortCode
                    , s.STOCK_NAME                         AS stockName
