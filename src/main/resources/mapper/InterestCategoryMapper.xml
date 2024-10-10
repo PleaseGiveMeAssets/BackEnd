@@ -6,8 +6,8 @@
 <mapper namespace="com.example.spring.mapper.InterestCategoryMapper">
 
     <!-- 메인 카테고리 전체 불러오기 -->
-    <select id="getAllMainCategories" resultType="String">
-        SELECT MAIN_CATEGORY_NAME
+    <select id="getAllMainCategories" resultType="com.example.spring.dto.InterestCategoryDTO">
+        SELECT MAIN_CATEGORY_ID, MAIN_CATEGORY_NAME
         FROM MAIN_CATEGORY
     </select>
 

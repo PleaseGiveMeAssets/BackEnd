@@ -2,7 +2,6 @@ package com.example.spring.service;
 
 import com.example.spring.dto.InterestCategoryDTO;
 import com.example.spring.mapper.InterestCategoryMapper;
-import com.example.spring.service.InterestCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class InterestCategoryServiceImpl implements InterestCategoryService {
 
     // 메인 카테고리 전체 불러오기
     @Override
-    public List<String> getAllMainCategories() {
+    public List<InterestCategoryDTO> getAllMainCategories() {
         return interestCategoryMapper.getAllMainCategories();
     }
 
