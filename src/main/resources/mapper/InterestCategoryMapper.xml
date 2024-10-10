@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spring.mapper.InterestCategoryMapper">
+
+    <!-- 메인 카테고리 전체 불러오기 -->
+    <select id="getAllMainCategories" resultType="com.example.spring.dto.InterestCategoryDTO">
+        SELECT MAIN_CATEGORY_ID, MAIN_CATEGORY_NAME
+        FROM MAIN_CATEGORY
+    </select>
+
+    <!-- 사용자가 등록한 관심 세부 카테고리 불러오기 -->
+    <select id="getUserSubCategories" resultType="com.example.spring.dto.InterestCategoryDTO">
+        SELECT mc.MAIN_CATEGORY_ID, mc.MAIN_CATEGORY_NAME, sc.SUB_CATEGORY_ID, sc.SUB_CATEGORY_NAME
+        FROM MAIN_CATEGORY mc
+        JOIN SUB_CATEGORY sc ON mc.MAIN_CATEGORY_ID = sc.MAIN_CATEGORY_ID
+        JOIN INTEREST_CATEGORY ic ON ic.SUB_CATEGORY_ID = sc.SUB_CATEGORY_ID
+        WHERE ic.USER_ID = #{userId}
+    </select>
+
+    <!-- 사용자가 등록한 관심 세부 카테고리 삭제 -->
+    <delete id="deleteSubCategory">
+        DELETE FROM INTEREST_CATEGORY
+        WHERE USER_ID = #{userId} AND SUB_CATEGORY_ID = #{subCategoryId}
+    </delete>
+
+    <!-- 메인 카테고리에 따른 세부 카테고리 전체 불러오기-->
+    <select id="getSubCategoriesByMainCategoryId" resultType="com.example.spring.dto.InterestCategoryDTO">
+        SELECT sc.SUB_CATEGORY_ID, sc.SUB_CATEGORY_NAME
+        FROM SUB_CATEGORY sc
+        WHERE sc.MAIN_CATEGORY_ID = #{mainCategoryId}
+    </select>
+
+    <!-- 세부 카테고리 관심 목록에 저장 -->
+    <insert id="saveInterestCategory">
+        INSERT INTO INTEREST_CATEGORY (USER_ID, SUB_CATEGORY_ID, CREATED_AT)
+        VALUES (#{userId}, #{subCategoryId}, NOW())
+    </insert>
+
+</mapper>
