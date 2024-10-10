@@ -22,24 +22,29 @@ public class SurveyResultController {
         this.surveyResultService = surveyResultService;
     }
 
-    @GetMapping("/total-score/{userId}")
-    public ResponseEntity<Integer> getTotalScore(@PathVariable String userId) {
-        int totalScore = surveyResultService.getTotalScore(userId);
+    // 현재 로그인된 사용자의 점수를 조회 (userId PathVariable 제거, JWT 토큰 사용)
+    @GetMapping("/total-score")
+    public ResponseEntity<Integer> getTotalScore(@AuthenticationPrincipal UserDetails userDetails) {
+        String userId = userDetails.getUsername();  // JWT 토큰을 통해 userId 가져오기
+        int totalScore = surveyResultService.getTotalScore();
         return ResponseEntity.ok(totalScore);
     }
 
-    @GetMapping("/investment-type/{userId}")
-    public ResponseEntity<InvestmentTypeAnswerDTO> getInvestmentType(@PathVariable String userId) {
-
+    // 현재 로그인된 사용자의 투자 유형을 조회 (userId PathVariable 제거, JWT 토큰 사용)
+    @GetMapping("/investment-type")
+    public ResponseEntity<InvestmentTypeAnswerDTO> getInvestmentTypeByUserId(@AuthenticationPrincipal UserDetails userDetails) {
+        String userId = userDetails.getUsername();  // JWT 토큰을 통해 userId 가져오기
         log.info("Received userId: " + userId);
 
-        InvestmentTypeAnswerDTO investmentTypeAnswerDTO = surveyResultService.getInvestmentType(userId);
+        InvestmentTypeAnswerDTO investmentTypeAnswerDTO = surveyResultService.getInvestmentTypeByUserId();
         return ResponseEntity.ok(investmentTypeAnswerDTO);
     }
 
+    // 현재 로그인된 사용자의 투자 유형 상세 정보를 조회
     @GetMapping("/investment-type/details")
     public ResponseEntity<InvestmentTypeDTO> getInvestmentTypeDetails(@AuthenticationPrincipal UserDetails userDetails) {
-        InvestmentTypeDTO investmentTypeDTO = surveyResultService.getInvestmentTypeDetails(userDetails.getUsername());
+        String userId = userDetails.getUsername();  // JWT 토큰을 통해 userId 가져오기
+        InvestmentTypeDTO investmentTypeDTO = surveyResultService.getInvestmentTypeDetails();
         return ResponseEntity.ok(investmentTypeDTO);
     }
 
