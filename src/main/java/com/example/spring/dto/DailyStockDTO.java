@@ -12,8 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DailyStockDTO {
-    private Long stockId;
-    private String shortCode;
-    private String stockName;
+    private String day;
     private List<DailyRecommendStockDTO> dailyRecommendStockDTOList;
 }
