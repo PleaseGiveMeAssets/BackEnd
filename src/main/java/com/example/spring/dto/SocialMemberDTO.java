@@ -11,7 +11,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DailyStockDTO {
-    private String day;
-    private List<DailyRecommendStockDTO> dailyRecommendStockDTOList;
+public class SocialMemberDTO {
+    private String userId;
+    private String phoneFirst;
+    private String phoneMiddle;
+    private String phoneLast;
+    private String name;
+    private String email;
+    private String sns;
 }

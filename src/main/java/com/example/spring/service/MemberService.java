@@ -1,15 +1,17 @@
 package com.example.spring.service;
 
-import com.example.spring.dto.FindIdRequestDTO;
-import com.example.spring.dto.FindPasswordRequestDTO;
-import com.example.spring.dto.LoginRequestDTO;
-import com.example.spring.dto.MemberDTO;
+import com.example.spring.dto.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public interface MemberService {
     // 회원가입
     int signup(MemberDTO memberDTO);
+
+    // 소셜 회원가입
+    int socialSignup(SocialMemberDTO socialMemberDTO);
 
     // 아이디 찾기
     Map<String, Object> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
@@ -18,8 +20,11 @@ public interface MemberService {
     int findPassword(FindPasswordRequestDTO findPasswordRequestDTO);
 
     // 로그인
-    String login(LoginRequestDTO loginRequest);
+    LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletResponse response);
+
+    // 소셜로그인
+    LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletResponse response);
 
     // 로그아웃
-    void logout(String token);
+    void logout(HttpServletRequest request, HttpServletResponse response);
 }

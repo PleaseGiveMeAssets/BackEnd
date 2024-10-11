@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MemberCodeEnum {
     Y("Y"),
+    NAVER("naver"),
+    KAKAO("kakao"),
     START_TIME("000000"),
     END_TIME("235959");
 

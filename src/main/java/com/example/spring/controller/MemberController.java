@@ -1,15 +1,14 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.FindIdRequestDTO;
-import com.example.spring.dto.FindPasswordRequestDTO;
-import com.example.spring.dto.LoginRequestDTO;
-import com.example.spring.dto.MemberDTO;
+import com.example.spring.dto.*;
 import com.example.spring.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -40,14 +39,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequest) {
-        String token = memberService.login(loginRequest);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest, HttpServletResponse response) {
+        LoginResponseDTO loginResponseDTO = memberService.login(loginRequest, response);
+        return ResponseEntity.ok(loginResponseDTO);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader(value = "Authorization") String token) {
-        memberService.logout(token);
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        memberService.logout(request, response);
         return ResponseEntity.ok().build();
     }
 
