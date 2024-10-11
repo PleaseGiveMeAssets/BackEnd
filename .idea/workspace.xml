@@ -4,19 +4,83 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12fccb60-766c-4d63-9767-a885eaee0d6d" name="Changes" comment="">
+    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="chore : 캐시 삭제 및 gitignore 재적용">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/vo/StockVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/vo/StockVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/dependencies-accessors/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileChanges/last-build.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/dependencies-accessors/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileChanges/last-build.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024__10__4___11_09__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024__10__4__오전_11_09_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024__9__25__오전_9_53_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024__9__25__오전_9_58_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024__9__25__오전_9_59_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024__9__27__오후_5_27_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024__9__27__오후_5_27_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/InterestCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/InterestCategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/SurveyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/SurveyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/oauth/SocialLoginController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/InvestmentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/InvestmentType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/InvestmentTypeStrategy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/StockHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/StockHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyRecommendStockDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyRecommendStockDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/LoginResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/OrderHistoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/OrderHistoryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/SocialMemberDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/StockHistoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/StockHistoryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/exception/SocialOauthException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/exception/UserAnswerProcessingException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/exception/UserAnswerProcessingException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/InterestCategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/InterestCategoryMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/StockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/StockMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/UserAnswerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/UserAnswerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/DailyRecommendServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/DailyRecommendServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/DailyTrendServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/DailyTrendServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/InterestCategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/InterestCategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/InterestCategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/InterestCategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/SurveyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/SurveyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/SurveyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/SurveyServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/KaKaoOauthServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/KakaoOauthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/NaverOauthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/NaverOauthServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/util/KRXBusinessDayCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/util/KRXBusinessDayCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/InterestCategoryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/InterestCategoryMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/StockMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/StockMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/UserAnswerMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/UserAnswerMapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="ExternalProjectsData">
-    <projectState path="$PROJECT_DIR$">
-      <ProjectState />
-    </projectState>
   </component>
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
@@ -35,9 +99,6 @@
       </state>
     </system>
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -45,145 +106,19 @@
     <option name="FILTER_DEBUG" value="true" />
     <option name="CUSTOM_FILTER" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
-}</component>
-  <component name="ProjectId" id="2me7KbHytVnqZpZSpwQqKFleMuI" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
-  </component>
-  <component name="ProjectViewState">
-    <option name="autoscrollToSource" value="true" />
-    <option name="openDirectoriesWithSingleClick" value="true" />
-    <option name="showVisibilityIcons" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Gradle.Build BackEnd.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Tomcat Server.Tomcat 9.0.91.executor": "Run",
-    "git-widget-placeholder": "dev",
-    "kotlin-language-version-configured": "true",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "configurable.group.appearance",
-    "vue.rearranger.settings.migration": "true"
+    "git-widget-placeholder": "7e988804"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="Tomcat 9.0.91" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.91" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
-      <option name="UPDATING_POLICY" value="restart-server" />
-      <deployment>
-        <artifact name="Gradle : com.example : spring-1.0-SNAPSHOT.war">
-          <settings>
-            <option name="CONTEXT_PATH" value="/" />
-          </settings>
-        </artifact>
-      </deployment>
-      <server-settings>
-        <option name="BASE_DIRECTORY_NAME" value="6b4cd16b-2433-484c-b666-768a1be7b700" />
-      </server-settings>
-      <predefined_log_file enabled="true" id="Tomcat" />
-      <predefined_log_file enabled="true" id="Tomcat Catalina" />
-      <predefined_log_file id="Tomcat Manager" />
-      <predefined_log_file id="Tomcat Host Manager" />
-      <predefined_log_file id="Tomcat Localhost Access" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="57920" />
-      </RunnerSettings>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <method v="2">
-        <option name="Make" enabled="true" />
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="Gradle : com.example : spring-1.0-SNAPSHOT.war" />
-        </option>
-      </method>
-    </configuration>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.387" />
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.387" />
-      </set>
-    </attachedChunks>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="12fccb60-766c-4d63-9767-a885eaee0d6d" name="Changes" comment="" />
-      <created>1727425125666</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1727425125666</updated>
-      <workItem from="1727425127203" duration="154000" />
-    </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="chore : 캐시 삭제 및 gitignore 재적용" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore : 캐시 삭제 및 gitignore 재적용" />
   </component>
 </project>

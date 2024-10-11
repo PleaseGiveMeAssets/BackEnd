@@ -20,7 +20,7 @@ public class InterestCategoryController {
 
     // 메인 카테고리 목록 불러오기
     @GetMapping("")
-    public List<String> getAllMainCategories() {
+    public List<InterestCategoryDTO> getAllMainCategories() {
         log.info("메인 카테고리 전체 조회 요청");
         return interestCategoryService.getAllMainCategories();
     }

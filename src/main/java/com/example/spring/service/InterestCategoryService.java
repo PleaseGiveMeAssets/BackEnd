@@ -7,7 +7,7 @@ import java.util.List;
 public interface InterestCategoryService {
 
     // 메인 카테고리 목록 불러오기
-    List<String> getAllMainCategories();
+    List<InterestCategoryDTO> getAllMainCategories();
 
     // 사용자가 등록한 관심 세부 카테고리 불러오기
     List<InterestCategoryDTO> getUserSubCategories(String userId);

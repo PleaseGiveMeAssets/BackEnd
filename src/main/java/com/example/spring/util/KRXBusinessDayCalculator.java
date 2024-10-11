@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -18,7 +20,7 @@ public class KRXBusinessDayCalculator {
                     marketHolidays.contains(currentDate))) {
                 businessDays++;
             }
-            if(businessDays == n){
+            if (businessDays == n) {
                 return currentDate;
             }
             currentDate = currentDate.minusDays(1);
@@ -53,5 +55,21 @@ public class KRXBusinessDayCalculator {
         }
 
         return businessDays;
+    }
+
+    public List<LocalDate> getListBusinessDays(LocalDate startDate, int n, Set<LocalDate> holidays) {
+        List<LocalDate> businessDayList = new ArrayList<>();
+        int businessDays = 0;
+
+        while (businessDays < n) {
+            if (!(startDate.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                    startDate.getDayOfWeek() == DayOfWeek.SUNDAY ||
+                    holidays.contains(startDate))) {
+                businessDayList.add(startDate);
+                businessDays++;
+            }
+            startDate = startDate.minusDays(1);
+        }
+        return businessDayList;
     }
 }

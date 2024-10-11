@@ -3,19 +3,18 @@ package com.example.spring.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvestmentType {
+public class InvestmentTypeAnswer {
+
+    private String userId;
     private Long investmentTypeId;
-    private String investmentTypeName;
-    private String content;
-    private String stockAllocationContent;
-    private String stockSelectionContent;
-    private String riskManagementContent;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
