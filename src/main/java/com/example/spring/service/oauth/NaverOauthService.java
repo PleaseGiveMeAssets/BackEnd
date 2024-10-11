@@ -9,5 +9,5 @@ import java.io.IOException;
 public interface NaverOauthService {
     String getNaverAccessToken(String authorize_code, String state);
     JsonObject getUserInfo(String access_Token);
-    LoginResponseDTO processNaverLogin(String code, String state);
+    LoginResponseDTO processNaverLogin(String code, String state, HttpServletResponse response);
 }

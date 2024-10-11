@@ -7,6 +7,7 @@ import com.example.spring.exception.*;
 import com.example.spring.mapper.TermsOfUseMapper;
 import com.example.spring.mapper.UserMapper;
 import com.example.spring.security.util.JwtProcessor;
+import com.example.spring.service.oauth.KaKaoOauthServiceImpl;
 import com.example.spring.util.MemberCodeEnum;
 import com.example.spring.util.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +40,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private EncryptionService encryptionService;
+    @Autowired
+    private KaKaoOauthServiceImpl kaKaoOauthServiceImpl;
 
     @Autowired
     public MemberServiceImpl(UserMapper userMapper, TermsOfUseMapper termsOfUseMapper, PasswordEncoder passwordEncoder, SmsService smsService, JwtProcessor jwtProcessor) {
@@ -172,7 +180,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 로그인
     @Override
-    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletResponse response) {
         // 사용자 정보 조회
         User user = userMapper.findByUserId(loginRequestDTO.getUserId());
         if (user == null) {
@@ -213,13 +221,20 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtProcessor.generateToken(authentication.getName());
         String refreshToken = jwtProcessor.generateRefreshToken(authentication.getName());
 
+        // Refresh Token을 HTTP-Only 쿠키로 설정
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
+        refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+        refreshTokenCookie.setPath("/"); // 쿠키 경로
+        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        response.addCookie(refreshTokenCookie);
 
-        return new LoginResponseDTO(accessToken, refreshToken);
+        return new LoginResponseDTO(accessToken, null);
     }
 
     // 소셜로그인
     @Override
-    public LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO) {
+    public LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletResponse response) {
         // 사용자 정보 조회
         User user = userMapper.findByUserId(loginRequestDTO.getUserId());
         if (user == null) {
@@ -244,13 +259,77 @@ public class MemberServiceImpl implements MemberService {
         System.out.println("accessToken: " + accessToken);
         System.out.println("refreshToken: " + refreshToken);
 
-        return new LoginResponseDTO(accessToken, refreshToken);
+        // Refresh Token을 HTTP-Only 쿠키로 설정
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
+        refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+        refreshTokenCookie.setPath("/"); // 쿠키 경로
+        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        response.addCookie(refreshTokenCookie);
+
+        return new LoginResponseDTO(accessToken, null);
     }
 
 
     @Override
-    public void logout(String token) {
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        // 세션에서 Kakao 액세스 토큰 가져오기
+        HttpSession session = request.getSession(false);
+        String kakaoAccessToken = null;
+        String kakaoLogoutUrl = null;
 
+        if  (session != null) {
+            kakaoAccessToken = (String) session.getAttribute("kakaoAccessToken");
+        }
+
+        // 현재 인증된 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            String userId = authentication.getName();
+            User user = userMapper.findByUserId(userId);
+
+            if (user != null && MemberCodeEnum.KAKAO.getValue().equals(user.getSns())) {
+                if (kakaoAccessToken != null) {
+                    // Kakao 로그아웃 처리
+                    kakaoLogoutUrl = kaKaoOauthServiceImpl.kakaoLogout();
+                    System.out.println("@@Kakao 로그아웃 처리 완료:");
+                    System.out.println(kakaoLogoutUrl);
+                    // 세션에서 Kakao 액세스 토큰 제거
+                    session.removeAttribute("kakaoAccessToken");
+                }
+            }
+        }
+
+        // 세션무효화 - JSESSIONID도 없어짐
+        if(session != null) {
+            session.invalidate();
+        }
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(false);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(0); // 쿠키 즉시 만료
+        response.addCookie(refreshTokenCookie);
+
+        SecurityContextHolder.clearContext();
+
+        System.out.println("@@로그아웃 프로세스 완료@@");
+
+        // 응답으로 카카오 로그아웃 URL 반환
+        if (kakaoLogoutUrl != null) {
+            // 카카오 로그아웃 URL이 있으면 프론트에 전달
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            try {
+                response.getWriter().write("{\"kakaoLogoutUrl\":\"" + kakaoLogoutUrl + "\"}");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // 카카오 로그아웃 URL이 없으면 일반 로그아웃 처리
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 
 

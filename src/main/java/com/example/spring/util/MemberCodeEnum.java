@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum MemberCodeEnum {
     Y("Y"),
     NAVER("naver"),
-    KAKAO("kakao");
+    KAKAO("kakao"),
+    START_TIME("000000"),
+    END_TIME("235959");
 
     private String value;
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -37,14 +39,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
-        LoginResponseDTO loginResponseDTO = memberService.login(loginRequest);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest, HttpServletResponse response) {
+        LoginResponseDTO loginResponseDTO = memberService.login(loginRequest, response);
         return ResponseEntity.ok(loginResponseDTO);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader(value = "Authorization") String token) {
-        memberService.logout(token);
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        memberService.logout(request, response);
         return ResponseEntity.ok().build();
     }
 

@@ -169,7 +169,7 @@ public class NaverOauthServiceImpl implements NaverOauthService {
     }
 
     @Override
-    public LoginResponseDTO processNaverLogin(String code, String state) {
+    public LoginResponseDTO processNaverLogin(String code, String state, HttpServletResponse response) {
         String accessToken = getNaverAccessToken(code, state);
         JsonObject userInfo = getUserInfo(accessToken);
 
@@ -226,7 +226,7 @@ public class NaverOauthServiceImpl implements NaverOauthService {
             }
 
             LoginRequestDTO loginRequestDTO = new LoginRequestDTO(userId, null);
-            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO);
+            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, response);
             System.out.println("로그인 완료");
             return loginResponse;
         }

@@ -15,9 +15,13 @@ import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.UUID;
 
 @Service
 public class KaKaoOauthServiceImpl implements KakaoOauthService {
@@ -27,6 +31,9 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
 
     @Value("${kakao.redirect-uri}")
     private String REDIRECT_URI;
+
+    @Value("${kakao.logout-redirect-uri}")
+    private String LOGOUT_REDIRECT_URI;
 
     private final MemberServiceImpl memberService;
 
@@ -163,7 +170,7 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
     }
 
     @Override
-    public LoginResponseDTO processKakaoLogin(String code) {
+    public LoginResponseDTO processKakaoLogin(String code, HttpServletResponse response, HttpServletRequest request) {
         String accessToken = getAccessToken(code);
         JsonObject userInfo = getUserInfo(accessToken);
 
@@ -213,14 +220,30 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
                 memberService.socialSignup(socialMemberDTO);
 
                 System.out.println("카카오 회원가입 완료");
-
             }
 
+            //세션에 카카오 엑세스 토큰 저장
+            HttpSession session = request.getSession(true);
+            session.setAttribute("kakaoAccessToken", accessToken);
+            System.out.println("@@세션에 KakaoAccessToken 저장했습~");
+
             LoginRequestDTO loginRequestDTO = new LoginRequestDTO(userId, null);
-            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO);
+            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, response);
             System.out.println("로그인 완료");
             return loginResponse;
         }
         throw new SocialOauthException(ResultCodeEnum.KAKAO_LOGIN_FAIL.getMessage());
+    }
+
+    @Override
+    public String kakaoLogout() {
+        String state = "";
+        String kakaoLogoutUrl = String.format(
+                "https://kauth.kakao.com/oauth/logout?client_id=%s&logout_redirect_uri=%s&state=%s",
+                REST_API_KEY,
+                LOGOUT_REDIRECT_URI,
+                state
+        );
+        return kakaoLogoutUrl;
     }
 }

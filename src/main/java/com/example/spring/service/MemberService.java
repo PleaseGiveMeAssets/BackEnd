@@ -2,6 +2,8 @@ package com.example.spring.service;
 
 import com.example.spring.dto.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public interface MemberService {
@@ -18,11 +20,11 @@ public interface MemberService {
     int findPassword(FindPasswordRequestDTO findPasswordRequestDTO);
 
     // 로그인
-    LoginResponseDTO login(LoginRequestDTO loginRequest);
+    LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletResponse response);
 
     // 소셜로그인
-    LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO);
+    LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletResponse response);
 
     // 로그아웃
-    void logout(String token);
+    void logout(HttpServletRequest request, HttpServletResponse response);
 }
