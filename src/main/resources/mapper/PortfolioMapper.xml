@@ -20,6 +20,7 @@
         FROM PORTFOLIO
         WHERE STOCK_ID = #{stockId}
         AND USER_ID = #{userId}
+        ORDER BY ORDERED_AT DESC, CREATED_AT DESC;
     </select>
     <insert id="insert" parameterType="map">
         INSERT INTO PORTFOLIO
