@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper
 public interface StockHistoryMapper {
     List<StockHistory> findByStockId(@Param("stockId") Long stockId, @Param("startDate") String startDate, @Param("endDate") String endDate);
-    int findRecentPriceByStockIdAndShortCode(@Param("stockId") Long stockId, @Param("shortCode")String shortCode);
+    Long findRecentPriceByStockIdAndShortCode(@Param("stockId") Long stockId, @Param("shortCode")String shortCode);
 }

@@ -5,6 +5,8 @@ import com.example.spring.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,5 +62,10 @@ public class MemberController {
     @PostMapping("/find-password")
     public ResponseEntity<Integer> findPassword(@RequestBody FindPasswordRequestDTO findPasswordRequestDTO) {
         return ResponseEntity.ok(memberService.findPassword(findPasswordRequestDTO));
+    }
+
+    @GetMapping("/login/renew")
+    public ResponseEntity<?> renewLogin(@AuthenticationPrincipal UserDetails userDetails, @CookieValue(value = "refreshToken") String refreshToken, HttpServletResponse response) {
+        return ResponseEntity.ok(memberService.renewLogin(userDetails.getUsername(), refreshToken, response));
     }
 }
