@@ -86,13 +86,12 @@ public class PortfolioServiceImpl implements PortfolioService {
         Stock stock = stockMapper.findByStockId(stockId);
         if (stock == null)
             throw new IllegalArgumentException("Stock not found");
-
+        Long recentPrice = stockHistoryMapper.findRecentPriceByStockIdAndShortCode(stockId, stock.getShortCode());
         List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByUserIdAndStockId(userId, stock.getStockId());
-        OrderSummaryDTO OrderSummary = makeSummary(stock, symbolTradeHistory, null);
-
-        log.info("exampleDTOList : {}", OrderSummary);
+        OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, recentPrice,null);
+        log.info("exampleDTOList : {}", orderSummary);
         log.info(System.getProperty("user.dir"));
-        return OrderSummary;
+        return orderSummary;
     }
 
     @Override
@@ -123,28 +122,25 @@ public class PortfolioServiceImpl implements PortfolioService {
         Stock stock = stockMapper.findByStockId(stockId);
         if (stock == null)
             throw new IllegalArgumentException("Stock not found");
-        int recentPrice = stockHistoryMapper.findRecentPriceByStockIdAndShortCode(stockId, stock.getShortCode());
+        Long recentPrice = stockHistoryMapper.findRecentPriceByStockIdAndShortCode(stockId, stock.getShortCode());
 
         List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByUserIdAndStockId(userId, stock.getStockId());
         List<OrderDTO> orders = new ArrayList<>();
-        OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, orders);
+        OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, recentPrice, orders);
 
+        Collections.reverse(orders);
         return new OrderHistoryDTO(orderSummary.getName(),
                 orderSummary.getAvgPrice(),
-                orderSummary.getQuantity(),
+                orderSummary.getTotalQuantity(),
                 recentPrice,
                 orders
         );
     }
-
-    private OrderSummaryDTO makeSummary(Stock stock, List<Portfolio> symbolTradeHistory, List<OrderDTO> orderDTOList) {
-        Long totalPrice = 0L;
+    private OrderSummaryDTO makeSummary(Stock stock, List<Portfolio> symbolTradeHistory, Long recentPrice, List<OrderDTO> orderDTOList) {
         Long totalQuantity = 0L;
         Double avgPrice = 0.0;
         if (symbolTradeHistory == null || symbolTradeHistory.isEmpty())
             throw new IllegalArgumentException("Portfolio not found");
-
-        Collections.reverse(symbolTradeHistory);
 
         for (Portfolio order : symbolTradeHistory) {
             if (order.getOrderType() == 'B') {
@@ -164,8 +160,6 @@ public class PortfolioServiceImpl implements PortfolioService {
             }
         }
 
-        Collections.reverse(symbolTradeHistory);
-
-        return new OrderSummaryDTO(stock.getStockName(), avgPrice, totalQuantity);
+        return new OrderSummaryDTO(stock.getStockName(), Math.round(avgPrice), totalQuantity, recentPrice);
     }
 }

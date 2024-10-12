@@ -2,6 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.config.AppConfig;
 import com.example.spring.dto.OrderDTO;
+import com.example.spring.dto.OrderHistoryDTO;
 import com.example.spring.util.OrderTypeStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -60,5 +61,13 @@ public class PortfolioServiceTest {
         orderDTO.setOrderType('B');
         int status = portfolioService.updateOrder(7L, orderDTO);
         assertEquals(0, status);
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("포트폴리오 종목 조회")
+    public void selectOrders(){
+        OrderHistoryDTO orderHistory = portfolioService.getOrders("testUser1", 27777L);
+        
     }
 }
