@@ -135,4 +135,16 @@ public class SurveyResultServiceImpl implements SurveyResultService {
         log.info("Investment type details for userId {}: {}", userId, investmentTypeDTO.getInvestmentTypeName());
         return investmentTypeDTO;
     }
+
+    @Override
+    public String getUserNickname(String userId) {
+        try {
+            String nickname = surveyResultMapper.getUserNickname(userId); // Mapper를 통해 닉네임 조회
+            log.info("User nickname for userId {}: {}", userId, nickname);
+            return nickname;
+        } catch (Exception e) {
+            log.error("Error while retrieving nickname for userId: {}", userId, e);
+            throw new RuntimeException("Failed to get nickname for userId: " + userId);
+        }
+    }
 }
