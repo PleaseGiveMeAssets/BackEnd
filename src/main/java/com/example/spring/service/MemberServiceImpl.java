@@ -226,7 +226,7 @@ public class MemberServiceImpl implements MemberService {
         refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
         refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
         refreshTokenCookie.setPath("/"); // 쿠키 경로
-        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
         response.addCookie(refreshTokenCookie);
 
         return new LoginResponseDTO(accessToken, null);
@@ -264,7 +264,7 @@ public class MemberServiceImpl implements MemberService {
         refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
         refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
         refreshTokenCookie.setPath("/"); // 쿠키 경로
-        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
         response.addCookie(refreshTokenCookie);
 
         return new LoginResponseDTO(accessToken, null);
@@ -278,7 +278,7 @@ public class MemberServiceImpl implements MemberService {
         String kakaoAccessToken = null;
         String kakaoLogoutUrl = null;
 
-        if  (session != null) {
+        if (session != null) {
             kakaoAccessToken = (String) session.getAttribute("kakaoAccessToken");
         }
 
@@ -301,7 +301,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         // 세션무효화 - JSESSIONID도 없어짐
-        if(session != null) {
+        if (session != null) {
             session.invalidate();
         }
 
@@ -331,7 +331,6 @@ public class MemberServiceImpl implements MemberService {
             response.setStatus(HttpServletResponse.SC_OK);
         }
     }
-
 
     // 아이디 찾기
     // 인증코드 확인 여부x
@@ -438,5 +437,45 @@ public class MemberServiceImpl implements MemberService {
     // 임시 비밀번호 생성
     private String generateTempPassword() {
         return UUID.randomUUID().toString().substring(0, 8);
+    }
+
+    @Override
+    public LoginResponseDTO renewLogin(String userId, String token, HttpServletResponse response) {
+        boolean isValidToken = jwtProcessor.validateToken(token);
+
+        if (isValidToken) {
+            User user = userMapper.findByUserId(userId);
+
+            if (user == null) {
+                throw new UserIdNotFoundException(ResultCodeEnum.NO_EXIST_USER_ID.getMessage());
+            }
+
+            if (MemberCodeEnum.Y.getValue().equals(user.getAutoLogin().toString())) {
+                // 인증 객체 생성
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        user.getUserId(),
+                        user.getPassword() // 비밀번호x - null
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                // 액세스 토큰과 리프레시 토큰 생성
+                String accessToken = jwtProcessor.generateToken(authentication.getName());
+                String refreshToken = jwtProcessor.generateRefreshToken(authentication.getName());
+
+                // Refresh Token을 HTTP-Only 쿠키로 설정
+                Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+                refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
+                refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+                refreshTokenCookie.setPath("/"); // 쿠키 경로
+                refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
+                response.addCookie(refreshTokenCookie);
+                return new LoginResponseDTO(accessToken, null);
+            } else {
+                throw new SessionExpiredException(ResultCodeEnum.SESSION_EXPIRATION.getMessage());
+            }
+        } else {
+            throw new SessionExpiredException(ResultCodeEnum.SESSION_EXPIRATION.getMessage());
+        }
     }
 }
