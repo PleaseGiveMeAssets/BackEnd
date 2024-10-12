@@ -440,14 +440,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public LoginResponseDTO renewLogin(String userId, String token, HttpServletResponse response) {
+    public LoginResponseDTO renewLogin(String token, HttpServletResponse response) {
         boolean isValidToken = jwtProcessor.validateToken(token);
 
         if (isValidToken) {
+            String userId = jwtProcessor.getUsername(token);
             User user = userMapper.findByUserId(userId);
 
             if (user == null) {
                 throw new UserIdNotFoundException(ResultCodeEnum.NO_EXIST_USER_ID.getMessage());
+            }
+
+            if (log.isInfoEnabled()) {
+                log.info("renewLogin user : {}", user);
             }
 
             if (MemberCodeEnum.Y.getValue().equals(user.getAutoLogin().toString())) {
