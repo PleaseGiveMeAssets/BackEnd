@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -54,7 +53,7 @@ public class MemberController {
     }
 
     @PostMapping("/find-id")
-    public ResponseEntity<List<Map<String, Object>>> findId(@RequestBody FindIdRequestDTO findIdRequestDTO) {
+    public ResponseEntity<Map<String, Object>> findId(@RequestBody FindIdRequestDTO findIdRequestDTO) {
         //이름+휴대폰번호로 회원 찾기
         //일치하는 회원 데이터 리턴
         return ResponseEntity.ok(memberService.findIdByNameAndPhone(findIdRequestDTO));

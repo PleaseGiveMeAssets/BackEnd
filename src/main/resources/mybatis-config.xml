@@ -34,6 +34,8 @@
         <typeAlias type="com.example.spring.dto.TotalStockInfoDTO" alias="TotalStockInfoDTO"/>
         <typeAlias type="com.example.spring.dto.DailyStockDTO" alias="DailyStockDTO"/>
         <typeAlias type="com.example.spring.dto.DailyRecommendStockDTO" alias="DailyRecommendStockDTO"/>
+        <typeAlias type="com.example.spring.dto.SmsDTO" alias="SmsDTO"/>
+        <typeAlias type="com.example.spring.domain.MemberSms" alias="MemberSms"/>
     </typeAliases>
 
     <mappers>
@@ -58,5 +60,6 @@
         <mapper resource="mapper/SurveyResultMapper.xml"/>
         <mapper resource="mapper/NewsMapper.xml"/>
         <mapper resource="mapper/SearchDetailStockMapper.xml"/>
+        <mapper resource="mapper/MemberSmsMapper.xml"/>
     </mappers>
 </configuration>

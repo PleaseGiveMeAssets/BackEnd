@@ -4,7 +4,6 @@ import com.example.spring.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
@@ -15,7 +14,7 @@ public interface MemberService {
     int socialSignup(SocialMemberDTO socialMemberDTO);
 
     // 아이디 찾기
-    List<Map<String, Object>> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
+    Map<String, Object> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
 
     // 비밀번호 찾기
     int findPassword(FindPasswordRequestDTO findPasswordRequestDTO);

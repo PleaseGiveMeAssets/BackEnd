@@ -99,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 아이디 찾기
     @Override
-    public List<Map<String, Object>> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO) {
+    public Map<String, Object> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO) {
         if (log.isInfoEnabled()) {
             log.info("findIdByNameAndPhone findIdRequestDTO : {}", findIdRequestDTO.toString());
         }
@@ -110,8 +110,8 @@ public class MemberServiceImpl implements MemberService {
         // DB에서 이름, phoneFirst, phoneMiddle로 회원 정보 조회
         List<User> users = userMapper.findMemberByNameAndPhone(findIdRequestDTO);
         if (users.isEmpty()) {
-            System.out.println("USER 없다");
-            throw new NoMatchingUserException(ResultCodeEnum.NO_MATCHING_USER.getMessage());
+            // TODO 익셉션이랑 결과메시지 변경할 것
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage()); // 일치하는 회원이 없는 경우
         }
 
         // 핸드폰 번호 마지막 부분 복호화
@@ -120,30 +120,19 @@ public class MemberServiceImpl implements MemberService {
         log.info("USER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
 
         if (!findIdRequestDTO.getPhoneLast().equals(decryptedPhoneLast)) {
-            System.out.println("복호화된 뒷자리 다르다");
-            throw new NoMatchingUserException(ResultCodeEnum.NO_MATCHING_USER.getMessage());
+            // TODO 익셉션이랑 결과메시지 변경할 것
+            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
-        // 회원 목록에서 입력된 phoneLast와 일치하는 회원 찾기
-        List<Map<String, Object>> results = new ArrayList<>();
 
+        // 회원 목록에서 입력된 phoneLast와 일치하는 회원 찾기
+        Map<String, Object> result = null;
         for (User user : users) {
-            Map<String, Object> result = new HashMap<>();
+            // 일치하는 회원 정보 반환
             result = new HashMap<>();
             result.put("userId", user.getUserId());
             result.put("createdAt", user.getCreatedAt());
-
-            if(user.getSns() == null || user.getSns().isEmpty()) {
-                result.put("sns", null);
-            } else if("kakao".equals(user.getSns())) {
-                result.put("sns", "kakao");
-            } else {
-                result.put("sns", "naver");
-            }
-
-            results.add(result);
         }
-        System.out.println("결과: " + results);
-        return results;
+        return result;
     }
 
     // 비밀번호 찾기
@@ -162,13 +151,6 @@ public class MemberServiceImpl implements MemberService {
             // TODO 익셉션이랑 결과메시지 변경할 것
             throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
-//
-//        // 휴대폰번호 뒷자리 암호화 검사
-//        boolean isMatches = passwordEncoder.matches(findPasswordRequestDTO.getPhoneLast(), user.getPhoneLast());
-//        if (!isMatches) {
-//            // TODO 익셉션이랑 결과메시지 변경할 것
-//            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
-//        }
 
         // 핸드폰 번호 마지막 부분 복호화
         String decryptedPhoneLast = encryptionService.decrypt(user.getPhoneLast());

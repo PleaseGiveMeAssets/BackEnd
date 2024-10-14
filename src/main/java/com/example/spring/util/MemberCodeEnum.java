@@ -10,7 +10,8 @@ public enum MemberCodeEnum {
     NAVER("naver"),
     KAKAO("kakao"),
     START_TIME("000000"),
-    END_TIME("235959");
+    END_TIME("235959"),
+    SEND_NUMBER("010-4343-1517");
 
     private String value;
 }
