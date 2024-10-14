@@ -27,29 +27,36 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserDTO getUserProfile(String userId) {
-        // 사용자 정보를 가져옴
-        User userProfile = userMapper.selectUserProfile(userId);
+        try {
+            User userProfile = userMapper.selectUserProfile(userId);
 
-        if (userProfile == null) {
-            log.warn("User not found for userId: {}", userId);
+            if (userProfile == null) {
+                log.warn("User not found for userId: {}", userId);
+                return null;
+            }
+
+            // 사용자 포트폴리오 정보를 가져와 자산 총액 계산
+            List<Portfolio> portfolios = portfolioMapper.selectOrdersByUserId(userId);
+            double totalAssets = portfolios.stream()
+                    .mapToDouble(order -> order.getPrice() * order.getQuantity())
+                    .sum();
+
+            // User 객체의 프로필 정보를 UserDTO로 변환
+            UserDTO userDTO = UserDTO.builder()
+                    .userId(userProfile.getUserId())
+                    .nickname(userProfile.getNickname())
+                    .investmentTypeName(userProfile.getInvestmentType() != null ? userProfile.getInvestmentType().getInvestmentTypeName() : null)
+                    .totalAssets(totalAssets)
+                    .profileImageUrl(userProfile.getProfileImageUrl())
+                    .name(userProfile.getName())
+                    .build();
+
+            log.info("User profile and total assets retrieved: {}", userDTO);
+            return userDTO;
+
+        } catch (Exception e) {
+            log.error("Failed to retrieve user profile for userId: {}", userId, e);
             return null;
         }
-
-        // 사용자의 주문 정보를 가져옴
-        List<Portfolio> portfolios = portfolioMapper.selectOrdersByUserId(userId);
-
-        // 자산 총액을 계산
-        double totalAssets = portfolios.stream()
-                .mapToDouble(order -> order.getPrice() * order.getQuantity())
-                .sum();
-
-        // UserVO -> UserDTO 변환
-        UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(userProfile, userDTO);
-        userDTO.setTotalAssets(totalAssets); // 자산 총액 설정
-
-        log.info("User profile and total assets retrieved: {}", userDTO);
-
-        return userDTO;
     }
 }
