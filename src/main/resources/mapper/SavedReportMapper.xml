@@ -6,7 +6,7 @@
 
     <!-- 유저의 저장된 리포트 목록을 불러옴 -->
     <select id="findAllSavedReportsByUserId" parameterType="String" resultType="com.example.spring.domain.DailyReport">
-        SELECT dr.daily_report_id, dr.recent_trend_title, dr.created_at, dr.updated_at,
+        SELECT dr.daily_report_id, dr.recent_trend_title, dr.stock_trend_title,dr.created_at, dr.updated_at,
                sr.saved_report_id, sr.created_at as saved_at
         FROM DAILY_REPORT dr
                  JOIN SAVED_REPORT sr ON dr.daily_report_id = sr.daily_report_id

@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 소셜로그인 컨트롤러 배포">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/OrderHistoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/OrderHistoryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/OrderSummaryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/OrderSummaryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/StockDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/StockDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/SearchMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/SearchMapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,9 +17,6 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -48,17 +44,15 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.BackEnd 빌드.executor": "Run",
-    "Gradle.Build BackEnd.executor": "Run",
-    "Tomcat Server.Tomcat 9.0.91.executor": "Run",
-    "Tomcat 서버.Tomcat 9.0.91.executor": "Run",
-    "git-widget-placeholder": "dev",
-    "last_opened_file_path": "/Users/andybaek/Desktop/SynologyDrive/Andy/Coding/PleaseGiveMeAssets/BackEnd/src/main/java/com/example/spring/controller",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build BackEnd.executor&quot;: &quot;Run&quot;,
+    &quot;Tomcat Server.Tomcat 9.0.91.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/andybaek/Desktop/SynologyDrive/Andy/Coding/PleaseGiveMeAssets/BackEnd/src/main/java/com/example/spring/controller&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/com/example/spring/controller" />
@@ -68,7 +62,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Tomcat 9.0.91" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.93" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+    <configuration name="Tomcat 9.0.91" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.91" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
       <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
       <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
       <deployment>
