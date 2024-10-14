@@ -9,10 +9,12 @@ import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.exception.UserAnswerProcessingException;
 import com.example.spring.mapper.QuestionMapper;
 import com.example.spring.mapper.UserAnswerMapper;
+import com.example.spring.mapper.UserMapper;
 import com.example.spring.vo.UserAnswerVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,13 @@ public class SurveyServiceImpl implements SurveyService {
 
     private final QuestionMapper questionMapper;
     private final UserAnswerMapper userAnswerMapper;
+    private final UserMapper userMapper;
 
     @Autowired
-    public SurveyServiceImpl(QuestionMapper questionMapper, UserAnswerMapper userAnswerMapper) {
+    public SurveyServiceImpl(UserMapper userMapper,QuestionMapper questionMapper, UserAnswerMapper userAnswerMapper) {
         this.questionMapper = questionMapper;
         this.userAnswerMapper = userAnswerMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -63,7 +67,6 @@ public class SurveyServiceImpl implements SurveyService {
         return questionDTO;
     }
 
-
     @Override
     public void insertOrUpdateUserAnswer(String userId, long questionId, UserAnswerDTO userAnswerDTO) {
         try {
@@ -93,9 +96,44 @@ public class SurveyServiceImpl implements SurveyService {
                 }
                 log.info("Answer updated for userId: {}, questionId: {}, optionId: {}", userId, questionId, userAnswerDTO.getOptionId());
             }
+
+            // 모든 질문에 대한 답변이 완료되었는지 확인
+            int totalQuestions = questionMapper.getTotalQuestionsCount(); // 전체 질문 수
+            int answeredQuestions = userAnswerMapper.getTotalAnsweredQuestions(userId); // 답변한 질문 수
+
+            if (answeredQuestions == totalQuestions) {
+                // 모든 질문이 완료되었으면 설문 상태를 'Y'로 업데이트
+                updateSurveyStatus(userId, 'Y');
+            }
+
+
         } catch (Exception e) {
             log.error("Error while inserting/updating user answer for userId: {}, questionId: {}", userId, questionId, e);
             throw new UserAnswerProcessingException("Error while inserting/updating user answer");
         }
     }
+
+    @Override
+    public void updateSurveyStatus(String userId, char surveyStatus) {
+        // 설문 상태를 업데이트
+        userMapper.updateSurveyStatus(userId, surveyStatus);
+        log.info("Survey status updated for userId: {}, new status: {}", userId, surveyStatus);
+    }
+
+    @Override
+    public String getSurveyStatus(String userId) {
+        // 사용자 설문 상태 조회
+        return userMapper.getSurveyStatus(userId);
+    }
+
+    @Override
+    public boolean areAllQuestionsAnswered(String userId) {
+        // 전체 질문 수와 답변한 질문 수를 비교
+        int totalQuestions = questionMapper.getTotalQuestionsCount();
+        int answeredQuestions = userAnswerMapper.getTotalAnsweredQuestions(userId);
+
+        return answeredQuestions == totalQuestions;
+    }
+
+
 }

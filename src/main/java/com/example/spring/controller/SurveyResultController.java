@@ -2,7 +2,9 @@ package com.example.spring.controller;
 
 import com.example.spring.dto.InvestmentTypeDTO;
 import com.example.spring.dto.InvestmentTypeAnswerDTO;
+import com.example.spring.mapper.UserMapper;
 import com.example.spring.service.SurveyResultService;
+import com.example.spring.service.SurveyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class SurveyResultController {
 
     private final SurveyResultService surveyResultService;
+    private final SurveyService surveyService;
 
     @Autowired
-    public SurveyResultController(SurveyResultService surveyResultService) {
+    public SurveyResultController(SurveyResultService surveyResultService ,SurveyService surveyService) {
         this.surveyResultService = surveyResultService;
+        this.surveyService = surveyService;
     }
 
     // 현재 로그인된 사용자의 점수를 조회 (userId PathVariable 제거, JWT 토큰 사용)
@@ -33,7 +37,9 @@ public class SurveyResultController {
     // 현재 로그인된 사용자의 투자 유형을 조회 (userId PathVariable 제거, JWT 토큰 사용)
     @GetMapping("/investment-type")
     public ResponseEntity<InvestmentTypeAnswerDTO> getInvestmentTypeByUserId(@AuthenticationPrincipal UserDetails userDetails) {
+
         InvestmentTypeAnswerDTO investmentTypeAnswerDTO = surveyResultService.getInvestmentTypeByUserId();
+
         return ResponseEntity.ok(investmentTypeAnswerDTO);
     }
 

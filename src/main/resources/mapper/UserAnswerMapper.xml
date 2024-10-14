@@ -32,4 +32,12 @@
         AND USER_ANSWER.QUESTION_ID IN (1, 2, 3, 4, 5, 6, 7);
     </select>
 
+    <!-- 사용자 답변한 질문 수 조회 -->
+    <select id="getTotalAnsweredQuestions" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT QUESTION_ID)
+        FROM USER_ANSWER
+        WHERE USER_ID = #{userId}
+    </select>
+
+
 </mapper>
