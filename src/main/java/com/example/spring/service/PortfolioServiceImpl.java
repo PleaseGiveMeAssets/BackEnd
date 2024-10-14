@@ -129,7 +129,9 @@ public class PortfolioServiceImpl implements PortfolioService {
         OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, recentPrice, orders);
 
         Collections.reverse(orders);
-        return new OrderHistoryDTO(orderSummary.getName(),
+        return new OrderHistoryDTO(
+                orderSummary.getName(),
+                stock.getShortCode(),
                 orderSummary.getAvgPrice(),
                 orderSummary.getTotalQuantity(),
                 recentPrice,
@@ -139,8 +141,6 @@ public class PortfolioServiceImpl implements PortfolioService {
     private OrderSummaryDTO makeSummary(Stock stock, List<Portfolio> symbolTradeHistory, Long recentPrice, List<OrderDTO> orderDTOList) {
         Long totalQuantity = 0L;
         Double avgPrice = 0.0;
-        if (symbolTradeHistory == null || symbolTradeHistory.isEmpty())
-            throw new IllegalArgumentException("Portfolio not found");
 
         for (Portfolio order : symbolTradeHistory) {
             if (order.getOrderType() == 'B') {
@@ -160,6 +160,6 @@ public class PortfolioServiceImpl implements PortfolioService {
             }
         }
 
-        return new OrderSummaryDTO(stock.getStockName(), Math.round(avgPrice), totalQuantity, recentPrice);
+        return new OrderSummaryDTO(stock.getStockName(), stock.getShortCode(), Math.round(avgPrice), totalQuantity, recentPrice);
     }
 }
