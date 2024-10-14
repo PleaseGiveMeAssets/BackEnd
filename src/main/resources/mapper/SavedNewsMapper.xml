@@ -6,7 +6,7 @@
 
     <!-- 유저의 저장된 뉴스 목록을 불러옴 -->
     <select id="findAllSavedNewsByUserId" parameterType="String" resultType="com.example.spring.domain.News">
-        SELECT n.news_id, n.title, n.link, n.created_at, n.updated_at,
+        SELECT n.news_id, n.title, n.link, n.image, n.created_at, n.updated_at,
                sn.saved_news_id, sn.created_at as saved_at
         FROM NEWS n
                  JOIN SAVED_NEWS sn ON n.news_id = sn.news_id
@@ -27,4 +27,3 @@
           AND news_id = #{newsId}
     </delete>
 </mapper>
-

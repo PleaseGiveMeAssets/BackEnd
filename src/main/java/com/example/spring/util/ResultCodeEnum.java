@@ -17,19 +17,22 @@ public enum ResultCodeEnum {
     NAVER_ACCOUNT_ALREADY_EXISTS(HttpStatus.CONFLICT, "네이버로 가입된 계정입니다. 해당 방식으로 로그인해 주세요."),
     //로그아웃
     LOGOUT_FAIL(HttpStatus.BAD_REQUEST, "로그아웃에 실패하였습니다."),
+    //아이디,비밀번호찾기
+    NO_MATCHING_USER(HttpStatus.NOT_FOUND, "입력한 정보와 일치하는 회원이 없습니다."),
     //회원가입
     INVALID_ID_FORMAT(HttpStatus.BAD_REQUEST, "8~15자 영문 소문자/숫자"),
     INVALID_PASSWORD_FORMAT(HttpStatus.BAD_REQUEST, "8~15자 영문/숫자/특수문자 조합"),
     INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "이메일 형식이 아닙니다."),
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     DUPLICATED_MEMBER_ID(HttpStatus.CONFLICT, "같은 아이디가 존재합니다."),
+    NO_EXIST_USER_ID(HttpStatus.BAD_REQUEST, "아이디가 존재하지 않습니다."),
     //인증번호x
     INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "인증번호가 올바르지 않습니다."),
     INVALID_EMAIL_VERIFICATION(HttpStatus.BAD_REQUEST, "유효하지 않은 인증 코드입니다."),
 
     NO_EXIST_TERMS_OF_USE(HttpStatus.BAD_REQUEST, "이용약관이 존재하지 않습니다."),
 
-    SESSION_EXPIRATION(HttpStatus.BAD_REQUEST, "세션이 만료되었습니다."),
+    SESSION_EXPIRATION(HttpStatus.UNAUTHORIZED, "세션이 만료되었습니다."),
 
     NO_EXIST_DATA(HttpStatus.BAD_REQUEST, "데이터가 존재하지 않습니다.");
 

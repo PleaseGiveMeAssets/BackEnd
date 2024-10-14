@@ -25,6 +25,8 @@ public class NewsServiceImpl implements NewsService {
         List<News> newsList = newsMapper.selectNewsByStockId(stockId);
         List<NewsDTO> newsDTOList = new ArrayList<>();
 
+        log.info("hi : {}", newsList.get(0).getImage());
+
         for (News news : newsList) {
             NewsDTO newsDTO = new NewsDTO();
             newsDTO.setNewsId(news.getNewsId());

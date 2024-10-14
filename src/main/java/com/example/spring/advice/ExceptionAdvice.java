@@ -47,6 +47,11 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } // 이메일 양식x - INVALID_EMAIL_FORMAT
 
+    @ExceptionHandler(NoMatchingUserException.class)
+    public ResponseEntity<String> noMatchingUserException(NoMatchingUserException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } // 일치하는 회원X
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> illegalArgumentException(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -107,6 +112,16 @@ public class ExceptionAdvice {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> noSuchElementException(NoSuchElementException e) {
         return ResponseEntity.status(ResultCodeEnum.NO_EXIST_DATA.getHttpStatus()).body(e.getMessage());
+    }
+
+    @ExceptionHandler(UserIdNotFoundException.class)
+    ResponseEntity<String> userIdNotFoundException(UserIdNotFoundException e) {
+        return ResponseEntity.status(ResultCodeEnum.NO_EXIST_USER_ID.getHttpStatus()).body(e.getMessage());
+    }
+
+    @ExceptionHandler(SessionExpiredException.class)
+    ResponseEntity<String> sessionExpiredException(SessionExpiredException e) {
+        return ResponseEntity.status(ResultCodeEnum.SESSION_EXPIRATION.getHttpStatus()).body(e.getMessage());
     }
 
     //내부 서버 오류

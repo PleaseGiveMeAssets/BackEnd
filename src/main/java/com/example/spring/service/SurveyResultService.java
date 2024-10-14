@@ -17,4 +17,7 @@ public interface SurveyResultService {
     // 사용자의 투자유형 ID로 INVESTMENT_TYPE 테이블에서 상세 정보를 조회
     InvestmentTypeDTO getInvestmentTypeDetails(); // userId 파라미터 제거
 
+    String getUserNickname(String userId);
+
+
 }

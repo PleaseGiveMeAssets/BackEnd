@@ -12,7 +12,8 @@ import java.util.Date;
 
 @Component
 public class JwtProcessor {
-    static private final long TOKEN_VALID_MILISECOND = 1000L * 60 * 60; // 30 분
+    private final static long ACCESS_TOKEN_VALID_MILISECOND = 1000L * 60 * 60; // 60 분
+    private final static long REFRESH_TOKEN_VALID_MILISECOND = 1000L * 60 * 60 * 24 * 15;
 
     private String secretKey = "충분히 긴 임의의(랜덤한) 비밀키 문자열 배정 ";
     private Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -23,7 +24,7 @@ public class JwtProcessor {
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND))
+                .setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_VALID_MILISECOND))
                 .signWith(key)
                 .compact();
     } // 쿠키
@@ -33,7 +34,7 @@ public class JwtProcessor {
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND * 24 * 15)) // 15일
+                .setExpiration(new Date(new Date().getTime() + REFRESH_TOKEN_VALID_MILISECOND)) // 15일
                 .signWith(key)
                 .compact();
     } // 로컬스토리지
