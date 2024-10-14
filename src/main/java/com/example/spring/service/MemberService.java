@@ -28,4 +28,6 @@ public interface MemberService {
 
     // 로그아웃
     void logout(HttpServletRequest request, HttpServletResponse response);
+
+    LoginResponseDTO renewLogin(String token, HttpServletResponse response);
 }

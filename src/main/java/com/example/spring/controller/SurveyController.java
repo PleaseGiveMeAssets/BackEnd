@@ -37,7 +37,6 @@ public class SurveyController {
 
     @PostMapping("/answer/{questionId}")
     public ResponseEntity<String> insertOrUpdateUserAnswer(@PathVariable long questionId, @RequestBody UserAnswerDTO userAnswerDTO) {
-//        String userId = "testUser1";  // 임시 userId 사용
         String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
         surveyService.insertOrUpdateUserAnswer(userId, questionId, userAnswerDTO); // 성공 시 예외 처리로 인해 추가 확인 불필요
         return ResponseEntity.status(201).body("Answer Inserted/Updated Successfully");

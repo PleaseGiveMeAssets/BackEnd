@@ -114,6 +114,16 @@ public class ExceptionAdvice {
         return ResponseEntity.status(ResultCodeEnum.NO_EXIST_DATA.getHttpStatus()).body(e.getMessage());
     }
 
+    @ExceptionHandler(UserIdNotFoundException.class)
+    ResponseEntity<String> userIdNotFoundException(UserIdNotFoundException e) {
+        return ResponseEntity.status(ResultCodeEnum.NO_EXIST_USER_ID.getHttpStatus()).body(e.getMessage());
+    }
+
+    @ExceptionHandler(SessionExpiredException.class)
+    ResponseEntity<String> sessionExpiredException(SessionExpiredException e) {
+        return ResponseEntity.status(ResultCodeEnum.SESSION_EXPIRATION.getHttpStatus()).body(e.getMessage());
+    }
+
     //내부 서버 오류
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> exception(Exception e) {

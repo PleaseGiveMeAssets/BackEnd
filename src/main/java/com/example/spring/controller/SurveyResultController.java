@@ -33,9 +33,6 @@ public class SurveyResultController {
     // 현재 로그인된 사용자의 투자 유형을 조회 (userId PathVariable 제거, JWT 토큰 사용)
     @GetMapping("/investment-type")
     public ResponseEntity<InvestmentTypeAnswerDTO> getInvestmentTypeByUserId(@AuthenticationPrincipal UserDetails userDetails) {
-        String userId = userDetails.getUsername();  // JWT 토큰을 통해 userId 가져오기
-        log.info("Received userId: " + userId);
-
         InvestmentTypeAnswerDTO investmentTypeAnswerDTO = surveyResultService.getInvestmentTypeByUserId();
         return ResponseEntity.ok(investmentTypeAnswerDTO);
     }
@@ -43,9 +40,15 @@ public class SurveyResultController {
     // 현재 로그인된 사용자의 투자 유형 상세 정보를 조회
     @GetMapping("/investment-type/details")
     public ResponseEntity<InvestmentTypeDTO> getInvestmentTypeDetails(@AuthenticationPrincipal UserDetails userDetails) {
-        String userId = userDetails.getUsername();  // JWT 토큰을 통해 userId 가져오기
         InvestmentTypeDTO investmentTypeDTO = surveyResultService.getInvestmentTypeDetails();
         return ResponseEntity.ok(investmentTypeDTO);
+    }
+
+    @GetMapping("/user-nickname")
+    public ResponseEntity<String> getUserNickname(@AuthenticationPrincipal UserDetails userDetails) {
+        String userId = userDetails.getUsername();
+        String nickname = surveyResultService.getUserNickname(userId); // 서비스에서 닉네임 조회
+        return ResponseEntity.ok(nickname);
     }
 
 }

@@ -32,6 +32,8 @@
         <typeAlias type="com.example.spring.domain.StockHistory" alias="StockHistory"/>
         <typeAlias type="com.example.spring.domain.News" alias="News"/>
         <typeAlias type="com.example.spring.dto.TotalStockInfoDTO" alias="TotalStockInfoDTO"/>
+        <typeAlias type="com.example.spring.dto.DailyStockDTO" alias="DailyStockDTO"/>
+        <typeAlias type="com.example.spring.dto.DailyRecommendStockDTO" alias="DailyRecommendStockDTO"/>
     </typeAliases>
 
     <mappers>
