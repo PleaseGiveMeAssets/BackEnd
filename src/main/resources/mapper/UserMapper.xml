@@ -26,6 +26,7 @@
             <idArg column="user_id" javaType="String"/>
             <arg column="profile_image_url" javaType="String"/>
             <arg column="nickname" javaType="String"/>
+            <arg column="user_name" javaType="String"/>
         </constructor>
     </resultMap>
 
@@ -33,7 +34,8 @@
     <select id="selectUserProfile" parameterType="string" resultMap="selectUserProfileResultMap">
         SELECT u.USER_ID AS user_id,
         u.NICKNAME AS nickname,
-        u.PROFILE_IMAGE_URL AS profile_image_url
+        u.PROFILE_IMAGE_URL AS profile_image_url,
+        u.NAME AS user_name
         FROM USER u
         WHERE u.USER_ID = #{userId}
     </select>

@@ -48,4 +48,13 @@ public class User {
     private List<SelectedTerms> selectedTermsList;
     private Setting setting;
     private String sns;
+
+
+    // user 프로필 조회를 위한 생성자
+    public User(String userId, String profileImageUrl, String nickname,String name) {
+        this.userId = userId;
+        this.profileImageUrl = profileImageUrl;
+        this.nickname = nickname;
+        this.name = name;
+    }
 }
