@@ -54,10 +54,13 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
         List<LocalDate> businessDayList = businessDayCalculator.getListBusinessDays(today.toLocalDate(), 7, holidays);
 
         String startDateFormat = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + MemberCodeEnum.START_TIME.getValue();
+        log.info("startDateFormat : {}",startDateFormat);
         String endDateFormat = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + MemberCodeEnum.END_TIME.getValue();
-
+        log.info("endDateFormat : {}",endDateFormat);
         List<TotalStockInfoDTO> totalStockInfoDTOList = portfolioHistoryMapper.selectListStockPortfolioByUserId(userId, startDateFormat, endDateFormat);
-
+        totalStockInfoDTOList.forEach(totalStockInfoDTO -> {
+            log.info("************totalStockInfoDTO: {}", totalStockInfoDTO.getStockDate());
+        });
         if (totalStockInfoDTOList == null || totalStockInfoDTOList.isEmpty()) {
             throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
         }
@@ -67,9 +70,13 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
         }
 
         businessDayList.forEach(businessDay -> {
+            log.info("************businessDay: {}", businessDay);
             String businessDayFormat = businessDay.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            boolean isBusinessDay = totalStockInfoDTOList.stream().anyMatch(totalStockInfoDTO -> totalStockInfoDTO.getStockDate().equals(businessDayFormat));
+            log.info("businessDayFormat: {}", businessDayFormat);
+            boolean isBusinessDay = totalStockInfoDTOList.stream().anyMatch(totalStockInfoDTO ->
+                    totalStockInfoDTO.getStockDate().equals(businessDayFormat));
 
+            log.info("isBusinessDay: {}", isBusinessDay);
             if (!isBusinessDay) {
                 totalStockInfoDTOList.add(new TotalStockInfoDTO(businessDayFormat, 0L, 0L));
             }
