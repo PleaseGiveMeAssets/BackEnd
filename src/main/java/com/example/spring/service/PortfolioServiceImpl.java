@@ -156,7 +156,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             }
             if (orderDTOList != null) {
                 orderDTOList.add(new OrderDTO(order.getPortfolioId(), order.getPrice(),
-                        order.getQuantity(), order.getMemo(), order.getOrderType(), order.getOrderedAt()));
+                        order.getQuantity(), order.getMemo(), order.getOrderType(), order.getOrderedAt(), order.getCreatedAt()));
             }
         }
 
