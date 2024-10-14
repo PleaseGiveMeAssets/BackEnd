@@ -47,6 +47,11 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } // 이메일 양식x - INVALID_EMAIL_FORMAT
 
+    @ExceptionHandler(NoMatchingUserException.class)
+    public ResponseEntity<String> noMatchingUserException(NoMatchingUserException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } // 일치하는 회원X
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> illegalArgumentException(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

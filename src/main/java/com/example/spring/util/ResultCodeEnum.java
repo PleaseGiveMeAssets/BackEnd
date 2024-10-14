@@ -17,6 +17,8 @@ public enum ResultCodeEnum {
     NAVER_ACCOUNT_ALREADY_EXISTS(HttpStatus.CONFLICT, "네이버로 가입된 계정입니다. 해당 방식으로 로그인해 주세요."),
     //로그아웃
     LOGOUT_FAIL(HttpStatus.BAD_REQUEST, "로그아웃에 실패하였습니다."),
+    //아이디,비밀번호찾기
+    NO_MATCHING_USER(HttpStatus.NOT_FOUND, "입력한 정보와 일치하는 회원이 없습니다."),
     //회원가입
     INVALID_ID_FORMAT(HttpStatus.BAD_REQUEST, "8~15자 영문 소문자/숫자"),
     INVALID_PASSWORD_FORMAT(HttpStatus.BAD_REQUEST, "8~15자 영문/숫자/특수문자 조합"),
