@@ -1,5 +1,6 @@
 package com.example.spring.service;
 
+import com.example.spring.domain.EditStockPortfolio;
 import com.example.spring.domain.Stock;
 import com.example.spring.domain.StockHistory;
 import com.example.spring.domain.UserStockPortfolio;
@@ -11,10 +12,10 @@ import com.example.spring.mapper.StockHistoryMapper;
 import com.example.spring.mapper.StockMapper;
 import com.example.spring.util.KRXBusinessDayCalculator;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -88,6 +89,11 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
+    public EditStockPortfolio getUserStockPortfolioByDate(String userId, Timestamp timestamp, Long stockId){
+        return stockMapper.getUserStockPortfolioByDate(userId, timestamp, stockId); // 여기
+    }
+
+    @Override
     public UserTotalStockPortfolioPowerDTO getUserTotalStockPortfolio(String userId) {
         // 같은 클래스 내의 getUserStockPortfolio 메서드를 호출
         List<UserStockPortfolio> userStockPortfolioList = this.getUserStockPortfolio(userId);
@@ -100,7 +106,8 @@ public class StockServiceImpl implements StockService {
             totalInvestedAmount += portfolio.getTotalInvestedAmount(); // 값을 더함
             totalProfitLossAmount += portfolio.getTotalProfitLossAmount();
         }
-        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount) - 1) * 100;
+        double totalProfitLossPercentage = ((totalProfitLossAmount / totalInvestedAmount)) * 100;
+
         UserTotalStockPortfolioPowerDTO userTotalStockPortfolioPowerDTO = new UserTotalStockPortfolioPowerDTO();
         userTotalStockPortfolioPowerDTO.setTotalInvestedAmount(totalInvestedAmount);
         userTotalStockPortfolioPowerDTO.setTotalProfitLossAmount(totalProfitLossAmount);
