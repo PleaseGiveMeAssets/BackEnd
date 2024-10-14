@@ -5,10 +5,13 @@ import com.example.spring.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -51,7 +54,7 @@ public class MemberController {
     }
 
     @PostMapping("/find-id")
-    public ResponseEntity<Map<String, Object>> findId(@RequestBody FindIdRequestDTO findIdRequestDTO) {
+    public ResponseEntity<List<Map<String, Object>>> findId(@RequestBody FindIdRequestDTO findIdRequestDTO) {
         //이름+휴대폰번호로 회원 찾기
         //일치하는 회원 데이터 리턴
         return ResponseEntity.ok(memberService.findIdByNameAndPhone(findIdRequestDTO));
@@ -60,5 +63,13 @@ public class MemberController {
     @PostMapping("/find-password")
     public ResponseEntity<Integer> findPassword(@RequestBody FindPasswordRequestDTO findPasswordRequestDTO) {
         return ResponseEntity.ok(memberService.findPassword(findPasswordRequestDTO));
+    }
+
+    @GetMapping("/login/renew")
+    public ResponseEntity<?> renewLogin(@CookieValue(value = "refreshToken") String refreshToken, HttpServletResponse response) {
+        if (log.isInfoEnabled()) {
+            log.info("renewLogin refreshToken : {}, response : {}", refreshToken, response);
+        }
+        return ResponseEntity.ok(memberService.renewLogin(refreshToken, response));
     }
 }

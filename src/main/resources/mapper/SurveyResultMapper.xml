@@ -52,4 +52,8 @@
         WHERE INVESTMENT_TYPE_ID = #{investmentTypeId}
     </select>
 
+    <select id="getUserNickname" resultType="String">
+        SELECT NICKNAME FROM USER WHERE USER_ID = #{userId}
+    </select>
+
 </mapper>

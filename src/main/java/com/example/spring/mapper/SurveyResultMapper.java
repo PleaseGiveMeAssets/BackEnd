@@ -24,4 +24,6 @@ public interface SurveyResultMapper {
 
     // 투자 유형 ID로 해당 투자 유형의 상세 정보를 조회하는 메서드
     InvestmentTypeDTO getInvestmentTypeDetails(Long investmentTypeId);
+
+    String getUserNickname(String userId);
 }

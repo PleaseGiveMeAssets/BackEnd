@@ -19,4 +19,6 @@ public interface StockMapper {
     List<DailyStockDTO> selectListRecommendStockByUserId(@Param("userId") String userId, @Param("date") String date);
 
     List<UserStockPortfolio> getUserStockPortfolio(@Param("userId") String userId);
+
+    List<Stock> selectListPortfolioByUserId(String userId);
 }
