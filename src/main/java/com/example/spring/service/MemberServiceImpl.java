@@ -228,9 +228,9 @@ public class MemberServiceImpl implements MemberService {
         // Refresh Token을 HTTP-Only 쿠키로 설정
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
-        refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+        refreshTokenCookie.setSecure(true); // HTTPS에서만 정송되도록 설정
         refreshTokenCookie.setPath("/"); // 쿠키 경로
-        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
         response.addCookie(refreshTokenCookie);
 
         return new LoginResponseDTO(accessToken, null);
@@ -266,9 +266,9 @@ public class MemberServiceImpl implements MemberService {
         // Refresh Token을 HTTP-Only 쿠키로 설정
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
-        refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+        refreshTokenCookie.setSecure(true); // HTTPS에서만 정송되도록 설정
         refreshTokenCookie.setPath("/"); // 쿠키 경로
-        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
         response.addCookie(refreshTokenCookie);
 
         return new LoginResponseDTO(accessToken, null);
@@ -475,7 +475,7 @@ public class MemberServiceImpl implements MemberService {
                 // Refresh Token을 HTTP-Only 쿠키로 설정
                 Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
                 refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
-                refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+                refreshTokenCookie.setSecure(true); // HTTPS에서만 정송되도록 설정
                 refreshTokenCookie.setPath("/"); // 쿠키 경로
                 refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
                 response.addCookie(refreshTokenCookie);
