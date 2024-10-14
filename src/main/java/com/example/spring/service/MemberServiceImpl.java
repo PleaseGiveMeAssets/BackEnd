@@ -162,13 +162,6 @@ public class MemberServiceImpl implements MemberService {
             // TODO 익셉션이랑 결과메시지 변경할 것
             throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
-//
-//        // 휴대폰번호 뒷자리 암호화 검사
-//        boolean isMatches = passwordEncoder.matches(findPasswordRequestDTO.getPhoneLast(), user.getPhoneLast());
-//        if (!isMatches) {
-//            // TODO 익셉션이랑 결과메시지 변경할 것
-//            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
-//        }
 
         // 핸드폰 번호 마지막 부분 복호화
         String decryptedPhoneLast = encryptionService.decrypt(user.getPhoneLast());
