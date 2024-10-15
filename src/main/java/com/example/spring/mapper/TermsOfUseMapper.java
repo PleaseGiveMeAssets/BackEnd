@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface TermsOfUseMapper {
     List<TermsOfUse> selectListTermsOfUseByRequired(String required);
+
+    List<TermsOfUse> selectListTermsOfUse();
 }

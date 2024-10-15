@@ -21,8 +21,8 @@
         , stockName
         , content
         , price
-        , (tb.price - tb.closedPrice) AS changeAmount
-        , TRUNCATE((tb.price - tb.closedPrice) / tb.price, 2) AS changeAmountRate
+        , (tb.closedPrice - tb.price) AS changeAmount
+        , TRUNCATE((tb.closedPrice - tb.price) / tb.price, 2) AS changeAmountRate
         FROM (SELECT s.STOCK_ID AS stockId
         , s.SHORT_CODE AS shortCode
         , s.STOCK_NAME as stockName

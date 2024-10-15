@@ -8,4 +8,9 @@
         FROM TERMS_OF_USE
         WHERE REQUIRED = #{required}
     </select>
+
+    <select id="selectListTermsOfUse" resultType="TermsOfUse">
+        SELECT *
+        FROM TERMS_OF_USE
+    </select>
 </mapper>

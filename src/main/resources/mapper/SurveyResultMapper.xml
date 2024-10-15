@@ -53,7 +53,9 @@
     </select>
 
     <select id="getUserNickname" resultType="String">
-        SELECT NICKNAME FROM USER WHERE USER_ID = #{userId}
+        SELECT COALESCE(NICKNAME, NAME) AS NICKNAME
+        FROM USER
+        WHERE USER_ID = #{userId}
     </select>
 
 </mapper>

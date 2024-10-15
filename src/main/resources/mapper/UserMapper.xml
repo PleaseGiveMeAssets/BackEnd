@@ -28,6 +28,10 @@
             <arg column="nickname" javaType="String"/>
             <arg column="user_name" javaType="String"/>
         </constructor>
+        <association property="investmentType" javaType="com.example.spring.domain.InvestmentType">
+            <id column="investment_type_id" javaType="Integer"/>
+            <result column="investment_type_name" property="investmentTypeName" javaType="String"/>
+        </association>
     </resultMap>
 
     <!-- 사용자 프로필을 조회하는 쿼리 -->
@@ -35,10 +39,14 @@
         SELECT u.USER_ID AS user_id,
         u.NICKNAME AS nickname,
         u.PROFILE_IMAGE_URL AS profile_image_url,
-        u.NAME AS user_name
+        u.NAME AS user_name,
+        it.INVESTMENT_TYPE_NAME AS investment_type_name
         FROM USER u
+        LEFT JOIN INVESTMENT_TYPE_ANSWER ita ON u.USER_ID = ita.USER_ID
+        LEFT JOIN INVESTMENT_TYPE it ON ita.INVESTMENT_TYPE_ID = it.INVESTMENT_TYPE_ID
         WHERE u.USER_ID = #{userId}
     </select>
+
 
     <select id="selectUserById" parameterType="string" resultType="int">
         SELECT COUNT(*)
@@ -101,4 +109,18 @@
         SET PASSWORD_FAILURE_COUNT = 0, UPDATED_AT = CURRENT_TIMESTAMP()
         WHERE USER_ID = #{userId}
     </update>
+
+    <!-- survey_status 업데이트 -->
+    <update id="updateSurveyStatus">
+        UPDATE USER
+        SET survey_status = #{surveyStatus}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- survey_status 조회 -->
+    <select id="getSurveyStatus" resultType="String">
+        SELECT survey_status FROM USER
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

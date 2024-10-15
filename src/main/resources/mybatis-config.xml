@@ -37,6 +37,7 @@
         <typeAlias type="com.example.spring.dto.SmsDTO" alias="SmsDTO"/>
         <typeAlias type="com.example.spring.domain.MemberSms" alias="MemberSms"/>
         <typeAlias type="com.example.spring.domain.EditStockPortfolio" alias="EditStockPortfolio"/>
+        <typeAlias type="com.example.spring.domain.TotalInvestedSumStockPortfolio" alias="TotalInvestedSumStockPortfolio"/>
     </typeAliases>
 
     <mappers>

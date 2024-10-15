@@ -4,17 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 리프레시 토큰 https 방식 추가">
+    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/MemberController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/oauth/SocialLoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/oauth/SocialLoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/SmsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/SmsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/SmsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/SmsServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/KaKaoOauthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/KaKaoOauthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/NaverOauthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/NaverOauthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/NaverOauthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/oauth/NaverOauthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +36,13 @@
         </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -214,6 +215,8 @@
       <created>1728723140312</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
+      <updated>1728951566471</updated>
+      <workItem from="1728951567074" duration="12387000" />
       <updated>1728723140312</updated>
       <workItem from="1728723141358" duration="22000" />
       <workItem from="1728723235382" duration="19000" />
@@ -222,23 +225,7 @@
       <workItem from="1728828380806" duration="7089000" />
       <workItem from="1728882032757" duration="22000" />
     </task>
-    <task id="LOCAL-00002" summary="fix : 아이디 찾기 Impl 수정">
-      <option name="closed" value="true" />
-      <created>1728883832587</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1728883832587</updated>
-    </task>
-    <task id="LOCAL-00003" summary="fix : 리프레시 토큰 https 방식 추가">
-      <option name="closed" value="true" />
-      <created>1728914034944</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1728914034944</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,8 +235,6 @@
     <MESSAGE value="chore : 캐시 삭제 및 gitignore 재적용" />
     <MESSAGE value="fix : 소셜 로그인 재배포" />
     <MESSAGE value="fix : 소셜로그인 컨트롤러 배포" />
-    <MESSAGE value="fix : 아이디 찾기 Impl 수정" />
-    <MESSAGE value="fix : 리프레시 토큰 https 방식 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : 리프레시 토큰 https 방식 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>

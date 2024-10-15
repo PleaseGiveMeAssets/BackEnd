@@ -54,11 +54,9 @@ public class StockController {
     public ResponseEntity<?> validateSellData(@AuthenticationPrincipal UserDetails userDetails, @RequestParam String endDate, @RequestParam Long stockId) {
         // endDate를 Timestamp로 변환
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        log.info("endDate : " + endDate);
         try {
             Date parsedDate = dateFormat.parse(endDate);
             Timestamp timestamp = new Timestamp(parsedDate.getTime());
-            log.info("timestamp : " + timestamp);
             return ResponseEntity.ok(stockService.getUserStockPortfolioByDate(userDetails.getUsername(), timestamp, stockId));
         } catch (ParseException e) {
             return ResponseEntity.badRequest().body("Invalid date format");
