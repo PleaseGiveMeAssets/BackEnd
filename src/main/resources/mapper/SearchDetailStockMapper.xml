@@ -45,4 +45,33 @@
         ) lsh ON ut.STOCK_ID = lsh.STOCK_ID
     WHERE (ut.total_quantity_bought - ut.total_quantity_sold) > 0
 </select>
+
+    <select id="getUserStockPortfolioByDate" resultType="com.example.spring.domain.EditStockPortfolio">
+        SELECT
+        ut.STOCK_ID,
+        s.STOCK_NAME,
+        s.SHORT_CODE,
+        -- 보유 수량
+        (ut.total_quantity_bought - ut.total_quantity_sold) AS quantity,
+        -- 매수 평균가
+        (ut.total_purchase_amount / NULLIF(ut.total_quantity_bought, 0)) AS average_purchase_price,
+        -- 총 투자 금액
+        (ut.total_purchase_amount / NULLIF(ut.total_quantity_bought, 0)) * (ut.total_quantity_bought - ut.total_quantity_sold) AS total_invested_amount
+        FROM
+        (
+        -- 유저의 거래 내역을 집계하는 서브쿼리 (특정 날짜까지 필터링)
+        SELECT
+        p.STOCK_ID,
+        SUM(CASE WHEN p.ORDER_TYPE = 'B' THEN p.QUANTITY ELSE 0 END) AS total_quantity_bought,
+        SUM(CASE WHEN p.ORDER_TYPE = 'B' THEN p.PRICE * p.QUANTITY ELSE 0 END) AS total_purchase_amount,
+        SUM(CASE WHEN p.ORDER_TYPE = 'S' THEN p.QUANTITY ELSE 0 END) AS total_quantity_sold
+        FROM PORTFOLIO p
+        WHERE p.USER_ID = #{userId}
+        -- 특정 날짜 이전까지의 데이터 필터링
+        AND p.ORDERED_AT &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+        GROUP BY p.STOCK_ID
+        ) ut
+        JOIN STOCK s ON ut.STOCK_ID = s.STOCK_ID
+        WHERE (ut.total_quantity_bought - ut.total_quantity_sold) > 0
+    </select>
 </mapper>

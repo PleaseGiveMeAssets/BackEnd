@@ -1,5 +1,6 @@
 package com.example.spring.controller;
 
+import com.example.spring.dto.StockPortfolioDTO;
 import com.example.spring.dto.TotalStockInfoDTO;
 import com.example.spring.service.PortfolioHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class PortfolioHistoryController {
     private final PortfolioHistoryService portfolioHistoryService;
 
     @GetMapping
-    public ResponseEntity<List<TotalStockInfoDTO>> getStockPortfolioInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(portfolioHistoryService.getStockPortfolioInfo(userDetails.getUsername()));
+    public ResponseEntity<List<StockPortfolioDTO>> getStockport(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(portfolioHistoryService.getStockPortfolioInfoByDate(userDetails.getUsername()));
     }
 }

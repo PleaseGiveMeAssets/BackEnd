@@ -4,9 +4,12 @@ package com.example.spring.service;
 import com.example.spring.dto.FindIdRequestDTO;
 import com.example.spring.dto.FindPasswordRequestDTO;
 import com.example.spring.dto.MemberDTO;
+import com.example.spring.dto.SmsDTO;
 
 public interface SmsService {
-    void sendSms(String phoneFisrt, String phoneMiddle, String phoneLast, String message);
+    SmsDTO sendSms(SmsDTO smsDTO);
+
+    int checkSmsVerification(SmsDTO smsDTO);
 
     boolean checkVerifyCodeForFindId(FindIdRequestDTO findIdRequestDTO);
 
