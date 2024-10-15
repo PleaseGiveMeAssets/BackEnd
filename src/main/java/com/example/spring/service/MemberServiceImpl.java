@@ -132,9 +132,9 @@ public class MemberServiceImpl implements MemberService {
             result.put("userId", user.getUserId());
             result.put("createdAt", user.getCreatedAt());
 
-            if(user.getSns() == null || user.getSns().isEmpty()) {
+            if (user.getSns() == null || user.getSns().isEmpty()) {
                 result.put("sns", null);
-            } else if("kakao".equals(user.getSns())) {
+            } else if ("kakao".equals(user.getSns())) {
                 result.put("sns", "kakao");
             } else {
                 result.put("sns", "naver");
@@ -184,7 +184,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 로그인
     @Override
-    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletResponse response) {
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response) {
         // 사용자 정보 조회
         User user = userMapper.findByUserId(loginRequestDTO.getUserId());
         if (user == null) {
@@ -227,10 +227,15 @@ public class MemberServiceImpl implements MemberService {
 
         // Refresh Token을 HTTP-Only 쿠키로 설정
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
-        refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+        if (request.isSecure()) {
+            refreshTokenCookie.setHttpOnly(false);
+            refreshTokenCookie.setSecure(true);
+        } else {
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setSecure(false);
+        }
         refreshTokenCookie.setPath("/"); // 쿠키 경로
-        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
         response.addCookie(refreshTokenCookie);
 
         return new LoginResponseDTO(accessToken, null);
@@ -238,7 +243,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 소셜로그인
     @Override
-    public LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletResponse response) {
+    public LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response) {
         // 사용자 정보 조회
         User user = userMapper.findByUserId(loginRequestDTO.getUserId());
         if (user == null) {
@@ -265,10 +270,15 @@ public class MemberServiceImpl implements MemberService {
 
         // Refresh Token을 HTTP-Only 쿠키로 설정
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
-        refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+        if (request.isSecure()) {
+            refreshTokenCookie.setHttpOnly(false);
+            refreshTokenCookie.setSecure(true);
+        } else {
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setSecure(false);
+        }
         refreshTokenCookie.setPath("/"); // 쿠키 경로
-        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (7일)
+        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
         response.addCookie(refreshTokenCookie);
 
         return new LoginResponseDTO(accessToken, null);
@@ -310,8 +320,13 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", null);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(false);
+        if (request.isSecure()) {
+            refreshTokenCookie.setHttpOnly(false);
+            refreshTokenCookie.setSecure(true);
+        } else {
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setSecure(false);
+        }
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setMaxAge(0); // 쿠키 즉시 만료
         response.addCookie(refreshTokenCookie);
@@ -444,7 +459,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public LoginResponseDTO renewLogin(String token, HttpServletResponse response) {
+    public LoginResponseDTO renewLogin(String token, HttpServletRequest request, HttpServletResponse response) {
         boolean isValidToken = jwtProcessor.validateToken(token);
 
         if (isValidToken) {
@@ -474,8 +489,13 @@ public class MemberServiceImpl implements MemberService {
 
                 // Refresh Token을 HTTP-Only 쿠키로 설정
                 Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-                refreshTokenCookie.setHttpOnly(true); // HTTP-Only 속성 설정
-                refreshTokenCookie.setSecure(false); // HTTPS에서만 정송되도록 설정
+                if (request.isSecure()) {
+                    refreshTokenCookie.setHttpOnly(false);
+                    refreshTokenCookie.setSecure(true);
+                } else {
+                    refreshTokenCookie.setHttpOnly(true);
+                    refreshTokenCookie.setSecure(false);
+                }
                 refreshTokenCookie.setPath("/"); // 쿠키 경로
                 refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
                 response.addCookie(refreshTokenCookie);
