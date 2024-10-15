@@ -41,7 +41,7 @@ public class UserProfileServiceImpl implements UserProfileService {
                     .mapToDouble(order -> order.getPrice() * order.getQuantity())
                     .sum();
 
-            // User 객체의 프로필 정보를 UserDTO로 변환
+            // User 객체의 프로필 정보를 UserDTO 로 변환
             UserDTO userDTO = UserDTO.builder()
                     .userId(userProfile.getUserId())
                     .nickname(userProfile.getNickname())
