@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,15 +19,15 @@ public class ProfileEditController {
     private ProfileEditService profileEditService;
 
     // 사용자 ID로 프로필 정보를 조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<ProfileEditDTO> getProfile(@PathVariable String userId) {
-        log.info("프로필 조회 요청 - 사용자 ID: {}", userId);
-        ProfileEditDTO profile = profileEditService.getProfile(userId);
+    @GetMapping
+    public ResponseEntity<ProfileEditDTO> getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("프로필 조회 요청 - 사용자 ID: {}", userDetails.getUsername());
+        ProfileEditDTO profile = profileEditService.getProfile(userDetails.getUsername());
         if (profile != null) {
-            log.info("프로필 조회 완료 - 사용자 ID: {}", userId);
+            log.info("프로필 조회 완료 - 사용자 ID: {}", userDetails.getUsername());
             return new ResponseEntity<>(profile, HttpStatus.OK);
         } else {
-            log.warn("프로필 조회 실패 - 사용자 ID: {}", userId);
+            log.warn("프로필 조회 실패 - 사용자 ID: {}", userDetails.getUsername());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
