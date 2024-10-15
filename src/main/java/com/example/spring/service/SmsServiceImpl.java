@@ -125,7 +125,23 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public boolean checkVerifyCodeForFindId(FindIdRequestDTO findIdRequestDTO) {
-        return true;
+        SmsDTO smsDTO = SmsDTO.builder()
+                .phoneFirst(findIdRequestDTO.getPhoneFirst())
+                .phoneMiddle(findIdRequestDTO.getPhoneMiddle())
+                .phoneLast(findIdRequestDTO.getPhoneLast())
+                .phoneVerificationCode(findIdRequestDTO.getPhoneVerificationCode()).build();
+        List<MemberSms> memberSmsList = memberSmsMapper.select(smsDTO);
+
+        if (memberSmsList.isEmpty()) {
+            return false;
+        } else {
+            for (MemberSms memberSms : memberSmsList) {
+                if (smsDTO.getPhoneLast().equals(encryptionService.decrypt(memberSms.getPhoneLast()))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

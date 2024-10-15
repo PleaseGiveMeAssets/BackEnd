@@ -5,8 +5,6 @@ import com.example.spring.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,8 +40,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest, HttpServletResponse response) {
-        LoginResponseDTO loginResponseDTO = memberService.login(loginRequest, response);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest, HttpServletRequest request, HttpServletResponse response) {
+        LoginResponseDTO loginResponseDTO = memberService.login(loginRequest, request, response);
         return ResponseEntity.ok(loginResponseDTO);
     }
 
@@ -66,10 +64,10 @@ public class MemberController {
     }
 
     @GetMapping("/login/renew")
-    public ResponseEntity<?> renewLogin(@CookieValue(value = "refreshToken") String refreshToken, HttpServletResponse response) {
+    public ResponseEntity<?> renewLogin(@CookieValue(value = "refreshToken") String refreshToken, HttpServletRequest request, HttpServletResponse response) {
         if (log.isInfoEnabled()) {
-            log.info("renewLogin refreshToken : {}, response : {}", refreshToken, response);
+            log.info("renewLogin refreshToken : {}, request : {}, response : {}", refreshToken, request, response);
         }
-        return ResponseEntity.ok(memberService.renewLogin(refreshToken, response));
+        return ResponseEntity.ok(memberService.renewLogin(refreshToken, request, response));
     }
 }
