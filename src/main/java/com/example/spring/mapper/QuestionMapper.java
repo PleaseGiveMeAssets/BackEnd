@@ -14,4 +14,6 @@ public interface QuestionMapper {
 
     // 특정 질문에 대한 옵션들 조회
     List<QuestionOption> selectOptionsByQuestionId(@Param("questionId") long questionId);
+
+    int getTotalQuestionsCount();
 }

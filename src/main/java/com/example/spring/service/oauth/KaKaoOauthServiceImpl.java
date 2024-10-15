@@ -187,14 +187,14 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
             boolean isExistingUser = false;
 
 
-            if(existingUser != null){
+            if (existingUser != null) {
                 String decryptedPhoneLast = encryptionService.decrypt(existingUser.getPhoneLast());
-                if(decryptedPhoneLast.equals(phoneLast)){
+                if (decryptedPhoneLast.equals(phoneLast)) {
                     if (MemberCodeEnum.KAKAO.getValue().equals(existingUser.getSns())) {
                         //기존회원
                         userId = existingUser.getUserId();
                         isExistingUser = true;
-                    } else if(MemberCodeEnum.NAVER.getValue().equals(existingUser.getSns())){
+                    } else if (MemberCodeEnum.NAVER.getValue().equals(existingUser.getSns())) {
                         System.out.println("네이버 계정 있움");
                         throw new SocialOauthException(ResultCodeEnum.NAVER_ACCOUNT_ALREADY_EXISTS.getMessage());
                     } else {
@@ -227,7 +227,7 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
             System.out.println("@@세션에 KakaoAccessToken 저장했습~");
 
             LoginRequestDTO loginRequestDTO = new LoginRequestDTO(userId, null);
-            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, response);
+            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, request, response);
             System.out.println("로그인 완료");
             return loginResponse;
         }

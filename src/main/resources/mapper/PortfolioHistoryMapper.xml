@@ -5,57 +5,68 @@
 
 <mapper namespace="com.example.spring.mapper.PortfolioHistoryMapper">
     <select id="selectListStockPortfolioByUserId" parameterType="map" resultType="TotalStockInfoDTO">
-        SELECT stockHistoryId                                             AS stockDate
-             , SUM((IFNULL(closedPrice, price) - price) * quantity)       AS totalAmount
-             , SUM((IFNULL(closedPrice, price) - price) * quantity) / 100 AS totalProfit
-        FROM (SELECT s.STOCK_ID                           AS stockId
-                   , s.SHORT_CODE                         AS shortCode
-                   , s.STOCK_NAME                         AS stockName
-                   , sh.CLOSED_PRICE                      AS closedPrice
-                   , p.PRICE                              AS price
-                   , p.QUANTITY                           AS quantity
-                   , p.ORDER_TYPE                         AS orderType
-                   , SUBSTRING(sh.STOCK_HISTORY_ID, 1, 8) AS stockHistoryId
-              FROM STOCK s
-                       JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
-                  AND s.SHORT_CODE = p.SHORT_CODE
-                  AND p.ORDER_TYPE = 'B'
-                       LEFT JOIN (SELECT STOCK_HISTORY_ID, STOCK_ID, SHORT_CODE, CLOSED_PRICE
-                                  FROM (SELECT RANK() OVER (PARTITION BY SUBSTRING(STOCK_HISTORY_ID, 1, 8) ORDER BY STOCK_HISTORY_ID DESC) AS rk,
-                                               STOCK_HISTORY_ID,
-                                               STOCK_ID,
-                                               SHORT_CODE,
-                                               CLOSED_PRICE
-                                        FROM STOCK_HISTORY
-                                        WHERE STOCK_HISTORY_ID BETWEEN #{startDateFormat} AND #{endDateFormat}) AS sh
-                                  WHERE rk = 1) AS sh ON s.STOCK_ID = sh.STOCK_ID
-                  AND s.SHORT_CODE = sh.SHORT_CODE
-                  AND p.USER_ID = #{userId}
-              UNION ALL
-              SELECT s.STOCK_ID                                                 AS stockId
-                   , s.SHORT_CODE                                               AS shortCode
-                   , s.STOCK_NAME                                               AS stockName
-                   , (SELECT CLOSED_PRICE
-                      FROM STOCK_HISTORY sh
-                      WHERE STOCK_HISTORY_ID = (SELECT MAX(STOCK_HISTORY_ID)
-                                                FROM STOCK_HISTORY sh
-                                                WHERE sh.STOCK_ID = p.STOCK_ID
-                                                  AND sh.SHORT_CODE = p.SHORT_CODE
-                                                  AND SUBSTRING(sh.STOCK_HISTORY_ID, 1, 8) =
-                                                      SUBSTRING(DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s'), 1, 8))
-                        AND sh.STOCK_ID = p.STOCK_ID
-                        AND sh.SHORT_CODE = p.SHORT_CODE)                       AS closedPrice
-                   , p.PRICE                                                    AS price
-                   , p.QUANTITY                                                 AS quantity
-                   , p.ORDER_TYPE                                               AS orderType
-                   , SUBSTRING(DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s'), 1, 8) AS stockHistoryId
-              FROM STOCK s
-                       JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
-                  AND s.SHORT_CODE = p.SHORT_CODE
-                  AND p.ORDER_TYPE = 'S'
-                  AND DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s') BETWEEN #{startDateFormat} AND #{endDateFormat}
-                  AND p.USER_ID = #{userId}) tb
-        GROUP BY stockHistoryId
-        ORDER BY 1
+SELECT stockHistoryId                                             AS stockDate,
+       SUM((IFNULL(closedPrice, price) - price) * quantity)       AS totalAmount
+FROM (
+         -- 매수 주문
+         SELECT s.STOCK_ID                           AS stockId,
+                s.SHORT_CODE                         AS shortCode,
+                s.STOCK_NAME                         AS stockName,
+                sh.CLOSED_PRICE                      AS closedPrice,
+                p.PRICE                              AS price,
+                p.QUANTITY                           AS quantity,
+                p.ORDER_TYPE                         AS orderType,
+                SUBSTRING(sh.STOCK_HISTORY_ID, 1, 8) AS stockHistoryId
+         FROM STOCK s
+                  JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
+             AND s.SHORT_CODE = p.SHORT_CODE
+             AND p.ORDER_TYPE = 'B'
+                  LEFT JOIN (
+             SELECT STOCK_HISTORY_ID, STOCK_ID, SHORT_CODE, CLOSED_PRICE
+             FROM (
+                      SELECT RANK() OVER (PARTITION BY SUBSTRING(STOCK_HISTORY_ID, 1, 8)
+                          ORDER BY STOCK_HISTORY_ID DESC) AS rk,
+                             STOCK_HISTORY_ID,
+                             STOCK_ID,
+                             SHORT_CODE,
+                             CLOSED_PRICE
+                      FROM STOCK_HISTORY
+                      WHERE STOCK_HISTORY_ID BETWEEN #{startDateFormat} AND #{endDateFormat}
+                  ) AS sh
+             WHERE rk = 1
+         ) AS sh ON s.STOCK_ID = sh.STOCK_ID
+             AND s.SHORT_CODE = sh.SHORT_CODE
+         WHERE p.USER_ID = #{userId}
+
+         UNION ALL
+
+         SELECT s.STOCK_ID                                                 AS stockId,
+                s.SHORT_CODE                                               AS shortCode,
+                s.STOCK_NAME                                               AS stockName,
+                (SELECT CLOSED_PRICE
+                 FROM STOCK_HISTORY sh
+                 WHERE STOCK_HISTORY_ID = (SELECT MAX(STOCK_HISTORY_ID)
+                                           FROM STOCK_HISTORY sh
+                                           WHERE sh.STOCK_ID = p.STOCK_ID
+                                             AND sh.SHORT_CODE = p.SHORT_CODE
+                                             AND SUBSTRING(sh.STOCK_HISTORY_ID, 1, 8) =
+                                                 SUBSTRING(DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s'), 1, 8))
+                   AND sh.STOCK_ID = p.STOCK_ID
+                   AND sh.SHORT_CODE = p.SHORT_CODE)                       AS closedPrice,
+                p.PRICE                                                    AS price,
+                p.QUANTITY                                                 AS quantity,
+                p.ORDER_TYPE                                               AS orderType,
+                SUBSTRING(DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s'), 1, 8) AS stockHistoryId
+         FROM STOCK s
+                  JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
+             AND s.SHORT_CODE = p.SHORT_CODE
+             AND p.ORDER_TYPE = 'S'
+         WHERE DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s')
+             BETWEEN #{startDateFormat} AND #{endDateFormat}
+           AND p.USER_ID = #{userId}
+     ) tb
+WHERE stockHistoryId IS NOT NULL
+GROUP BY stockHistoryId
+ORDER BY 1;
     </select>
 </mapper>

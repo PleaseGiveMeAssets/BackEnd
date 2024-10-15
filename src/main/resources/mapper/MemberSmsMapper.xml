@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spring.mapper.MemberSmsMapper">
+    <select id="select" parameterType="SmsDTO" resultType="MemberSms">
+        SELECT PHONE_FIRST AS phoneFirst
+        , PHONE_MIDDLE AS phoneMiddle
+        , PHONE_LAST AS phoneLast
+        , USER_ID AS userId
+        , PHONE_VERIFICATION_CODE AS phoneVerificationCode
+        , PHONE_VERIFIED_STATUS AS phoneVerifiedStatus
+        FROM MEMBER_SMS
+        WHERE PHONE_FIRST = #{phoneFirst}
+        AND PHONE_MIDDLE = #{phoneMiddle}
+        <if test="phoneVerificationCode != null and phoneVerificationCode != ''">
+            AND PHONE_VERIFICATION_CODE = #{phoneVerificationCode}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="SmsDTO">
+        INSERT INTO MEMBER_SMS (PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, PHONE_VERIFICATION_CODE)
+        VALUES (#{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{phoneVerificationCode})
+    </insert>
+
+    <update id="updatePhoneVerification" parameterType="SmsDTO">
+        UPDATE MEMBER_SMS
+        SET PHONE_VERIFICATION_CODE = #{phoneVerificationCode}, PHONE_VERIFIED_STATUS = 'N'
+        WHERE PHONE_FIRST = #{phoneFirst}
+        AND PHONE_MIDDLE = #{phoneMiddle}
+        AND PHONE_LAST = #{phoneLast}
+    </update>
+
+    <update id="updatePhoneVerificationStatus" parameterType="SmsDTO">
+        UPDATE MEMBER_SMS
+        SET PHONE_VERIFIED_STATUS = 'Y'
+        WHERE PHONE_FIRST = #{phoneFirst}
+        AND PHONE_MIDDLE = #{phoneMiddle}
+        AND PHONE_LAST = #{phoneLast}
+        AND PHONE_VERIFICATION_CODE = #{phoneVerificationCode}
+    </update>
+</mapper>

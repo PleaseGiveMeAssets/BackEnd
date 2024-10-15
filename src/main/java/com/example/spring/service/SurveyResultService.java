@@ -18,6 +18,6 @@ public interface SurveyResultService {
     InvestmentTypeDTO getInvestmentTypeDetails(); // userId 파라미터 제거
 
     String getUserNickname(String userId);
-
+    
 
 }
