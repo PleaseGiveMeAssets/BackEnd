@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/NotificationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" afterDir="false" />
     </list>
@@ -214,6 +215,8 @@
       <created>1728723140312</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
+      <updated>1728951566471</updated>
+      <workItem from="1728951567074" duration="12387000" />
       <updated>1728723140312</updated>
       <workItem from="1728723141358" duration="22000" />
       <workItem from="1728723235382" duration="19000" />
