@@ -18,10 +18,10 @@ public class DailyTrendReportDTO {
     private String recentTrendContent;
     private String stockTrendTitle;
     private String stockTrendContent;
-    private Integer kosdaqPrice;
-    private Integer kosdaqProfitRate;
-    private Integer kospiPrice;
-    private Integer kospiProfitRate;
+    private Double kosdaqPrice;
+    private Double kosdaqProfitRate;
+    private Double kospiPrice;
+    private Double kospiProfitRate;
     private String dailyTrendSummarizedTitle;
     private String dailyTrendSummarizedContent;
     private String hour;
