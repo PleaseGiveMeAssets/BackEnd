@@ -45,6 +45,7 @@
         ) lsh ON ut.STOCK_ID = lsh.STOCK_ID
     WHERE (ut.total_quantity_bought - ut.total_quantity_sold) > 0
 </select>
+
     <select id="getUserStockPortfolioByDate" resultType="com.example.spring.domain.EditStockPortfolio">
         SELECT
         ut.STOCK_ID,
@@ -66,7 +67,6 @@
         SUM(CASE WHEN p.ORDER_TYPE = 'S' THEN p.QUANTITY ELSE 0 END) AS total_quantity_sold
         FROM PORTFOLIO p
         WHERE p.USER_ID = #{userId}
-        AND p.STOCK_ID = #{stockId}
         -- 특정 날짜 이전까지의 데이터 필터링
         AND p.ORDERED_AT &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
         GROUP BY p.STOCK_ID

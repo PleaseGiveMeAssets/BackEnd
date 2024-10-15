@@ -90,7 +90,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public EditStockPortfolio getUserStockPortfolioByDate(String userId, Timestamp timestamp, Long stockId){
-        return stockMapper.getUserStockPortfolioByDate(userId, timestamp, stockId); // 여기
+        return stockMapper.getUserStockPortfolioByDate(userId, timestamp, stockId);
     }
 
     @Override
