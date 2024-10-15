@@ -34,12 +34,22 @@ public class SurveyResultController {
         return ResponseEntity.ok(totalScore);
     }
 
+    //추가 수정!!!!
+    // 설문 완료 후 투자 유형 결정 및 저장 (POST 요청 추가)
+    @PostMapping("/investment-type")
+    public ResponseEntity<InvestmentTypeAnswerDTO> insertOrUpdateInvestmentTypeAnswer(@AuthenticationPrincipal UserDetails userDetails) {
+        String userId = userDetails.getUsername();
+        log.info("Inserting or updating investment type answer for userId: {}", userId);
+
+        // 투자 유형 삽입 또는 업데이트 로직 호출
+        InvestmentTypeAnswerDTO investmentTypeAnswerDTO = surveyResultService.getInvestmentTypeByUserId();
+        return ResponseEntity.ok(investmentTypeAnswerDTO);
+    }
+
     // 현재 로그인된 사용자의 투자 유형을 조회 (userId PathVariable 제거, JWT 토큰 사용)
     @GetMapping("/investment-type")
     public ResponseEntity<InvestmentTypeAnswerDTO> getInvestmentTypeByUserId(@AuthenticationPrincipal UserDetails userDetails) {
-
         InvestmentTypeAnswerDTO investmentTypeAnswerDTO = surveyResultService.getInvestmentTypeByUserId();
-
         return ResponseEntity.ok(investmentTypeAnswerDTO);
     }
 
