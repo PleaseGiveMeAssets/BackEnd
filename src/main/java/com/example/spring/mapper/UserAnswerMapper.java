@@ -17,4 +17,5 @@ public interface UserAnswerMapper {
     // 사용자 총 점수 계산 메서드
     int getTotalScore(@Param("userId") String userId);
 
+    int getTotalAnsweredQuestions(String userId);
 }

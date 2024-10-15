@@ -101,4 +101,18 @@
         SET PASSWORD_FAILURE_COUNT = 0, UPDATED_AT = CURRENT_TIMESTAMP()
         WHERE USER_ID = #{userId}
     </update>
+
+    <!-- survey_status 업데이트 -->
+    <update id="updateSurveyStatus">
+        UPDATE USER
+        SET survey_status = #{surveyStatus}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- survey_status 조회 -->
+    <select id="getSurveyStatus" resultType="String">
+        SELECT survey_status FROM USER
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

@@ -37,4 +37,10 @@ public interface UserMapper {
     void incrementPasswordFailureCount(String userId);
 
     void resetPasswordFailureCount(String userId);
+
+    // survey_status 업데이트
+    void updateSurveyStatus(@Param("userId") String userId, @Param("surveyStatus") char surveyStatus);
+
+    // survey_status 조회
+    String getSurveyStatus(@Param("userId") String userId);
 }
