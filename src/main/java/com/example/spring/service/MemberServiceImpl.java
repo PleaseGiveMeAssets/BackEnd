@@ -385,9 +385,11 @@ public class MemberServiceImpl implements MemberService {
 
         Set<Long> requiredTermsOfUseIds = termsOfUseList.stream().map(TermsOfUse::getTermsOfUseId).collect(Collectors.toSet());
 
-        memberDTO.getTermsAgreementDTOList().stream().forEach(termsAgreementDTO -> {
+        memberDTO.getTermsAgreementDTOList().forEach(termsAgreementDTO -> {
             if (!requiredTermsOfUseIds.contains(termsAgreementDTO.getTermsOfUseId())) {
-                throw new ApplicationContextException(ResultCodeEnum.NO_EXIST_TERMS_OF_USE.getMessage());
+                if (MemberCodeEnum.Y.getValue().equals(termsAgreementDTO.getRequired().toString())) {
+                    throw new ApplicationContextException(ResultCodeEnum.NO_EXIST_TERMS_OF_USE.getMessage());
+                }
             }
         });
     }

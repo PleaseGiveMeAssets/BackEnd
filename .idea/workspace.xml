@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 소셜로그인 컨트롤러 배포">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/TotalInvestedSumStockPortfolio.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/StockPortfolioDTO.java" afterDir="false" />
+    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/PortfolioHistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/PortfolioHistoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/PortfolioHistoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/PortfolioHistoryMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/StockServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/PortfolioHistoryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/PortfolioHistoryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/SearchDetailStockMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/SearchDetailStockMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/TermsAgreementDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/TermsAgreementDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,6 +232,6 @@
     <MESSAGE value="chore : 캐시 삭제 및 gitignore 재적용" />
     <MESSAGE value="fix : 소셜 로그인 재배포" />
     <MESSAGE value="fix : 소셜로그인 컨트롤러 배포" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : 소셜로그인 컨트롤러 배포" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
