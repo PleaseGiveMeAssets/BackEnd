@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7257b08-4b66-4e1b-9618-cb8a187e3c26" name="Changes" comment="fix : request 추가하여 https와 http를 구분하여 토큰 저장">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/TermsOfUseController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/TermsOfUseService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/TermsOfUseServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/TermsOfUseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/TermsOfUseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/TermsOfUseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/TermsOfUseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/TermsOfUseMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/TermsOfUseMapper.xml" afterDir="false" />
+    <list default="true" id="e7257b08-4b66-4e1b-9618-cb8a187e3c26" name="Changes" comment="feat : 이용약관 조회 컨트롤러 생성">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/TermsOfUse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/TermsOfUse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/TermsOfUseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/TermsOfUseServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,10 +146,20 @@
     </configuration>
   </component>
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="feat : 이용약관 조회 컨트롤러 생성">
+      <option name="closed" value="true" />
+      <created>1728970821549</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728970821549</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix : request 추가하여 https와 http를 구분하여 토큰 저장" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : request 추가하여 https와 http를 구분하여 토큰 저장" />
+    <MESSAGE value="feat : 이용약관 조회 컨트롤러 생성" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat : 이용약관 조회 컨트롤러 생성" />
   </component>
 </project>

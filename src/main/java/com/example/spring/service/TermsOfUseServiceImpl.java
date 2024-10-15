@@ -24,6 +24,10 @@ public class TermsOfUseServiceImpl implements TermsOfUseService {
     public List<TermsOfUseDTO> getTermsOfUse() {
         List<TermsOfUse> termsOfUseList = termsOfUseMapper.selectListTermsOfUse();
 
+        if (log.isInfoEnabled()) {
+            log.info("getTermsOfUse termsOfUseList : {}", termsOfUseList.toString());
+        }
+
         return termsOfUseList.stream()
                 .map(termsOfUse -> TermsOfUseDTO.builder()
                         .termOfUseId(termsOfUse.getTermsOfUseId())
