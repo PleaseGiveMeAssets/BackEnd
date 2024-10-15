@@ -38,7 +38,7 @@ FROM (
              AND s.SHORT_CODE = sh.SHORT_CODE
          WHERE p.USER_ID = #{userId}
 
-         UNION ALL
+                 UNION ALL
 
          SELECT s.STOCK_ID                                                 AS stockId,
                 s.SHORT_CODE                                               AS shortCode,
@@ -68,5 +68,49 @@ FROM (
 WHERE stockHistoryId IS NOT NULL
 GROUP BY stockHistoryId
 ORDER BY 1;
+    </select>
+
+    <select id="getUserStockPortfolioTotalInvestedAmountByDate" parameterType="map"
+            resultType="com.example.spring.domain.TotalInvestedSumStockPortfolio">
+        <![CDATA[
+        WITH RECURSIVE date_range (`date`) AS (
+            SELECT CAST(#{startDate} AS DATE) AS `date`
+            UNION ALL
+            SELECT DATE_ADD(`date`, INTERVAL 1 DAY)
+            FROM date_range
+            WHERE DATE_ADD(`date`, INTERVAL 1 DAY) <= CAST(#{endDate} AS DATE)
+        )
+        SELECT
+            DATE_FORMAT(dr.`date`, '%Y%m%d') AS stockDate,
+            ROUND(IFNULL(SUM(totals.total_invested_sum), 0), 1) AS totalInvestedSum,
+            ROUND(SUM(IFNULL(totals.total_invested_sum, 0)) OVER (ORDER BY dr.`date`), 1) AS calInvestedSum
+        FROM date_range dr
+                 LEFT JOIN (
+            -- 유저의 거래 내역을 집계하는 서브쿼리
+            SELECT
+                ut_date AS date,
+                SUM(
+                        (ut.total_purchase_amount / NULLIF(ut.total_quantity_bought, 0)) *
+                        (ut.total_quantity_bought - ut.total_quantity_sold)
+                ) AS total_invested_sum
+            FROM (
+                     SELECT
+                         p.STOCK_ID,
+                         DATE(p.ORDERED_AT) AS ut_date,
+                         SUM(CASE WHEN p.ORDER_TYPE = 'B' THEN p.QUANTITY ELSE 0 END) AS total_quantity_bought,
+                         SUM(CASE WHEN p.ORDER_TYPE = 'B' THEN p.PRICE * p.QUANTITY ELSE 0 END) AS total_purchase_amount,
+                         SUM(CASE WHEN p.ORDER_TYPE = 'S' THEN p.QUANTITY ELSE 0 END) AS total_quantity_sold
+                     FROM PORTFOLIO p
+                     WHERE p.USER_ID = #{userId}
+                       AND DATE(p.ORDERED_AT) BETWEEN CAST(#{startDate} AS DATE) AND CAST(#{endDate} AS DATE)
+                     GROUP BY p.STOCK_ID, ut_date
+                 ) ut
+                     JOIN STOCK s ON ut.STOCK_ID = s.STOCK_ID
+            WHERE (ut.total_quantity_bought - ut.total_quantity_sold) > 0
+            GROUP BY ut_date
+        ) totals ON dr.`date` = totals.date
+        GROUP BY dr.`date`
+        ORDER BY dr.`date`;
+        ]]>
     </select>
 </mapper>

@@ -4,18 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7257b08-4b66-4e1b-9618-cb8a187e3c26" name="Changes" comment="fix : 도메인 ToString 로그 추가">
+    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 소셜로그인 컨트롤러 배포">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/TotalInvestedSumStockPortfolio.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/StockPortfolioDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/ProfileEditController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/ProfileEditController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/InvestmentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/InvestmentType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/UserProfileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/UserProfileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/PortfolioHistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/PortfolioHistoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/PortfolioHistoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/mapper/PortfolioHistoryMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioHistoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/StockServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/PortfolioHistoryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/PortfolioHistoryMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/SearchDetailStockMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/SearchDetailStockMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
   </component>
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
@@ -37,11 +48,25 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;HeywantPark&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/PleaseGiveMeAssets/BackEnd.git&quot;,
+    &quot;accountId&quot;: &quot;1070ef78-a2f2-41fa-a259-6a695ff38198&quot;
+  }
+}</component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -49,29 +74,55 @@
     <option name="FILTER_DEBUG" value="true" />
     <option name="CUSTOM_FILTER" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2nKYGYYT9pGxFjXTid3Fsh0C8Vo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build BackEnd.executor": "Run",
-    "Tomcat Server.Tomcat 9.0.91.executor": "Run",
-    "git-widget-placeholder": "dev",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build BackEnd.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Tomcat Server.Tomcat 9.0.91.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/andybaek/Desktop/SynologyDrive/Andy/Coding/PleaseGiveMeAssets/BackEnd&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/com/example/spring/controller" />
+      <recent name="$PROJECT_DIR$/src/main/java/com/example/spring/exception" />
+      <recent name="$PROJECT_DIR$/src/main/java/com/example/spring/dto" />
+      <recent name="$PROJECT_DIR$/src/main/java/com/example/spring/service/auth" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/com/example/spring/service" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Tomcat 9.0.91" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.91" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
-        <artifact name="Gradle : com.example : spring-1.0-SNAPSHOT.war (exploded)">
+        <artifact name="Gradle : com.example : spring-1.0-SNAPSHOT.war">
           <settings>
             <option name="CONTEXT_PATH" value="/" />
           </settings>
         </artifact>
       </deployment>
       <server-settings>
-        <option name="BASE_DIRECTORY_NAME" value="68a7a774-752b-49e1-a6c0-64a45fca4f00" />
+        <option name="BASE_DIRECTORY_NAME" value="9060872a-6dd3-4bc5-9f97-be005893e368" />
       </server-settings>
       <predefined_log_file enabled="true" id="Tomcat" />
       <predefined_log_file enabled="true" id="Tomcat Catalina" />
@@ -79,7 +130,7 @@
       <predefined_log_file id="Tomcat Host Manager" />
       <predefined_log_file id="Tomcat Localhost Access" />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="64709" />
+        <option name="DEBUG_PORT" value="64738" />
       </RunnerSettings>
       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
         <option name="USE_ENV_VARIABLES" value="true" />
@@ -144,42 +195,52 @@
       <method v="2">
         <option name="Make" enabled="true" />
         <option name="BuildArtifacts" enabled="true">
-          <artifact name="Gradle : com.example : spring-1.0-SNAPSHOT.war (exploded)" />
+          <artifact name="Gradle : com.example : spring-1.0-SNAPSHOT.war" />
         </option>
       </method>
     </configuration>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19072.14" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19072.14" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="feat : 이용약관 조회 컨트롤러 생성">
+    <task id="LOCAL-00001" summary="fix : 소셜로그인 컨트롤러 배포">
       <option name="closed" value="true" />
-      <created>1728970821549</created>
+      <created>1728613421349</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1728970821549</updated>
+      <updated>1728613421349</updated>
     </task>
     <task active="true" id="Default" summary="Default task">
       <changelist id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 소셜로그인 컨트롤러 배포" />
-      <created>1728951566471</created>
+      <created>1728723140312</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1728951566471</updated>
-      <workItem from="1728951567074" duration="9909000" />
-    <task id="LOCAL-00002" summary="fix : 도메인 ToString 로그 추가">
-      <option name="closed" value="true" />
-      <created>1728971199752</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1728971199752</updated>
+      <updated>1728723140312</updated>
+      <workItem from="1728723141358" duration="22000" />
+      <workItem from="1728723235382" duration="19000" />
+      <workItem from="1728723258721" duration="241000" />
+      <workItem from="1728742387895" duration="1550000" />
+      <workItem from="1728828380806" duration="7089000" />
+      <workItem from="1728882032757" duration="22000" />
     </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix : request 추가하여 https와 http를 구분하여 토큰 저장" />
-    <MESSAGE value="feat : 이용약관 조회 컨트롤러 생성" />
-    <MESSAGE value="fix : 도메인 ToString 로그 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : 도메인 ToString 로그 추가" />
+    <MESSAGE value="chore : 캐시 삭제 및 gitignore 재적용" />
+    <MESSAGE value="fix : 소셜 로그인 재배포" />
+    <MESSAGE value="fix : 소셜로그인 컨트롤러 배포" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix : 소셜로그인 컨트롤러 배포" />
   </component>
 </project>
