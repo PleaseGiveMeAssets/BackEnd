@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="">
+    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 추천 등락률 버그 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/NotificationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/PortfolioServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/StockMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/StockMapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,9 +214,8 @@
       <created>1728723140312</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1728951566471</updated>
-      <workItem from="1728951567074" duration="12387000" />
       <updated>1728723140312</updated>
+      <workItem from="1728951567074" duration="12387000" />
       <workItem from="1728723141358" duration="22000" />
       <workItem from="1728723235382" duration="19000" />
       <workItem from="1728723258721" duration="241000" />
@@ -225,7 +223,15 @@
       <workItem from="1728828380806" duration="7089000" />
       <workItem from="1728882032757" duration="22000" />
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fix : 추천 등락률 버그 수정">
+      <option name="closed" value="true" />
+      <created>1728988096841</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1728988096842</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +241,8 @@
     <MESSAGE value="chore : 캐시 삭제 및 gitignore 재적용" />
     <MESSAGE value="fix : 소셜 로그인 재배포" />
     <MESSAGE value="fix : 소셜로그인 컨트롤러 배포" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="fix : 코스닥 및 코스피 데이터 타입 변경" />
+    <MESSAGE value="fix : 추천 등락률 버그 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix : 추천 등락률 버그 수정" />
   </component>
 </project>

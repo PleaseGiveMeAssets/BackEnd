@@ -50,7 +50,7 @@
             </otherwise>
         </choose>
         ) tb
-        ORDER BY 1
+        ORDER BY 1 DESC
     </select>
     <select id="findByStockId" parameterType="Long" resultType="Stock">
         SELECT *

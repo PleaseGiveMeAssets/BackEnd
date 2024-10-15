@@ -12,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -68,6 +65,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             forChartDTO.setTotalQuantity(totalBuyQuantity - totalSellQuantity);
             forChartDTO.setTotalPrice((totalBuyQuantity - totalSellQuantity) * stock.getClosedPrice());
             forChartDTOList.add(forChartDTO);
+            forChartDTOList.sort(Comparator.comparing(ForChartDTO::getTotalPrice).reversed());
         });
         return forChartDTOList;
     }
@@ -88,7 +86,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             throw new IllegalArgumentException("Stock not found");
         Long recentPrice = stockHistoryMapper.findRecentPriceByStockIdAndShortCode(stockId, stock.getShortCode());
         List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByUserIdAndStockId(userId, stock.getStockId());
-        OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, recentPrice,null);
+        OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, recentPrice, null);
         log.info("exampleDTOList : {}", orderSummary);
         log.info(System.getProperty("user.dir"));
         return orderSummary;
@@ -138,6 +136,7 @@ public class PortfolioServiceImpl implements PortfolioService {
                 orders
         );
     }
+
     private OrderSummaryDTO makeSummary(Stock stock, List<Portfolio> symbolTradeHistory, Long recentPrice, List<OrderDTO> orderDTOList) {
         Long totalQuantity = 0L;
         Double avgPrice = 0.0;
