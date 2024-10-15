@@ -22,6 +22,10 @@ public class PortfolioHistoryController {
 
     @GetMapping
     public ResponseEntity<List<TotalStockInfoDTO>> getStockPortfolioInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        List<TotalStockInfoDTO> totalStockInfoDTOS = portfolioHistoryService.getStockPortfolioInfo(userDetails.getUsername());
+        totalStockInfoDTOS.forEach(totalStockInfoDTO -> {
+            log.info("********(*(*(*(*(*(*(*(* totalStockInfoDTO : {} ", totalStockInfoDTO.toString());
+        });
         return ResponseEntity.ok(portfolioHistoryService.getStockPortfolioInfo(userDetails.getUsername()));
     }
 }

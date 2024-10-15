@@ -15,6 +15,7 @@ import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -169,7 +170,7 @@ public class NaverOauthServiceImpl implements NaverOauthService {
     }
 
     @Override
-    public LoginResponseDTO processNaverLogin(String code, String state, HttpServletResponse response) {
+    public LoginResponseDTO processNaverLogin(String code, String state, HttpServletRequest request, HttpServletResponse response) {
         String accessToken = getNaverAccessToken(code, state);
         JsonObject userInfo = getUserInfo(accessToken);
 
@@ -190,14 +191,14 @@ public class NaverOauthServiceImpl implements NaverOauthService {
 
 
             System.out.println("userInfo 안 비었돠");
-            if(existingUser != null){
+            if (existingUser != null) {
                 String decryptedPhoneLast = encryptionService.decrypt(existingUser.getPhoneLast());
-                if(decryptedPhoneLast.equals(phoneLast)){
+                if (decryptedPhoneLast.equals(phoneLast)) {
                     if (MemberCodeEnum.NAVER.getValue().equals(existingUser.getSns())) {
                         //기존회원
                         userId = existingUser.getUserId();
                         isExistingUser = true;
-                    } else if(MemberCodeEnum.KAKAO.getValue().equals(existingUser.getSns())){
+                    } else if (MemberCodeEnum.KAKAO.getValue().equals(existingUser.getSns())) {
                         System.out.println("카카오 계정 있움");
                         throw new SocialOauthException(ResultCodeEnum.KAKAO_ACCOUNT_ALREADY_EXISTS.getMessage());
                     } else {
@@ -226,7 +227,7 @@ public class NaverOauthServiceImpl implements NaverOauthService {
             }
 
             LoginRequestDTO loginRequestDTO = new LoginRequestDTO(userId, null);
-            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, response);
+            LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, request, response);
             System.out.println("로그인 완료");
             return loginResponse;
         }

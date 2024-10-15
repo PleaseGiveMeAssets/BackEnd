@@ -21,13 +21,13 @@ public interface MemberService {
     int findPassword(FindPasswordRequestDTO findPasswordRequestDTO);
 
     // 로그인
-    LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletResponse response);
+    LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response);
 
     // 소셜로그인
-    LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletResponse response);
+    LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response);
 
     // 로그아웃
     void logout(HttpServletRequest request, HttpServletResponse response);
 
-    LoginResponseDTO renewLogin(String token, HttpServletResponse response);
+    LoginResponseDTO renewLogin(String token, HttpServletRequest request, HttpServletResponse response);
 }

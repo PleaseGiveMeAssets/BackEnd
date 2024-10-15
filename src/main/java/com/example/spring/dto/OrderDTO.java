@@ -19,4 +19,5 @@ public class OrderDTO {
     private String memo;
     private Character orderType;
     private Timestamp orderedAt;
+    private Timestamp createdAt;
 }
