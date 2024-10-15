@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/TermsAgreementDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/TermsAgreementDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/service/MemberServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/domain/DailyReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/dto/DailyTrendReportDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
