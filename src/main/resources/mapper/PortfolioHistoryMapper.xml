@@ -6,8 +6,7 @@
 <mapper namespace="com.example.spring.mapper.PortfolioHistoryMapper">
     <select id="selectListStockPortfolioByUserId" parameterType="map" resultType="TotalStockInfoDTO">
 SELECT stockHistoryId                                             AS stockDate,
-       SUM((IFNULL(closedPrice, price) - price) * quantity)       AS totalAmount,
-       SUM((IFNULL(closedPrice, price) - price) * quantity) / 100 AS totalProfit
+       SUM((IFNULL(closedPrice, price) - price) * quantity)       AS totalAmount
 FROM (
          -- 매수 주문
          SELECT s.STOCK_ID                           AS stockId,
