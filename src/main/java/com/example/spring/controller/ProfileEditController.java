@@ -32,15 +32,15 @@ public class ProfileEditController {
         }
     }
     // 사용자 ID로 프로필 정보를 업데이트
-    @PutMapping("/{userId}")
-    public ResponseEntity<Void> updateProfile(@PathVariable String userId, @RequestBody ProfileEditDTO profileEditDTO) {
-        log.info("프로필 업데이트 요청 - 사용자 ID: {}, 수정할 정보: {}", userId, profileEditDTO);
+    @PutMapping
+    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ProfileEditDTO profileEditDTO) {
+        log.info("프로필 업데이트 요청 - 사용자 ID: {}, 수정할 정보: {}", userDetails.getUsername(), profileEditDTO);
         try {
-            profileEditService.updateProfile(userId, profileEditDTO);
-            log.info("프로필 업데이트 완료 - 사용자 ID: {}", userId);
+            profileEditService.updateProfile(userDetails.getUsername(), profileEditDTO);
+            log.info("프로필 업데이트 완료 - 사용자 ID: {}", userDetails.getUsername());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.error("프로필 업데이트 실패 - 사용자 ID: {}, 오류: {}", userId, e.getMessage());
+            log.error("프로필 업데이트 실패 - 사용자 ID: {}, 오류: {}", userDetails.getUsername(), e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
