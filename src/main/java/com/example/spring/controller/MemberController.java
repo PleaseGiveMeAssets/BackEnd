@@ -59,8 +59,14 @@ public class MemberController {
     }
 
     @PostMapping("/find-password")
-    public ResponseEntity<Integer> findPassword(@RequestBody FindPasswordRequestDTO findPasswordRequestDTO) {
-        return ResponseEntity.ok(memberService.findPassword(findPasswordRequestDTO));
+    public ResponseEntity<Void> findPassword(@RequestBody FindPasswordRequestDTO findPasswordRequestDTO) {
+        memberService.findPassword(findPasswordRequestDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<Integer> changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
+        return ResponseEntity.ok(memberService.changePassword(changePasswordRequestDTO));
     }
 
     @GetMapping("/login/renew")

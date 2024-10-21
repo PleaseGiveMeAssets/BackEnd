@@ -24,7 +24,7 @@ public interface UserMapper {
     // 아이디찾기
     List<User> findMemberByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
 
-    User selectUserByIdAndNameAndPhone(FindPasswordRequestDTO findPasswordRequestDTO);
+    List<User> selectUserByIdAndNameAndPhone(FindPasswordRequestDTO findPasswordRequestDTO);
 
     int updatePasswordById(@Param("userId") String userId, @Param("password") String password);
 

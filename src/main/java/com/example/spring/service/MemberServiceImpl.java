@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -148,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 비밀번호 찾기
     @Override
-    public int findPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
+    public void findPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
         if (log.isInfoEnabled()) {
             log.info("findPassword findPasswordRequestDTO : {}", findPasswordRequestDTO.toString());
         }
@@ -157,29 +158,44 @@ public class MemberServiceImpl implements MemberService {
         checkVerifyCodeForFindPassword(findPasswordRequestDTO);
 
         // 아이디, 이름, 휴대폰번호로 유저 정보가 존재하는지 조회
-        User user = userMapper.selectUserByIdAndNameAndPhone(findPasswordRequestDTO);
-        if (user == null) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        List<User> users = userMapper.selectUserByIdAndNameAndPhone(findPasswordRequestDTO);
+        if (users.isEmpty()) {
+            throw new NoMatchingUserException(ResultCodeEnum.NO_MATCHING_USER.getMessage());
         }
 
-        // 핸드폰 번호 마지막 부분 복호화
-        String decryptedPhoneLast = encryptionService.decrypt(user.getPhoneLast());
-        log.info("입력한 핸드폰 번호 마지막 자리: {}", findPasswordRequestDTO.getPhoneLast());
-        log.info("USER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
+        boolean isPasswordChanged = false;
 
-        if (!findPasswordRequestDTO.getPhoneLast().equals(decryptedPhoneLast)) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        for(User user: users) {
+
+            String decryptedPhoneLast = encryptionService.decrypt(user.getPhoneLast());
+
+            if(decryptedPhoneLast.equals(findPasswordRequestDTO.getPhoneLast())) {
+                ChangePasswordRequestDTO changePasswordRequestDTO = new ChangePasswordRequestDTO();
+                changePasswordRequestDTO.setUserId(user.getUserId());
+                changePasswordRequestDTO.setPassword(findPasswordRequestDTO.getPassword());
+                changePasswordRequestDTO.setPasswordConfirmation(findPasswordRequestDTO.getPasswordConfirmation());
+                changePassword(changePasswordRequestDTO);
+                isPasswordChanged = true;
+                break;
+            }
         }
 
-        if (!findPasswordRequestDTO.getPassword().equals(findPasswordRequestDTO.getPasswordConfirmation())) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
+        if(!isPasswordChanged) {
+            throw new NoMatchingUserException(ResultCodeEnum.NO_MATCHING_USER.getMessage());
+        }
+    }
+
+    // 비밀번호 변경
+    @Override
+    public int changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+        String newPassword = changePasswordRequestDTO.getPassword();
+        if(newPassword.equals(changePasswordRequestDTO.getPasswordConfirmation())) {
+            String password = passwordEncoder.encode(newPassword);
+            userMapper.updatePasswordById(changePasswordRequestDTO.getUserId(), password);
+            return 1;
+        } else {
             throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
-
-        // DB에서 아이디, 이름, 휴대폰번호로 비밀번호 변경
-        return userMapper.updatePasswordById(findPasswordRequestDTO.getUserId(), passwordEncoder.encode(findPasswordRequestDTO.getPassword()));
     }
 
     // 로그인
@@ -188,24 +204,18 @@ public class MemberServiceImpl implements MemberService {
         // 사용자 정보 조회
         User user = userMapper.findByUserId(loginRequestDTO.getUserId());
         if (user == null) {
-            System.out.println("유저없음");
             throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
         // 계정 잠금 여부 확인
         int maxFailureCount = 5;
         if (user.getPasswordFailureCount() >= maxFailureCount) {
-            System.out.println("로그인횟수초과");
             throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
-
-        System.out.println("비밀번호: " + loginRequestDTO.getPassword());
-        System.out.println("있는 비번: " + user.getPassword());
 
         // 비밀번호 검증
         if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
             userMapper.incrementPasswordFailureCount(user.getUserId());
-            System.out.println("비밀번호틀림");
             throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
@@ -247,7 +257,6 @@ public class MemberServiceImpl implements MemberService {
         // 사용자 정보 조회
         User user = userMapper.findByUserId(loginRequestDTO.getUserId());
         if (user == null) {
-            System.out.println("유저없음");
             throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
@@ -264,9 +273,6 @@ public class MemberServiceImpl implements MemberService {
         // 액세스 토큰과 리프레시 토큰 생성
         String accessToken = jwtProcessor.generateToken(authentication.getName());
         String refreshToken = jwtProcessor.generateRefreshToken(authentication.getName());
-
-        System.out.println("accessToken: " + accessToken);
-        System.out.println("refreshToken: " + refreshToken);
 
         // Refresh Token을 HTTP-Only 쿠키로 설정
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
