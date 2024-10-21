@@ -17,7 +17,7 @@ public interface MemberService {
     // 아이디 찾기
     List<Map<String, Object>> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
 
-    // 비밀번호 찾기..
+    // 비밀번호 찾기
     void findPassword(FindPasswordRequestDTO findPasswordRequestDTO);
 
     // 비밀번호 변경
