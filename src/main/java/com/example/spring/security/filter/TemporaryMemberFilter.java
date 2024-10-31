@@ -20,7 +20,7 @@ public class TemporaryMemberFilter implements Filter {
             throws IOException, ServletException {
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            User tempMember = new User("testMember1", "123456", new ArrayList<>());
+            User tempMember = new User("testUser1", "123456", new ArrayList<>());
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(tempMember, null, tempMember.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

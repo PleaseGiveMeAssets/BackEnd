@@ -100,6 +100,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     public int createOrder(String memberId, Long stockId, OrderDTO orderDTO) {
         String shortCode = stockMapper.findShortCodeByStockId(stockId);
+        log.info(memberId);
         if (shortCode == null)
             return 0;
         return portfolioMapper.insert(memberId, stockId, shortCode, orderDTO);

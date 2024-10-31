@@ -22,7 +22,7 @@ public class DailyRecommendServiceTest {
 
     @Test
     public void getDailyRecommendStockInfo() {
-        String memberId = "testMember1";
+        String memberId = "testUser1";
         String date = "2024-09-26";
         List<DailyStockDTO> dailyStockDTOList = dailyRecommendService.getDailyRecommendStockInfo(memberId, date);
         assertTrue(dailyStockDTOList.size() > 0);
