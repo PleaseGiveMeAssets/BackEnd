@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class InterestCategory {
     private Long interestCategoryId;
-    private String userId;
+    private String memberId;
     private Long subCategoryId;
     private Timestamp createdAt;
     private Timestamp updatedAt;

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class RecommendStock {
     private Long recommendStockId;
-    private String userId;
+    private String memberId;
     private Long stockId;
     private String shortCode;
     private String content;

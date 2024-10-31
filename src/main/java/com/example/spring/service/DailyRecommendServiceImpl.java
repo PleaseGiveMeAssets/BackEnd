@@ -25,13 +25,13 @@ public class DailyRecommendServiceImpl implements DailyRecommendService {
      * <p>
      * 유저아이디와 날짜를 사용해 추천종목 리스트를 조회하는 메소드이다.
      *
-     * @param userId
+     * @param memberId
      * @param date
      * @return
      */
     @Override
-    public List<DailyStockDTO> getDailyRecommendStockInfo(String userId, String date) {
-        List<DailyStockDTO> dailyStockDTOList = stockMapper.selectListRecommendStockByUserId(userId, date);
+    public List<DailyStockDTO> getDailyRecommendStockInfo(String memberId, String date) {
+        List<DailyStockDTO> dailyStockDTOList = stockMapper.selectListRecommendStockByMemberId(memberId, date);
 
         if (dailyStockDTOList.isEmpty()) {
             throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());

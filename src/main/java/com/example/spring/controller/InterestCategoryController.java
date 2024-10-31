@@ -29,16 +29,16 @@ public class InterestCategoryController {
 
     // 사용자가 등록한 관심 세부 카테고리 불러오기
     @GetMapping("/interest")
-    public List<InterestCategoryDTO> getUserSubCategories(@AuthenticationPrincipal UserDetails userDetails) {
-        log.info("사용자가 등록한 관심 세부 카테고리 조회 요청 - userId: {}", userDetails.getUsername());
-        return interestCategoryService.getUserSubCategories(userDetails.getUsername());
+    public List<InterestCategoryDTO> getMemberSubCategories(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("사용자가 등록한 관심 세부 카테고리 조회 요청 - memberId: {}", userDetails.getUsername());
+        return interestCategoryService.getMemberSubCategories(userDetails.getUsername());
     }
 
     // 세부 카테고리 삭제
-    @DeleteMapping("/{userId}/{subCategoryId}")
-    public String deleteSubCategory(@PathVariable String userId, @PathVariable int subCategoryId) {
-        log.info("카테고리 삭제 요청 - userId: {}, subCategoryId: {}", userId, subCategoryId);
-        int result = interestCategoryService.deleteSubCategory(userId, subCategoryId);
+    @DeleteMapping("/{memberId}/{subCategoryId}")
+    public String deleteSubCategory(@PathVariable String memberId, @PathVariable int subCategoryId) {
+        log.info("카테고리 삭제 요청 - memberId: {}, subCategoryId: {}", memberId, subCategoryId);
+        int result = interestCategoryService.deleteSubCategory(memberId, subCategoryId);
         String message = result > 0 ? "삭제 성공" : "삭제 실패";
         log.info("카테고리 삭제 결과 - message: {}", message);
         return message;
@@ -55,9 +55,9 @@ public class InterestCategoryController {
     @PostMapping("/interest/{subCategoryId}")
     public String saveInterestCategory(@AuthenticationPrincipal UserDetails userDetails,
                                        @PathVariable int subCategoryId) {
-        String userId = userDetails.getUsername();
-        log.info("관심 항목 저장 요청 - userId: {}, subCategoryId: {}", userId, subCategoryId);
-        interestCategoryService.saveInterestCategory(userId, subCategoryId);
+        String memberId = userDetails.getUsername();
+        log.info("관심 항목 저장 요청 - memberId: {}, subCategoryId: {}", memberId, subCategoryId);
+        interestCategoryService.saveInterestCategory(memberId, subCategoryId);
         return "관심 항목에 추가되었습니다.";
     }
 }

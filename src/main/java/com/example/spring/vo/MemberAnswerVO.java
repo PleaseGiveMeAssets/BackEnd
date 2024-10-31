@@ -5,8 +5,8 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class UserAnswerVO {
-    private String userId;
+public class MemberAnswerVO {
+    private String memberId;
     private Long questionId;
     private Long questionOptionId;
     private Timestamp createdAt;

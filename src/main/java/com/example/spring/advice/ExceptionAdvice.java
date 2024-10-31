@@ -47,8 +47,8 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } // 이메일 양식x - INVALID_EMAIL_FORMAT
 
-    @ExceptionHandler(NoMatchingUserException.class)
-    public ResponseEntity<String> noMatchingUserException(NoMatchingUserException e) {
+    @ExceptionHandler(NoMatchingMemberException.class)
+    public ResponseEntity<String> noMatchingMemberException(NoMatchingMemberException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     } // 일치하는 회원X
 
@@ -57,8 +57,8 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<String> userAlreadyExistsException(UserAlreadyExistsException e) {
+    @ExceptionHandler(MemberAlreadyExistsException.class)
+    public ResponseEntity<String> memberAlreadyExistsException(MemberAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     } // 회원가입 시 중복된 아이디 - DUPLICATED_MEMBER_ID
 
@@ -73,8 +73,8 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } // 인증 코드x - INVALID_VERIFICAITION_CODE
 
-    @ExceptionHandler(UserAnswerProcessingException.class)
-    public ResponseEntity<String> handleUserAnswerProcessingException(UserAnswerProcessingException e) {
+    @ExceptionHandler(MemberAnswerProcessingException.class)
+    public ResponseEntity<String> handleMemberAnswerProcessingException(MemberAnswerProcessingException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()); //옵션 선택값 입력/수정 실패
     } //설문지 옵션값 insert update 오류
 
@@ -105,7 +105,7 @@ public class ExceptionAdvice {
     } // 이메일 인증x - INVALID_EMAIL_VERIFICATION
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<String> usernameNotFoundException(UsernameNotFoundException e) {
+    public ResponseEntity<String> membernameNotFoundException(UsernameNotFoundException e) {
         return ResponseEntity.status(ResultCodeEnum.SESSION_EXPIRATION.getHttpStatus()).body(e.getMessage());
     }
 
@@ -114,9 +114,9 @@ public class ExceptionAdvice {
         return ResponseEntity.status(ResultCodeEnum.NO_EXIST_DATA.getHttpStatus()).body(e.getMessage());
     }
 
-    @ExceptionHandler(UserIdNotFoundException.class)
-    ResponseEntity<String> userIdNotFoundException(UserIdNotFoundException e) {
-        return ResponseEntity.status(ResultCodeEnum.NO_EXIST_USER_ID.getHttpStatus()).body(e.getMessage());
+    @ExceptionHandler(MemberIdNotFoundException.class)
+    ResponseEntity<String> memberIdNotFoundException(MemberIdNotFoundException e) {
+        return ResponseEntity.status(ResultCodeEnum.NO_EXIST_MEMBER_ID.getHttpStatus()).body(e.getMessage());
     }
 
     @ExceptionHandler(SessionExpiredException.class)

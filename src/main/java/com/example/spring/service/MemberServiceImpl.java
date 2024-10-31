@@ -1,11 +1,11 @@
 package com.example.spring.service;
 
 import com.example.spring.domain.TermsOfUse;
-import com.example.spring.domain.User;
+import com.example.spring.domain.Member;
 import com.example.spring.dto.*;
 import com.example.spring.exception.*;
 import com.example.spring.mapper.TermsOfUseMapper;
-import com.example.spring.mapper.UserMapper;
+import com.example.spring.mapper.MemberMapper;
 import com.example.spring.security.util.JwtProcessor;
 import com.example.spring.service.oauth.KaKaoOauthServiceImpl;
 import com.example.spring.util.MemberCodeEnum;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class MemberServiceImpl implements MemberService {
-    private UserMapper userMapper;
+    private MemberMapper memberMapper;
     private TermsOfUseMapper termsOfUseMapper;
     private PasswordEncoder passwordEncoder;
     private SmsService smsService;
@@ -44,8 +44,8 @@ public class MemberServiceImpl implements MemberService {
     private KaKaoOauthServiceImpl kaKaoOauthServiceImpl;
 
     @Autowired
-    public MemberServiceImpl(UserMapper userMapper, TermsOfUseMapper termsOfUseMapper, PasswordEncoder passwordEncoder, SmsService smsService, JwtProcessor jwtProcessor) {
-        this.userMapper = userMapper;
+    public MemberServiceImpl(MemberMapper memberMapper, TermsOfUseMapper termsOfUseMapper, PasswordEncoder passwordEncoder, SmsService smsService, JwtProcessor jwtProcessor) {
+        this.memberMapper = memberMapper;
         this.termsOfUseMapper = termsOfUseMapper;
         this.passwordEncoder = passwordEncoder;
         this.smsService = smsService;
@@ -73,7 +73,7 @@ public class MemberServiceImpl implements MemberService {
         checkVerifyCodeForSignup(memberDTO);
 
         // 아이디 중복 체크
-        checkDuplicatedUserId(memberDTO.getUserId());
+        checkDuplicatedMemberId(memberDTO.getMemberId());
 
         // 비밀번호 체크
         checkPassword(memberDTO);
@@ -89,12 +89,12 @@ public class MemberServiceImpl implements MemberService {
         memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
         memberDTO.setPhoneLast(encryptedPhoneLast);
 
-        return userMapper.insertUser(memberDTO);
+        return memberMapper.insertMember(memberDTO);
     }
 
     @Override
     public int socialSignup(SocialMemberDTO socialMemberDTO) {
-        return userMapper.insertSocialUser(socialMemberDTO);
+        return memberMapper.insertSocialMember(socialMemberDTO);
     }
 
     // 아이디 찾기
@@ -108,33 +108,33 @@ public class MemberServiceImpl implements MemberService {
         checkVerifyCodeForFindId(findIdRequestDTO);
 
         // DB에서 이름, phoneFirst, phoneMiddle로 회원 정보 조회
-        List<User> users = userMapper.findMemberByNameAndPhone(findIdRequestDTO);
-        if (users.isEmpty()) {
-            System.out.println("USER 없다");
-            throw new NoMatchingUserException(ResultCodeEnum.NO_MATCHING_USER.getMessage());
+        List<Member> members = memberMapper.findMemberByNameAndPhone(findIdRequestDTO);
+        if (members.isEmpty()) {
+            System.out.println("MEMBER 없다");
+            throw new NoMatchingMemberException(ResultCodeEnum.NO_MATCHING_MEMBER.getMessage());
         }
 
         // 핸드폰 번호 마지막 부분 복호화
-        String decryptedPhoneLast = encryptionService.decrypt(users.get(0).getPhoneLast());
+        String decryptedPhoneLast = encryptionService.decrypt(members.get(0).getPhoneLast());
         log.info("입력한 핸드폰 번호 마지막 자리: {}", findIdRequestDTO.getPhoneLast());
-        log.info("USER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
+        log.info("MEMBER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
 
         if (!findIdRequestDTO.getPhoneLast().equals(decryptedPhoneLast)) {
             System.out.println("복호화된 뒷자리 다르다");
-            throw new NoMatchingUserException(ResultCodeEnum.NO_MATCHING_USER.getMessage());
+            throw new NoMatchingMemberException(ResultCodeEnum.NO_MATCHING_MEMBER.getMessage());
         }
         // 회원 목록에서 입력된 phoneLast와 일치하는 회원 찾기
         List<Map<String, Object>> results = new ArrayList<>();
 
-        for (User user : users) {
+        for (Member member : members) {
             Map<String, Object> result = new HashMap<>();
             result = new HashMap<>();
-            result.put("userId", user.getUserId());
-            result.put("createdAt", user.getCreatedAt());
+            result.put("memberId", member.getMemberId());
+            result.put("createdAt", member.getCreatedAt());
 
-            if (user.getSns() == null || user.getSns().isEmpty()) {
+            if (member.getSns() == null || member.getSns().isEmpty()) {
                 result.put("sns", null);
-            } else if ("kakao".equals(user.getSns())) {
+            } else if ("kakao".equals(member.getSns())) {
                 result.put("sns", "kakao");
             } else {
                 result.put("sns", "naver");
@@ -157,16 +157,16 @@ public class MemberServiceImpl implements MemberService {
         checkVerifyCodeForFindPassword(findPasswordRequestDTO);
 
         // 아이디, 이름, 휴대폰번호로 유저 정보가 존재하는지 조회
-        User user = userMapper.selectUserByIdAndNameAndPhone(findPasswordRequestDTO);
-        if (user == null) {
+        Member member = memberMapper.selectMemberByIdAndNameAndPhone(findPasswordRequestDTO);
+        if (member == null) {
             // TODO 익셉션이랑 결과메시지 변경할 것
             throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
         // 핸드폰 번호 마지막 부분 복호화
-        String decryptedPhoneLast = encryptionService.decrypt(user.getPhoneLast());
+        String decryptedPhoneLast = encryptionService.decrypt(member.getPhoneLast());
         log.info("입력한 핸드폰 번호 마지막 자리: {}", findPasswordRequestDTO.getPhoneLast());
-        log.info("USER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
+        log.info("MEMBER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
 
         if (!findPasswordRequestDTO.getPhoneLast().equals(decryptedPhoneLast)) {
             // TODO 익셉션이랑 결과메시지 변경할 것
@@ -179,42 +179,42 @@ public class MemberServiceImpl implements MemberService {
         }
 
         // DB에서 아이디, 이름, 휴대폰번호로 비밀번호 변경
-        return userMapper.updatePasswordById(findPasswordRequestDTO.getUserId(), passwordEncoder.encode(findPasswordRequestDTO.getPassword()));
+        return memberMapper.updatePasswordById(findPasswordRequestDTO.getMemberId(), passwordEncoder.encode(findPasswordRequestDTO.getPassword()));
     }
 
     // 로그인
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response) {
         // 사용자 정보 조회
-        User user = userMapper.findByUserId(loginRequestDTO.getUserId());
-        if (user == null) {
+        Member member = memberMapper.findByMemberId(loginRequestDTO.getMemberId());
+        if (member == null) {
             System.out.println("유저없음");
             throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
         // 계정 잠금 여부 확인
         int maxFailureCount = 5;
-        if (user.getPasswordFailureCount() >= maxFailureCount) {
+        if (member.getPasswordFailureCount() >= maxFailureCount) {
             System.out.println("로그인횟수초과");
             throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
         System.out.println("비밀번호: " + loginRequestDTO.getPassword());
-        System.out.println("있는 비번: " + user.getPassword());
+        System.out.println("있는 비번: " + member.getPassword());
 
         // 비밀번호 검증
-        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
-            userMapper.incrementPasswordFailureCount(user.getUserId());
+        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), member.getPassword())) {
+            memberMapper.incrementPasswordFailureCount(member.getMemberId());
             System.out.println("비밀번호틀림");
             throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
-        userMapper.resetPasswordFailureCount(user.getUserId()); // 비밀번호 입력 횟수 리셋~~~
+        memberMapper.resetPasswordFailureCount(member.getMemberId()); // 비밀번호 입력 횟수 리셋~~~
 
         // 인증 객체 생성
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user.getUserId(),
+                member.getMemberId(),
                 loginRequestDTO.getPassword(),
                 authorities
         );
@@ -245,16 +245,16 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public LoginResponseDTO socialLogin(LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response) {
         // 사용자 정보 조회
-        User user = userMapper.findByUserId(loginRequestDTO.getUserId());
-        if (user == null) {
+        Member member = memberMapper.findByMemberId(loginRequestDTO.getMemberId());
+        if (member == null) {
             System.out.println("유저없음");
             throw new InvalidCredentialsException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
         // 인증 객체 생성
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user.getUserId(),
+                member.getMemberId(),
                 null, // 비밀번호x - null
                 authorities
         );
@@ -299,10 +299,10 @@ public class MemberServiceImpl implements MemberService {
         // 현재 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            String userId = authentication.getName();
-            User user = userMapper.findByUserId(userId);
+            String memberId = authentication.getName();
+            Member member = memberMapper.findByMemberId(memberId);
 
-            if (user != null && MemberCodeEnum.KAKAO.getValue().equals(user.getSns())) {
+            if (member != null && MemberCodeEnum.KAKAO.getValue().equals(member.getSns())) {
                 if (kakaoAccessToken != null) {
                     // Kakao 로그아웃 처리
                     kakaoLogoutUrl = kaKaoOauthServiceImpl.kakaoLogout();
@@ -413,13 +413,13 @@ public class MemberServiceImpl implements MemberService {
      * <p>
      * 아이디로 중복 체크하는 메소드이다.
      *
-     * @param userId
+     * @param memberId
      */
-    private void checkDuplicatedUserId(String userId) {
-        int userCount = userMapper.selectUserById(userId);
+    private void checkDuplicatedMemberId(String memberId) {
+        int memberCount = memberMapper.selectMemberById(memberId);
 
-        if (userCount > 0) {
-            throw new UserAlreadyExistsException(ResultCodeEnum.DUPLICATED_MEMBER_ID.getMessage());
+        if (memberCount > 0) {
+            throw new MemberAlreadyExistsException(ResultCodeEnum.DUPLICATED_MEMBER_ID.getMessage());
         }
     }
 
@@ -451,8 +451,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 핸드폰 번호로 회원 찾기
-    public User findByPhoneNumber(String phoneFirst, String phoneMiddle) {
-        return userMapper.findMemberByPhoneNumber(phoneFirst, phoneMiddle);
+    public Member findByPhoneNumber(String phoneFirst, String phoneMiddle) {
+        return memberMapper.findMemberByPhoneNumber(phoneFirst, phoneMiddle);
     }
 
     // 임시 비밀번호 생성
@@ -465,22 +465,22 @@ public class MemberServiceImpl implements MemberService {
         boolean isValidToken = jwtProcessor.validateToken(token);
 
         if (isValidToken) {
-            String userId = jwtProcessor.getUsername(token);
-            User user = userMapper.findByUserId(userId);
+            String memberId = jwtProcessor.getUsername(token);
+            Member member = memberMapper.findByMemberId(memberId);
 
-            if (user == null) {
-                throw new UserIdNotFoundException(ResultCodeEnum.NO_EXIST_USER_ID.getMessage());
+            if (member == null) {
+                throw new MemberIdNotFoundException(ResultCodeEnum.NO_EXIST_MEMBER_ID.getMessage());
             }
 
             if (log.isInfoEnabled()) {
-                log.info("renewLogin user : {}", user);
+                log.info("renewLogin member : {}", member);
             }
 
-            if (MemberCodeEnum.Y.getValue().equals(user.getAutoLogin().toString())) {
+            if (MemberCodeEnum.Y.getValue().equals(member.getAutoLogin().toString())) {
                 // 인증 객체 생성
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        user.getUserId(),
-                        user.getPassword() // 비밀번호x - null
+                        member.getMemberId(),
+                        member.getPassword() // 비밀번호x - null
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);

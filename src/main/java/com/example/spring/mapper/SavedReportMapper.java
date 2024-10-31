@@ -10,9 +10,9 @@ import java.util.List;
 
 @Mapper
 public interface SavedReportMapper {
-    List<DailyReport> findAllSavedReportsByUserId(String userId);
+    List<DailyReport> findAllSavedReportsByMemberId(String memberId);
 
     void save(SavedReport savedReport);
 
-    void deleteByUserIdAndSavedReportId(@Param("userId") String userId, @Param("savedReportId") Long savedReportId);
+    void deleteByMemberIdAndSavedReportId(@Param("memberId") String memberId, @Param("savedReportId") Long savedReportId);
 }

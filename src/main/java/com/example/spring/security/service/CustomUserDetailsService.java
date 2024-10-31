@@ -1,7 +1,7 @@
 package com.example.spring.security.service;
 
-import com.example.spring.domain.User;
-import com.example.spring.mapper.UserMapper;
+import com.example.spring.domain.Member;
+import com.example.spring.mapper.MemberMapper;
 import com.example.spring.util.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserMapper userMapper;
+    private final MemberMapper memberMapper;
 
     @Autowired
-    public CustomUserDetailsService(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public CustomUserDetailsService(MemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userMapper.findByUserId(username);
+        Member member = memberMapper.findByMemberId(username);
 
-        if (user != null) {
+        if (member != null) {
             // 비밀번호가 null인 경우 빈 문자열로 대체
-            String password = user.getPassword();
+            String password = member.getPassword();
 
-            if (user.getSns() != null) {
+            if (member.getSns() != null) {
                 // 소셜 로그인 사용자
                 password = password != null ? password : "";
             } else {
@@ -35,9 +35,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                     throw new IllegalArgumentException("일반 사용자의 비밀번호는 null일 수 없습니다.");
                 }
             }
-            return org.springframework.security.core.userdetails.User.withUsername(user.getUserId())
+            return org.springframework.security.core.userdetails.User.withUsername(member.getMemberId())
                     .password(password)
-                    .roles("USER")
+                    .roles("MEMBER")
                     .build();
         }
         throw new UsernameNotFoundException(ResultCodeEnum.SESSION_EXPIRATION.getMessage());

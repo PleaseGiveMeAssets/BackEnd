@@ -1,6 +1,6 @@
 package com.example.spring.domain;
 
-import com.example.spring.vo.UserAnswerVO;
+import com.example.spring.vo.MemberAnswerVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +14,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private String userId;
+public class Member {
+    private String memberId;
     private String password;
     private Integer passwordFailureCount;
     private String phoneFirst;
@@ -39,7 +39,7 @@ public class User {
     private Timestamp updatedAt;
     private List<Notification> notificationList;
     private InvestmentType investmentType;
-    private List<UserAnswerVO> userAnswerVOList;
+    private List<MemberAnswerVO> memberAnswerVOList;
     private List<SavedReport> savedReportList;
     private List<DailyReport> dailyReportList;
     private List<Portfolio> portfolioList;
@@ -50,9 +50,9 @@ public class User {
     private String sns;
 
 
-    // user 프로필 조회를 위한 생성자
-    public User(String userId, String profileImageUrl, String nickname,String name) {
-        this.userId = userId;
+    // member 프로필 조회를 위한 생성자
+    public Member(String memberId, String profileImageUrl, String nickname,String name) {
+        this.memberId = memberId;
         this.profileImageUrl = profileImageUrl;
         this.nickname = nickname;
         this.name = name;

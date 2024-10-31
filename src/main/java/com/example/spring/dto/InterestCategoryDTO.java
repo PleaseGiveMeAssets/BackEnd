@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 @Data
 public class InterestCategoryDTO {
 
-    private String userId;            // 사용자 ID
+    private String memberId;            // 사용자 ID
     private int mainCategoryId;       // 주 카테고리 ID
     private String mainCategoryName;   // 주 카테고리 이름
     private int subCategoryId;         // 하위 카테고리 ID

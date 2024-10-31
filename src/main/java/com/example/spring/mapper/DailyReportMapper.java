@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface DailyReportMapper {
-    List<DailyReport> selectDailyReportByUserId(String userId);
+    List<DailyReport> selectDailyReportByMemberId(String memberId);
 }

@@ -13,15 +13,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TemporaryUserFilter implements Filter {
+public class TemporaryMemberFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            User tempUser = new User("testUser1", "123456", new ArrayList<>());
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(tempUser, null, tempUser.getAuthorities());
+            User tempMember = new User("testMember1", "123456", new ArrayList<>());
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(tempMember, null, tempMember.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

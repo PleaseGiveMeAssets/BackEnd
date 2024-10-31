@@ -2,7 +2,7 @@ package com.example.spring.mapper;
 
 import com.example.spring.domain.EditStockPortfolio;
 import com.example.spring.domain.Stock;
-import com.example.spring.domain.UserStockPortfolio;
+import com.example.spring.domain.MemberStockPortfolio;
 import com.example.spring.dto.DailyStockDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,11 +18,11 @@ public interface StockMapper {
 
     String findShortCodeByStockId(Long stockId);
 
-    List<DailyStockDTO> selectListRecommendStockByUserId(@Param("userId") String userId, @Param("date") String date);
+    List<DailyStockDTO> selectListRecommendStockByMemberId(@Param("memberId") String memberId, @Param("date") String date);
 
-    List<UserStockPortfolio> getUserStockPortfolio(@Param("userId") String userId);
+    List<MemberStockPortfolio> getMemberStockPortfolio(@Param("memberId") String memberId);
 
-    List<Stock> selectListPortfolioByUserId(String userId);
+    List<Stock> selectListPortfolioByMemberId(String memberId);
 
-    EditStockPortfolio getUserStockPortfolioByDate(@Param("userId") String userId, @Param("endDate") Timestamp timestamp, @Param("stockId") Long stockId);
+    EditStockPortfolio getMemberStockPortfolioByDate(@Param("memberId") String memberId, @Param("endDate") Timestamp timestamp, @Param("stockId") Long stockId);
 }

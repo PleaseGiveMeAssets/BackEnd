@@ -21,9 +21,9 @@ public class DailyReportMapperTest {
     private DailyReportMapper dailyReportMapper;
 
     @Test
-    public void selectDailyReportByUserId() {
-        String userId = "testUser1";
-        List<DailyReport> dailyReportList = dailyReportMapper.selectDailyReportByUserId(userId);
+    public void selectDailyReportByMemberId() {
+        String memberId = "testMember1";
+        List<DailyReport> dailyReportList = dailyReportMapper.selectDailyReportByMemberId(memberId);
         assertTrue(dailyReportList.size() > 0);
     }
 }

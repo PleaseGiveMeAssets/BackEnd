@@ -7,7 +7,7 @@
         SELECT PHONE_FIRST AS phoneFirst
         , PHONE_MIDDLE AS phoneMiddle
         , PHONE_LAST AS phoneLast
-        , USER_ID AS userId
+        , MEMBER_ID AS memberId
         , PHONE_VERIFICATION_CODE AS phoneVerificationCode
         , PHONE_VERIFIED_STATUS AS phoneVerifiedStatus
         FROM MEMBER_SMS

@@ -1,15 +1,16 @@
 package com.example.spring.controller;
 
-import com.example.spring.domain.UserStockPortfolio;
+import com.example.spring.domain.MemberStockPortfolio;
 import com.example.spring.dto.StockHistoryDTO;
 import com.example.spring.dto.StockIndexDTO;
-import com.example.spring.dto.UserTotalStockPortfolioPowerDTO;
+import com.example.spring.dto.MemberTotalStockPortfolioPowerDTO;
 import com.example.spring.service.StockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -47,8 +48,8 @@ public class StockController {
         return ResponseEntity.ok(stockService.findIndexByStockId(stockId));
     }
     @GetMapping()
-    public ResponseEntity<List<UserStockPortfolio>> getUserStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(stockService.getUserStockPortfolio(userDetails.getUsername()));
+    public ResponseEntity<List<MemberStockPortfolio>> getMemberStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(stockService.getMemberStockPortfolio(userDetails.getUsername()));
     }
     @GetMapping("/validateselldata")
     public ResponseEntity<?> validateSellData(@AuthenticationPrincipal UserDetails userDetails, @RequestParam String endDate, @RequestParam Long stockId) {
@@ -57,14 +58,14 @@ public class StockController {
         try {
             Date parsedDate = dateFormat.parse(endDate);
             Timestamp timestamp = new Timestamp(parsedDate.getTime());
-            return ResponseEntity.ok(stockService.getUserStockPortfolioByDate(userDetails.getUsername(), timestamp, stockId));
+            return ResponseEntity.ok(stockService.getMemberStockPortfolioByDate(userDetails.getUsername(), timestamp, stockId));
         } catch (ParseException e) {
             return ResponseEntity.badRequest().body("Invalid date format");
         }
     }
 
     @GetMapping("/total")
-    public ResponseEntity<UserTotalStockPortfolioPowerDTO> getUserTotalStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(stockService.getUserTotalStockPortfolio(userDetails.getUsername()));
+    public ResponseEntity<MemberTotalStockPortfolioPowerDTO> getMemberTotalStockPortfolio(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(stockService.getMemberTotalStockPortfolio(userDetails.getUsername()));
     }
 }

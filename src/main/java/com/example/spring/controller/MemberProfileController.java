@@ -1,7 +1,8 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.UserDTO;
-import com.example.spring.service.UserProfileService;
+import com.example.spring.dto.MemberDTO;
+import com.example.spring.dto.MemberProfileDTO;
+import com.example.spring.service.MemberProfileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,24 +16,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/user/profile")
+@RequestMapping("/api/v1/member/profile")
 @Slf4j
-public class UserProfileController {
+public class MemberProfileController {
 
-    private final UserProfileService userProfileService;
+    private final MemberProfileService memberProfileService;
 
     @Autowired
-    public UserProfileController(UserProfileService userProfileService) {
-        this.userProfileService = userProfileService;
+    public MemberProfileController(MemberProfileService memberProfileService) {
+        this.memberProfileService = memberProfileService;
     }
 
     @GetMapping
-    public ResponseEntity<UserDTO> getUserProfile(@AuthenticationPrincipal UserDetails userDetails ) {
+    public ResponseEntity<MemberProfileDTO> getMemberProfile(@AuthenticationPrincipal UserDetails userDetails ) {
 
-        UserDTO userProfile = userProfileService.getUserProfile(userDetails.getUsername());
+        MemberProfileDTO memberProfile = memberProfileService.getMemberProfile(userDetails.getUsername());
 
-        if (userProfile != null) {
-            return new ResponseEntity<>(userProfile, HttpStatus.OK);
+        if (memberProfile != null) {
+            return new ResponseEntity<>(memberProfile, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 public class SavedNews {
     private Long savedNewsId;
     private Long newsId;
-    private String userId;
+    private String memberId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

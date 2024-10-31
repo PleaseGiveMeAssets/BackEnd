@@ -10,6 +10,6 @@ import java.util.List;
 
 @Mapper
 public interface PortfolioHistoryMapper {
-    List<TotalStockInfoDTO> selectListStockPortfolioByUserId(@Param("userId") String userId, @Param("startDateFormat") String startDateFormat, @Param("endDateFormat") String endDateFormat);
-    List<TotalInvestedSumStockPortfolio> getUserStockPortfolioTotalInvestedAmountByDate(@Param("userId") String userId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<TotalStockInfoDTO> selectListStockPortfolioByMemberId(@Param("memberId") String memberId, @Param("startDateFormat") String startDateFormat, @Param("endDateFormat") String endDateFormat);
+    List<TotalInvestedSumStockPortfolio> getMemberStockPortfolioTotalInvestedAmountByDate(@Param("memberId") String memberId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

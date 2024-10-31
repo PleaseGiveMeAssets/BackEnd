@@ -24,25 +24,25 @@ public class NotificationController {
 
     // 특정 사용자의 알림 목록 불러오기 (DTO로 반환)
     @GetMapping
-    public ResponseEntity<List<NotificationDTO>> getNotificationsByUserId(@AuthenticationPrincipal UserDetails userDetails) {
-        log.info("알림 목록 조회 요청 - userId: {}", userDetails.getUsername());
-        List<NotificationDTO> notifications = notificationService.getNotificationsByUserId(userDetails.getUsername());
+    public ResponseEntity<List<NotificationDTO>> getNotificationsByMemberId(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("알림 목록 조회 요청 - memberId: {}", userDetails.getUsername());
+        List<NotificationDTO> notifications = notificationService.getNotificationsByMemberId(userDetails.getUsername());
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 
     // 특정 알림 삭제하기
     @DeleteMapping("/{notificationId}")
     public ResponseEntity<String> deleteNotificationById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int notificationId) {
-        log.info("알림 삭제 요청 - userId: {}, notificationId: {}", userDetails.getUsername(), notificationId);
+        log.info("알림 삭제 요청 - memberId: {}, notificationId: {}", userDetails.getUsername(), notificationId);
         notificationService.deleteNotificationById(notificationId, userDetails.getUsername());
         return new ResponseEntity<>("알림이 삭제되었습니다.", HttpStatus.OK);
     }
 
     // 특정 사용자의 모든 알림 삭제하기
     @DeleteMapping("/all")
-    public ResponseEntity<String> deleteAllNotificationsByUserId(@AuthenticationPrincipal UserDetails userDetails) {
-        log.info("알림 전체 삭제 요청 - userId: {}", userDetails.getUsername());
-        notificationService.deleteAllNotificationsByUserId(userDetails.getUsername());
+    public ResponseEntity<String> deleteAllNotificationsByMemberId(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("알림 전체 삭제 요청 - memberId: {}", userDetails.getUsername());
+        notificationService.deleteAllNotificationsByMemberId(userDetails.getUsername());
         return new ResponseEntity<>("모든 알림이 삭제되었습니다.", HttpStatus.OK);
     }
 }
