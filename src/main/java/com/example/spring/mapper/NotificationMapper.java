@@ -9,10 +9,10 @@ import java.util.List;
 @Mapper
 public interface NotificationMapper {
 
-    List<Notification> getNotificationsByUserId(@Param("userId") String userId);
+    List<Notification> getNotificationsByMemberId(@Param("memberId") String memberId);
 
-    int deleteNotificationById(@Param("notificationId") int notificationId, @Param("userId") String userId);
+    int deleteNotificationById(@Param("notificationId") int notificationId, @Param("memberId") String memberId);
 
-    int deleteAllNotificationsByUserId(@Param("userId") String userId);
+    int deleteAllNotificationsByMemberId(@Param("memberId") String memberId);
 
 }

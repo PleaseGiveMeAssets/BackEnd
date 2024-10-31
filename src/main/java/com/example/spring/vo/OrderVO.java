@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class OrderVO {
 
     private int orderId;          // 주문 ID
-    private String userId;        // 사용자 ID
+    private String memberId;        // 사용자 ID
     private int stockId;          // 주식 ID
     private String standardCode;  // 표준 코드
     private long price;           // 가격

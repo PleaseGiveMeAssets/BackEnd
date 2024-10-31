@@ -31,7 +31,7 @@ public class PortfolioServiceTest {
     @DisplayName("포트폴리오 종목 요약 조회 : 종목이 없으면 성공")
     public void successNotExistOrderSummary() {
         assertThrows(IllegalArgumentException.class, () -> {
-            portfolioService.getOrderSummary("testUser1", 3167L);
+            portfolioService.getOrderSummary("testMember1", 3167L);
         });
     }
 
@@ -45,7 +45,7 @@ public class PortfolioServiceTest {
         orderDTO.setMemo("test");
         orderDTO.setOrderedAt(Timestamp.valueOf(LocalDateTime.now()));
         orderDTO.setOrderType('B');
-        int status = portfolioService.createOrder("testUser1", 3167L, orderDTO);
+        int status = portfolioService.createOrder("testMember1", 3167L, orderDTO);
         assertEquals(0, status);
     }
 
@@ -67,7 +67,7 @@ public class PortfolioServiceTest {
     @Transactional
     @DisplayName("포트폴리오 종목 조회")
     public void selectOrders(){
-        OrderHistoryDTO orderHistory = portfolioService.getOrders("testUser1", 27777L);
+        OrderHistoryDTO orderHistory = portfolioService.getOrders("testMember1", 27777L);
         
     }
 }

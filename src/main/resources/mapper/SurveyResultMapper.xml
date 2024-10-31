@@ -7,23 +7,23 @@
 
     <!-- 투자 유형 답변 삽입 쿼리 -->
     <insert id="insertInvestmentTypeAnswer" parameterType="com.example.spring.domain.InvestmentTypeAnswer">
-        INSERT INTO INVESTMENT_TYPE_ANSWER (USER_ID, INVESTMENT_TYPE_ID, CREATED_AT, UPDATED_AT)
-        VALUES (#{userId}, #{investmentTypeId}, NOW(), NOW())
+        INSERT INTO INVESTMENT_TYPE_ANSWER (MEMBER_ID, INVESTMENT_TYPE_ID, CREATED_AT, UPDATED_AT)
+        VALUES (#{memberId}, #{investmentTypeId}, NOW(), NOW())
     </insert>
 
     <!-- 투자 유형 답변 업데이트 쿼리 -->
     <update id="updateInvestmentTypeAnswer" parameterType="com.example.spring.domain.InvestmentTypeAnswer">
         UPDATE INVESTMENT_TYPE_ANSWER
         SET INVESTMENT_TYPE_ID = #{investmentTypeId}, UPDATED_AT = NOW()
-        WHERE USER_ID = #{userId}
+        WHERE MEMBER_ID = #{memberId}
     </update>
 
     <!-- 총 점수를 계산하는 쿼리 -->
     <select id="getTotalScore" resultType="int" parameterType="string">
         SELECT SUM(questionOption.SCORE)
-        FROM USER_ANSWER userAnswer
-        JOIN QUESTION_OPTION questionOption ON userAnswer.QUESTION_OPTION_ID = questionOption.QUESTION_OPTION_ID
-        WHERE userAnswer.USER_ID = #{userId}
+        FROM MEMBER_ANSWER memberAnswer
+        JOIN QUESTION_OPTION questionOption ON memberAnswer.QUESTION_OPTION_ID = questionOption.QUESTION_OPTION_ID
+        WHERE memberAnswer.MEMBER_ID = #{memberId}
     </select>
 
     <!-- 점수에 따른 투자 유형 조회 쿼리 -->
@@ -39,10 +39,10 @@
     </select>
 
     <!-- 사용자 ID로 투자 유형 ID 가져오기 -->
-    <select id="getInvestmentTypeByUserId" parameterType="String" resultType="Long">
+    <select id="getInvestmentTypeByMemberId" parameterType="String" resultType="Long">
         SELECT INVESTMENT_TYPE_ID
         FROM INVESTMENT_TYPE_ANSWER
-        WHERE USER_ID = #{userId}
+        WHERE MEMBER_ID = #{memberId}
     </select>
 
     <!-- 투자 유형 ID로 투자 유형 상세 정보 가져오기 -->
@@ -52,10 +52,10 @@
         WHERE INVESTMENT_TYPE_ID = #{investmentTypeId}
     </select>
 
-    <select id="getUserNickname" resultType="String">
+    <select id="getMemberNickname" resultType="String">
         SELECT COALESCE(NICKNAME, NAME) AS NICKNAME
-        FROM USER
-        WHERE USER_ID = #{userId}
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
     </select>
 
 </mapper>

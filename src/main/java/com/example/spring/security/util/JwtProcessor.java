@@ -39,7 +39,7 @@ public class JwtProcessor {
                 .compact();
     } // 로컬스토리지
 
-    // JWT Subject(username) 추출 - 해석 불가인 경우 예외 발생
+    // JWT Subject(membername) 추출 - 해석 불가인 경우 예외 발생
     // 예외 ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException,
     //      IllegalArgumentException
     public String getUsername(String token) {

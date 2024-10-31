@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.spring.mapper.PortfolioHistoryMapper">
-    <select id="selectListStockPortfolioByUserId" parameterType="map" resultType="TotalStockInfoDTO">
+    <select id="selectListStockPortfolioByMemberId" parameterType="map" resultType="TotalStockInfoDTO">
 SELECT stockHistoryId                                             AS stockDate,
        SUM((IFNULL(closedPrice, price) - price) * quantity)       AS totalAmount
 FROM (
@@ -36,7 +36,7 @@ FROM (
              WHERE rk = 1
          ) AS sh ON s.STOCK_ID = sh.STOCK_ID
              AND s.SHORT_CODE = sh.SHORT_CODE
-         WHERE p.USER_ID = #{userId}
+         WHERE p.MEMBER_ID = #{memberId}
 
                  UNION ALL
 
@@ -63,14 +63,14 @@ FROM (
              AND p.ORDER_TYPE = 'S'
          WHERE DATE_FORMAT(p.ORDERED_AT, '%Y%m%d%h%m%s')
              BETWEEN #{startDateFormat} AND #{endDateFormat}
-           AND p.USER_ID = #{userId}
+           AND p.MEMBER_ID = #{memberId}
      ) tb
 WHERE stockHistoryId IS NOT NULL
 GROUP BY stockHistoryId
 ORDER BY 1;
     </select>
 
-    <select id="getUserStockPortfolioTotalInvestedAmountByDate" parameterType="map"
+    <select id="getMemberStockPortfolioTotalInvestedAmountByDate" parameterType="map"
             resultType="com.example.spring.domain.TotalInvestedSumStockPortfolio">
         <![CDATA[
         WITH RECURSIVE date_range (`date`) AS (
@@ -101,7 +101,7 @@ ORDER BY 1;
                          SUM(CASE WHEN p.ORDER_TYPE = 'B' THEN p.PRICE * p.QUANTITY ELSE 0 END) AS total_purchase_amount,
                          SUM(CASE WHEN p.ORDER_TYPE = 'S' THEN p.QUANTITY ELSE 0 END) AS total_quantity_sold
                      FROM PORTFOLIO p
-                     WHERE p.USER_ID = #{userId}
+                     WHERE p.MEMBER_ID = #{memberId}
                        AND DATE(p.ORDERED_AT) BETWEEN CAST(#{startDate} AS DATE) AND CAST(#{endDate} AS DATE)
                      GROUP BY p.STOCK_ID, ut_date
                  ) ut

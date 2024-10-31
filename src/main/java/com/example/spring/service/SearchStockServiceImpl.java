@@ -23,7 +23,7 @@ public class SearchStockServiceImpl implements SearchStockService {
         List<StockDTO> stockDTOList = searchStockMapper.findByStockName(stockName);
 
         log.info("stockDTOList : {}", stockDTOList);
-        log.info(System.getProperty("user.dir"));
+        log.info(System.getProperty("member.dir"));
         return stockDTOList;
     }
 }

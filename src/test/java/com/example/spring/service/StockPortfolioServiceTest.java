@@ -22,8 +22,8 @@ public class StockPortfolioServiceTest {
 
     @Test
     public void getStockPortfolioInfo() {
-        String userId = "testUser1";
-        List<ForChartDTO> orderList = stockPortfolioService.getOrderList(userId);
+        String memberId = "testMember1";
+        List<ForChartDTO> orderList = stockPortfolioService.getOrderList(memberId);
         assertTrue(!orderList.isEmpty());
     }
 }

@@ -9,10 +9,10 @@
     <!-- 로그 파일에 로그를 출력하는 설정 -->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--로그 파일 기본 경로-->
-        <file>${user.dir}/logs/server.log</file>
+        <file>${member.dir}/logs/server.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 로그 파일의 이름 형식 지정 -->
-            <fileNamePattern>${user.dir}/logs/server-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
+            <fileNamePattern>${member.dir}/logs/server-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <!-- 로그 파일 보관 기간 및 사이즈 설정 -->
             <maxHistory>30</maxHistory>
             <totalSizeCap>5GB</totalSizeCap>

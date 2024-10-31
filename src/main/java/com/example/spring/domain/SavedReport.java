@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class SavedReport {
     private Long savedReportId;
-    private String userId;
+    private String memberId;
     private Long dailyReportId;
     private Timestamp createdAt;
     private Timestamp updatedAt;

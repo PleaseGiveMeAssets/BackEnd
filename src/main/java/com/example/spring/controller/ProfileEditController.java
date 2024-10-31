@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/users/profile_edit")
+@RequestMapping("/api/v1/members/profile_edit")
 @Slf4j
 public class ProfileEditController {
 

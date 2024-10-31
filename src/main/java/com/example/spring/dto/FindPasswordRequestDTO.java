@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindPasswordRequestDTO {
-    private String userId;
+    private String memberId;
     private String name;
     private String phoneFirst;
     private String phoneMiddle;

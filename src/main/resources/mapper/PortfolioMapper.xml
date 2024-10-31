@@ -3,31 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.PortfolioMapper">
-    <resultMap id="selectListPortfolioByUserIdResultMap" type="Stock" autoMapping="true">
+    <resultMap id="selectListPortfolioByMemberIdResultMap" type="Stock" autoMapping="true">
         <id property="stockId" column="stockId"/>
         <collection property="portfolioList" ofType="Portfolio" autoMapping="true">
         </collection>
     </resultMap>
 
     <!-- 특정 사용자에 대한 주문 정보 조회 -->
-    <select id="selectOrdersByUserId" parameterType="string" resultType="Portfolio">
-        SELECT USER_ID AS userId, PRICE AS price, QUANTITY AS quantity
+    <select id="selectOrdersByMemberId" parameterType="string" resultType="Portfolio">
+        SELECT MEMBER_ID AS memberId, PRICE AS price, QUANTITY AS quantity
         FROM `PORTFOLIO`
-        WHERE USER_ID = #{userId}
+        WHERE MEMBER_ID = #{memberId}
     </select>
-    <select id="selectOrdersByUserIdAndStockId" parameterType="map" resultType="Portfolio">
+    <select id="selectOrdersByMemberIdAndStockId" parameterType="map" resultType="Portfolio">
         SELECT *
         FROM PORTFOLIO
         WHERE STOCK_ID = #{stockId}
-        AND USER_ID = #{userId}
+        AND MEMBER_ID = #{memberId}
         ORDER BY ORDERED_AT ASC, ORDER_TYPE ASC
 <!--        ORDER BY ORDERED_AT ASC, CREATED_AT ASC;-->
     </select>
     <insert id="insert" parameterType="map">
         INSERT INTO PORTFOLIO
-        ( USER_ID, STOCK_ID, SHORT_CODE, PRICE, QUANTITY, MEMO, ORDER_TYPE, ORDERED_AT)
+        ( MEMBER_ID, STOCK_ID, SHORT_CODE, PRICE, QUANTITY, MEMO, ORDER_TYPE, ORDERED_AT)
         VALUES
-        ( #{userId}, #{stockId}, #{shortCode}, #{orderDTO.price}, #{orderDTO.quantity},
+        ( #{memberId}, #{stockId}, #{shortCode}, #{orderDTO.price}, #{orderDTO.quantity},
         #{orderDTO.memo}, #{orderDTO.orderType}, #{orderDTO.orderedAt})
     </insert>
     <update id="update" parameterType="map">
@@ -51,11 +51,11 @@
     </delete>
     <delete id="deleteAllOrder" parameterType="map">
         DELETE FROM PORTFOLIO
-        WHERE USERID_ID = #{userID} AND
+        WHERE MEMBERID_ID = #{memberID} AND
         STOCK_ID = #{stockId}
     </delete>
 
-    <select id="selectListPortfolioByUserId" parameterType="string" resultMap="selectListPortfolioByUserIdResultMap">
+    <select id="selectListPortfolioByMemberId" parameterType="string" resultMap="selectListPortfolioByMemberIdResultMap">
         SELECT s.STOCK_ID AS stockID
         , s.SHORT_CODE AS shortCode
         , s.STOCK_NAME AS stockName
@@ -74,6 +74,6 @@
         FROM STOCK s
         JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
         AND s.SHORT_CODE = p.SHORT_CODE
-        WHERE p.USER_ID = #{userId}
+        WHERE p.MEMBER_ID = #{memberId}
     </select>
 </mapper>

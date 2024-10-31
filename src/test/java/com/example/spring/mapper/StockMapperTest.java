@@ -25,17 +25,17 @@ public class StockMapperTest {
     private StockMapper stockMapper;
 
     @Test
-    public void selectListRecommendStockByUserId() {
-        String userId = "testUser1";
+    public void selectListRecommendStockByMemberId() {
+        String memberId = "testMember1";
         String date = "2024-09-26";
-        List<DailyStockDTO> stockList = stockMapper.selectListRecommendStockByUserId(userId, date);
+        List<DailyStockDTO> stockList = stockMapper.selectListRecommendStockByMemberId(memberId, date);
         assertTrue(stockList.size() > 0);
     }
 
     @Test
-    public void selectListPortfolioByUserId() {
-        String userId = "testUser1";
-//        List<Stock> stockList = stockMapper.selectListPortfolioByUserId(userId);
+    public void selectListPortfolioByMemberId() {
+        String memberId = "testMember1";
+//        List<Stock> stockList = stockMapper.selectListPortfolioByMemberId(memberId);
 //        assertTrue(stockList.size() > 0);
     }
 

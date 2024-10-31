@@ -6,7 +6,7 @@ import com.example.spring.dto.SavedNewsDTO;
 import java.util.List;
 
 public interface SavedNewsService {
-    List<News> getSavedNews(String userId);
-    void saveNews(Long newsId, String userId);
-    void deleteNews(String userId, Long savedNewsId);
+    List<News> getSavedNews(String memberId);
+    void saveNews(Long newsId, String memberId);
+    void deleteNews(String memberId, Long savedNewsId);
 }

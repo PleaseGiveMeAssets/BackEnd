@@ -1,6 +1,6 @@
 package com.example.spring.service.oauth;
 
-import com.example.spring.domain.User;
+import com.example.spring.domain.Member;
 import com.example.spring.dto.LoginRequestDTO;
 import com.example.spring.dto.LoginResponseDTO;
 import com.example.spring.dto.SocialMemberDTO;
@@ -105,9 +105,9 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
     }
 
     @Override
-    public JsonObject getUserInfo(String access_Token) {
-        String reqURL = "https://kapi.kakao.com/v2/user/me"; // Access 토큰으로 유저 정보를 요청하는 API
-        JsonObject userInfo = new JsonObject();
+    public JsonObject getMemberInfo(String access_Token) {
+        String reqURL = "https://kapi.kakao.com/v2/member/me"; // Access 토큰으로 유저 정보를 요청하는 API
+        JsonObject memberInfo = new JsonObject();
 
         try {
             URL url = new URL(reqURL);
@@ -135,7 +135,7 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
             // ID 추출
             if (response.has("id")) {
                 String id = response.get("id").getAsString();
-                userInfo.addProperty("userId", id);
+                memberInfo.addProperty("memberId", id);
             }
 
             // 전화번호, 이메일, 이름 추출
@@ -149,11 +149,11 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
                 //이름
                 String name = kakao_account.get("name").getAsString();
 
-                userInfo.addProperty("email", email);
-                userInfo.addProperty("phoneNumber", phoneNumber);
-                userInfo.addProperty("name", name);
+                memberInfo.addProperty("email", email);
+                memberInfo.addProperty("phoneNumber", phoneNumber);
+                memberInfo.addProperty("name", name);
 
-                System.out.println("userInfo: " + userInfo.toString());
+                System.out.println("memberInfo: " + memberInfo.toString());
 
             }
             br.close(); // 자원 닫기
@@ -165,36 +165,36 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
             e.printStackTrace();
         }
 
-        return userInfo;  // 오류 발생 시에도 수집된 정보 반환
+        return memberInfo;  // 오류 발생 시에도 수집된 정보 반환
     }
 
     @Override
     public LoginResponseDTO processKakaoLogin(String code, HttpServletResponse response, HttpServletRequest request) {
         String accessToken = getAccessToken(code);
-        JsonObject userInfo = getUserInfo(accessToken);
+        JsonObject memberInfo = getMemberInfo(accessToken);
 
-        if (userInfo != null) {
-            String userId = userInfo.get("userId").getAsString();
-            String email = userInfo.get("email").getAsString();
-            String phoneNumber = userInfo.get("phoneNumber").getAsString();
-            String name = userInfo.get("name").getAsString();
+        if (memberInfo != null) {
+            String memberId = memberInfo.get("memberId").getAsString();
+            String email = memberInfo.get("email").getAsString();
+            String phoneNumber = memberInfo.get("phoneNumber").getAsString();
+            String name = memberInfo.get("name").getAsString();
 
             String phoneFirst = phoneNumber.substring(0, 3);
             String phoneMiddle = phoneNumber.substring(3, 7);
             String phoneLast = phoneNumber.substring(7);
 
-            User existingUser = memberService.findByPhoneNumber(phoneFirst, phoneMiddle);
-            boolean isExistingUser = false;
+            Member existingMember = memberService.findByPhoneNumber(phoneFirst, phoneMiddle);
+            boolean isExistingMember = false;
 
 
-            if (existingUser != null) {
-                String decryptedPhoneLast = encryptionService.decrypt(existingUser.getPhoneLast());
+            if (existingMember != null) {
+                String decryptedPhoneLast = encryptionService.decrypt(existingMember.getPhoneLast());
                 if (decryptedPhoneLast.equals(phoneLast)) {
-                    if (MemberCodeEnum.KAKAO.getValue().equals(existingUser.getSns())) {
+                    if (MemberCodeEnum.KAKAO.getValue().equals(existingMember.getSns())) {
                         //기존회원
-                        userId = existingUser.getUserId();
-                        isExistingUser = true;
-                    } else if (MemberCodeEnum.NAVER.getValue().equals(existingUser.getSns())) {
+                        memberId = existingMember.getMemberId();
+                        isExistingMember = true;
+                    } else if (MemberCodeEnum.NAVER.getValue().equals(existingMember.getSns())) {
                         System.out.println("네이버 계정 있움");
                         throw new SocialOauthException(ResultCodeEnum.NAVER_ACCOUNT_ALREADY_EXISTS.getMessage());
                     } else {
@@ -204,9 +204,9 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
                 }
             }
 
-            if (!isExistingUser) {
+            if (!isExistingMember) {
                 SocialMemberDTO socialMemberDTO = new SocialMemberDTO();
-                socialMemberDTO.setUserId(userId);
+                socialMemberDTO.setMemberId(memberId);
                 socialMemberDTO.setEmail(email);
                 socialMemberDTO.setName(name);
                 socialMemberDTO.setPhoneFirst(phoneFirst);
@@ -226,7 +226,7 @@ public class KaKaoOauthServiceImpl implements KakaoOauthService {
             session.setAttribute("kakaoAccessToken", accessToken);
             System.out.println("@@세션에 KakaoAccessToken 저장했습~");
 
-            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(userId, null);
+            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(memberId, null);
             LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, request, response);
             System.out.println("로그인 완료");
             return loginResponse;

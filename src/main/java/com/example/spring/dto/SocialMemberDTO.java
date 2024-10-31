@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SocialMemberDTO {
-    private String userId;
+    private String memberId;
     private String phoneFirst;
     private String phoneMiddle;
     private String phoneLast;

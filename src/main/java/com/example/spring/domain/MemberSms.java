@@ -11,7 +11,7 @@ public class MemberSms {
     String phoneFirst;
     String phoneMiddle;
     String phoneLast;
-    String userId;
+    String memberId;
     String phoneVerificationCode;
     String phoneVerifiedStatus;
 }

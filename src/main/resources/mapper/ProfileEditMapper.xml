@@ -5,15 +5,15 @@
 <mapper namespace="com.example.spring.mapper.ProfileEditMapper">
 
     <!-- 특정 사용자 ID로 프로필 정보를 조회하는 SQL -->
-    <select id="getProfileByUserId" parameterType="string" resultType="com.example.spring.dto.ProfileEditDTO">
+    <select id="getProfileByMemberId" parameterType="string" resultType="com.example.spring.dto.ProfileEditDTO">
         SELECT name, nickname, phone_first, phone_middle, phone_last, profile_image_url, birth_date
-        FROM USER
-        WHERE user_id = #{userId}
+        FROM MEMBER
+        WHERE member_id = #{memberId}
     </select>
 
     <!-- 특정 사용자 ID로 프로필 정보를 업데이트하는 SQL -->
     <update id="updateProfile">
-        UPDATE USER
+        UPDATE MEMBER
         SET name = #{profileEditDTO.name},
         nickname = #{profileEditDTO.nickname},
         phone_first = #{profileEditDTO.phoneFirst},
@@ -22,6 +22,6 @@
         profile_image_url = #{profileEditDTO.profileImageUrl},
         birth_date = #{profileEditDTO.birthDate},
         UPDATED_AT = CURRENT_TIMESTAMP()
-        WHERE user_id = #{userId}
+        WHERE member_id = #{memberId}
     </update>
 </mapper>

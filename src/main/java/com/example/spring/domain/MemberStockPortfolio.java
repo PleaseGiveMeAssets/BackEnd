@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserStockPortfolio {
+public class MemberStockPortfolio {
     private int stockId;
     private String stockName;
     private String shortCode;

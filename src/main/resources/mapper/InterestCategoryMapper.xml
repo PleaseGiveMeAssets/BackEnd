@@ -12,18 +12,18 @@
     </select>
 
     <!-- 사용자가 등록한 관심 세부 카테고리 불러오기 -->
-    <select id="getUserSubCategories" resultType="com.example.spring.dto.InterestCategoryDTO">
+    <select id="getMemberSubCategories" resultType="com.example.spring.dto.InterestCategoryDTO">
         SELECT mc.MAIN_CATEGORY_ID, mc.MAIN_CATEGORY_NAME, sc.SUB_CATEGORY_ID, sc.SUB_CATEGORY_NAME
         FROM MAIN_CATEGORY mc
         JOIN SUB_CATEGORY sc ON mc.MAIN_CATEGORY_ID = sc.MAIN_CATEGORY_ID
         JOIN INTEREST_CATEGORY ic ON ic.SUB_CATEGORY_ID = sc.SUB_CATEGORY_ID
-        WHERE ic.USER_ID = #{userId}
+        WHERE ic.MEMBER_ID = #{memberId}
     </select>
 
     <!-- 사용자가 등록한 관심 세부 카테고리 삭제 -->
     <delete id="deleteSubCategory">
         DELETE FROM INTEREST_CATEGORY
-        WHERE USER_ID = #{userId} AND SUB_CATEGORY_ID = #{subCategoryId}
+        WHERE MEMBER_ID = #{memberId} AND SUB_CATEGORY_ID = #{subCategoryId}
     </delete>
 
     <!-- 메인 카테고리에 따른 세부 카테고리 전체 불러오기-->
@@ -35,8 +35,8 @@
 
     <!-- 세부 카테고리 관심 목록에 저장 -->
     <insert id="saveInterestCategory">
-        INSERT INTO INTEREST_CATEGORY (USER_ID, SUB_CATEGORY_ID, CREATED_AT)
-        VALUES (#{userId}, #{subCategoryId}, NOW())
+        INSERT INTO INTEREST_CATEGORY (MEMBER_ID, SUB_CATEGORY_ID, CREATED_AT)
+        VALUES (#{memberId}, #{subCategoryId}, NOW())
     </insert>
 
 </mapper>

@@ -6,22 +6,22 @@
 <mapper namespace="com.example.spring.mapper.NotificationMapper">
 
     <!-- 특정 사용자의 알림 목록 불러오기 -->
-    <select id="getNotificationsByUserId" resultType="Notification">
-        SELECT NOTIFICATION_ID, USER_ID, MESSAGE, MESSAGE_TYPE, READED, CREATED_AT, UPDATED_AT
+    <select id="getNotificationsByMemberId" resultType="Notification">
+        SELECT NOTIFICATION_ID, MEMBER_ID, MESSAGE, MESSAGE_TYPE, READED, CREATED_AT, UPDATED_AT
         FROM NOTIFICATION
-        WHERE USER_ID = #{userId}
+        WHERE MEMBER_ID = #{memberId}
     </select>
 
     <!-- 특정 알림 삭제 -->
     <delete id="deleteNotificationById">
         DELETE FROM NOTIFICATION
-        WHERE NOTIFICATION_ID = #{notificationId} AND USER_ID = #{userId}
+        WHERE NOTIFICATION_ID = #{notificationId} AND MEMBER_ID = #{memberId}
     </delete>
 
     <!-- 특정 사용자의 모든 알림 삭제 -->
-    <delete id="deleteAllNotificationsByUserId">
+    <delete id="deleteAllNotificationsByMemberId">
         DELETE FROM NOTIFICATION
-        WHERE USER_ID = #{userId}
+        WHERE MEMBER_ID = #{memberId}
     </delete>
 
 </mapper>

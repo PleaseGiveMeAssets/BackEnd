@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTotalStockPortfolioPowerDTO {
+public class MemberTotalStockPortfolioPowerDTO {
     private double totalInvestedAmount;
     private double totalProfitLossAmount;
     private double totalProfitLossPercentage;
