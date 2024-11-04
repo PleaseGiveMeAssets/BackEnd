@@ -29,8 +29,8 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public List<ForChartDTO> getOrderList(String userId) {
-        List<Stock> stockList = portfolioMapper.selectListPortfolioByUserId(userId);
+    public List<ForChartDTO> getOrderList(String memberId) {
+        List<Stock> stockList = portfolioMapper.selectListPortfolioByMemberId(memberId);
 
         if (stockList.isEmpty()) {
             throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
@@ -75,20 +75,20 @@ public class PortfolioServiceImpl implements PortfolioService {
      * <p>
      * 사용자가 해당 종목을 얼만큼 보유하고 있는지 조회하는 메소드이다.
      *
-     * @param userId
+     * @param memberId
      * @param stockId
      * @return PortfolioSummaryDTO
      */
     @Override
-    public OrderSummaryDTO getOrderSummary(String userId, Long stockId) {
+    public OrderSummaryDTO getOrderSummary(String memberId, Long stockId) {
         Stock stock = stockMapper.findByStockId(stockId);
         if (stock == null)
             throw new IllegalArgumentException("Stock not found");
         Long recentPrice = stockHistoryMapper.findRecentPriceByStockIdAndShortCode(stockId, stock.getShortCode());
-        List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByUserIdAndStockId(userId, stock.getStockId());
+        List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByMemberIdAndStockId(memberId, stock.getStockId());
         OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, recentPrice, null);
         log.info("exampleDTOList : {}", orderSummary);
-        log.info(System.getProperty("user.dir"));
+        log.info(System.getProperty("member.dir"));
         return orderSummary;
     }
 
@@ -98,11 +98,12 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public int createOrder(String userId, Long stockId, OrderDTO orderDTO) {
+    public int createOrder(String memberId, Long stockId, OrderDTO orderDTO) {
         String shortCode = stockMapper.findShortCodeByStockId(stockId);
+        log.info(memberId);
         if (shortCode == null)
             return 0;
-        return portfolioMapper.insert(userId, stockId, shortCode, orderDTO);
+        return portfolioMapper.insert(memberId, stockId, shortCode, orderDTO);
     }
 
     @Override
@@ -111,18 +112,18 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public int deleteALlOrder(String userId, Long stockId) {
-        return portfolioMapper.deleteAllOrder(userId, stockId);
+    public int deleteALlOrder(String memberId, Long stockId) {
+        return portfolioMapper.deleteAllOrder(memberId, stockId);
     }
 
     @Override
-    public OrderHistoryDTO getOrders(String userId, Long stockId) {
+    public OrderHistoryDTO getOrders(String memberId, Long stockId) {
         Stock stock = stockMapper.findByStockId(stockId);
         if (stock == null)
             throw new IllegalArgumentException("Stock not found");
         Long recentPrice = stockHistoryMapper.findRecentPriceByStockIdAndShortCode(stockId, stock.getShortCode());
 
-        List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByUserIdAndStockId(userId, stock.getStockId());
+        List<Portfolio> symbolTradeHistory = portfolioMapper.selectOrdersByMemberIdAndStockId(memberId, stock.getStockId());
         List<OrderDTO> orders = new ArrayList<>();
         OrderSummaryDTO orderSummary = makeSummary(stock, symbolTradeHistory, recentPrice, orders);
 

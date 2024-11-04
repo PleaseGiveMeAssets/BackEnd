@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface NaverOauthService {
     String getNaverAccessToken(String authorize_code, String state);
-    JsonObject getUserInfo(String access_Token);
+    JsonObject getMemberInfo(String access_Token);
     LoginResponseDTO processNaverLogin(String code, String state, HttpServletRequest request, HttpServletResponse response);
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PortfolioHistoryDTO {
-    private String userId;
+    private String memberId;
     private List<DailyStockProfitDTO> profitDTOList;
 //    private int portfolioId;
 //    private double dailyProfit;

@@ -20,8 +20,8 @@ public class DailyTrendServiceTest {
 
     @Test
     public void getDailyTrendInfo() {
-        String userId = "testUser1";
-        DailyTrendReportDTO dailyReportDTO = dailyTrendService.getDailyTrendInfo(userId);
+        String memberId = "testMember1";
+        DailyTrendReportDTO dailyReportDTO = dailyTrendService.getDailyTrendInfo(memberId);
         assertNotNull(dailyReportDTO);
     }
 }

@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class DailyTrendReportDTO {
     private Long dailyReportId;
-    private String userId;
+    private String memberId;
     private String recentTrendTitle;
     private String recentTrendContent;
     private String stockTrendTitle;

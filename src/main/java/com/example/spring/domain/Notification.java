@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Notification {
     private Long NotificationId;
-    private String UserId;
+    private String MemberId;
     private String message;
     private Character messageType;
     private Character readed;

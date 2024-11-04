@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.StockMapper">
-<select id="getUserStockPortfolio" resultType="com.example.spring.domain.UserStockPortfolio">
+<select id="getMemberStockPortfolio" resultType="com.example.spring.domain.MemberStockPortfolio">
     SELECT
         ut.STOCK_ID,
         s.STOCK_NAME,
@@ -29,7 +29,7 @@
                 SUM(CASE WHEN p.ORDER_TYPE = 'B' THEN p.PRICE * p.QUANTITY ELSE 0 END) AS total_purchase_amount,
                 SUM(CASE WHEN p.ORDER_TYPE = 'S' THEN p.QUANTITY ELSE 0 END) AS total_quantity_sold
             FROM PORTFOLIO p
-            WHERE p.USER_ID = #{userId}
+            WHERE p.MEMBER_ID = #{memberId}
             GROUP BY p.STOCK_ID
         ) ut
             JOIN STOCK s ON ut.STOCK_ID = s.STOCK_ID
@@ -46,7 +46,7 @@
     WHERE (ut.total_quantity_bought - ut.total_quantity_sold) > 0
 </select>
 
-    <select id="getUserStockPortfolioByDate" resultType="com.example.spring.domain.EditStockPortfolio">
+    <select id="getMemberStockPortfolioByDate" resultType="com.example.spring.domain.EditStockPortfolio">
         SELECT
         ut.STOCK_ID,
         s.STOCK_NAME,
@@ -66,7 +66,7 @@
         SUM(CASE WHEN p.ORDER_TYPE = 'B' THEN p.PRICE * p.QUANTITY ELSE 0 END) AS total_purchase_amount,
         SUM(CASE WHEN p.ORDER_TYPE = 'S' THEN p.QUANTITY ELSE 0 END) AS total_quantity_sold
         FROM PORTFOLIO p
-        WHERE p.USER_ID = #{userId}
+        WHERE p.MEMBER_ID = #{memberId}
         -- 특정 날짜 이전까지의 데이터 필터링
         AND p.ORDERED_AT &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
         GROUP BY p.STOCK_ID

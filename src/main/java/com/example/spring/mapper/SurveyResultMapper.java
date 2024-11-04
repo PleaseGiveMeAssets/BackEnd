@@ -7,14 +7,14 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SurveyResultMapper {
 
-    // 총 점수를 조회하는 메서드 (userId 파라미터 제거)
-    int getTotalScore(String userId);
+    // 총 점수를 조회하는 메서드 (memberId 파라미터 제거)
+    int getTotalScore(String memberId);
 
     // 점수에 따른 투자 유형을 조회하는 메서드
     InvestmentTypeDTO getInvestmentTypeByScore(int totalScore);
 
-    // 기존 투자 유형 답변을 조회하는 메서드 (userId 파라미터 제거)
-    Long getInvestmentTypeByUserId(String userId);
+    // 기존 투자 유형 답변을 조회하는 메서드 (memberId 파라미터 제거)
+    Long getInvestmentTypeByMemberId(String memberId);
 
     // 투자 유형 답변을 삽입하는 메서드
     int insertInvestmentTypeAnswer(InvestmentTypeAnswer newAnswer);
@@ -25,5 +25,5 @@ public interface SurveyResultMapper {
     // 투자 유형 ID로 해당 투자 유형의 상세 정보를 조회하는 메서드
     InvestmentTypeDTO getInvestmentTypeDetails(Long investmentTypeId);
 
-    String getUserNickname(String userId);
+    String getMemberNickname(String memberId);
 }

@@ -10,18 +10,18 @@ import java.util.List;
 
 @Mapper
 public interface PortfolioMapper {
-    int insert(@Param("userId") String userId, @Param("stockId") Long stockId, @Param("shortCode") String shortCode, @Param("orderDTO") OrderDTO orderDTO);
+    int insert(@Param("memberId") String memberId, @Param("stockId") Long stockId, @Param("shortCode") String shortCode, @Param("orderDTO") OrderDTO orderDTO);
 
     int update(@Param("portfolioId") Long portfolioId, @Param("orderDTO") OrderDTO orderDTO);
 
-    List<Portfolio> selectOrdersByUserIdAndStockId(@Param("userId") String userId, @Param("stockId") Long stockId);
+    List<Portfolio> selectOrdersByMemberIdAndStockId(@Param("memberId") String memberId, @Param("stockId") Long stockId);
 
     // 특정 사용자에 대한 주문 정보를 가져오는 메서드
-    List<Portfolio> selectOrdersByUserId(@Param("userId") String userId);
+    List<Portfolio> selectOrdersByMemberId(@Param("memberId") String memberId);
 
-    List<Stock> selectListPortfolioByUserId(@Param("userId") String userId);
+    List<Stock> selectListPortfolioByMemberId(@Param("memberId") String memberId);
 
     int deleteOrdersByIds(List<Integer> orderIdList);
 
-    int deleteAllOrder(@Param("userId") String suerId, @Param("stockId") Long stockId);
+    int deleteAllOrder(@Param("memberId") String suerId, @Param("stockId") Long stockId);
 }

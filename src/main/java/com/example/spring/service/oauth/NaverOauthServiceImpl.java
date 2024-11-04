@@ -1,6 +1,6 @@
 package com.example.spring.service.oauth;
 
-import com.example.spring.domain.User;
+import com.example.spring.domain.Member;
 import com.example.spring.dto.LoginRequestDTO;
 import com.example.spring.dto.LoginResponseDTO;
 import com.example.spring.dto.SocialMemberDTO;
@@ -107,9 +107,9 @@ public class NaverOauthServiceImpl implements NaverOauthService {
     }
 
     @Override
-    public JsonObject getUserInfo(String access_Token) {
+    public JsonObject getMemberInfo(String access_Token) {
         String reqURL = "https://openapi.naver.com/v1/nid/me"; // Access 토큰으로 유저 정보를 요청하는 API
-        JsonObject userInfo = new JsonObject();
+        JsonObject memberInfo = new JsonObject();
 
         try {
             URL url = new URL(reqURL);
@@ -135,20 +135,20 @@ public class NaverOauthServiceImpl implements NaverOauthService {
             System.out.println(response.toString());
 
             if (response.has("response")) {
-                JsonObject userResponse = response.getAsJsonObject("response");
-                if (userResponse.has("id") && userResponse.has("email") && userResponse.has("mobile") && userResponse.has("name")) {
-                    String id = userResponse.get("id").getAsString();
-                    String email = userResponse.get("email").getAsString();
-                    String mobile = userResponse.get("mobile").getAsString();
-                    String name = userResponse.get("name").getAsString();
+                JsonObject memberResponse = response.getAsJsonObject("response");
+                if (memberResponse.has("id") && memberResponse.has("email") && memberResponse.has("mobile") && memberResponse.has("name")) {
+                    String id = memberResponse.get("id").getAsString();
+                    String email = memberResponse.get("email").getAsString();
+                    String mobile = memberResponse.get("mobile").getAsString();
+                    String name = memberResponse.get("name").getAsString();
 
                     // 전화번호에서 하이픈 제거
                     String phoneNumber = mobile.replaceAll("-", "");
 
-                    userInfo.addProperty("userId", id);
-                    userInfo.addProperty("email", email);
-                    userInfo.addProperty("phoneNumber", phoneNumber);
-                    userInfo.addProperty("name", name);
+                    memberInfo.addProperty("memberId", id);
+                    memberInfo.addProperty("email", email);
+                    memberInfo.addProperty("phoneNumber", phoneNumber);
+                    memberInfo.addProperty("name", name);
 
                     System.out.println("네이버 ID : " + id);
                     System.out.println("네이버 이메일 : " + email);
@@ -166,39 +166,39 @@ public class NaverOauthServiceImpl implements NaverOauthService {
             e.printStackTrace();
         }
 
-        return userInfo;  // 오류 발생 시에도 수집된 정보 반환
+        return memberInfo;  // 오류 발생 시에도 수집된 정보 반환
     }
 
     @Override
     public LoginResponseDTO processNaverLogin(String code, String state, HttpServletRequest request, HttpServletResponse response) {
         String accessToken = getNaverAccessToken(code, state);
-        JsonObject userInfo = getUserInfo(accessToken);
+        JsonObject memberInfo = getMemberInfo(accessToken);
 
-        System.out.println("userInfo2: " + userInfo.toString());
+        System.out.println("memberInfo2: " + memberInfo.toString());
 
-        if (userInfo != null) {
-            String userId = userInfo.get("userId").getAsString();
-            String email = userInfo.get("email").getAsString();
-            String phoneNumber = userInfo.get("phoneNumber").getAsString();
-            String name = userInfo.get("name").getAsString();
+        if (memberInfo != null) {
+            String memberId = memberInfo.get("memberId").getAsString();
+            String email = memberInfo.get("email").getAsString();
+            String phoneNumber = memberInfo.get("phoneNumber").getAsString();
+            String name = memberInfo.get("name").getAsString();
 
             String phoneFirst = phoneNumber.substring(0, 3);
             String phoneMiddle = phoneNumber.substring(3, 7);
             String phoneLast = phoneNumber.substring(7);
 
-            User existingUser = memberService.findByPhoneNumber(phoneFirst, phoneMiddle);
-            boolean isExistingUser = false;
+            Member existingMember = memberService.findByPhoneNumber(phoneFirst, phoneMiddle);
+            boolean isExistingMember = false;
 
 
-            System.out.println("userInfo 안 비었돠");
-            if (existingUser != null) {
-                String decryptedPhoneLast = encryptionService.decrypt(existingUser.getPhoneLast());
+            System.out.println("memberInfo 안 비었돠");
+            if (existingMember != null) {
+                String decryptedPhoneLast = encryptionService.decrypt(existingMember.getPhoneLast());
                 if (decryptedPhoneLast.equals(phoneLast)) {
-                    if (MemberCodeEnum.NAVER.getValue().equals(existingUser.getSns())) {
+                    if (MemberCodeEnum.NAVER.getValue().equals(existingMember.getSns())) {
                         //기존회원
-                        userId = existingUser.getUserId();
-                        isExistingUser = true;
-                    } else if (MemberCodeEnum.KAKAO.getValue().equals(existingUser.getSns())) {
+                        memberId = existingMember.getMemberId();
+                        isExistingMember = true;
+                    } else if (MemberCodeEnum.KAKAO.getValue().equals(existingMember.getSns())) {
                         System.out.println("카카오 계정 있움");
                         throw new SocialOauthException(ResultCodeEnum.KAKAO_ACCOUNT_ALREADY_EXISTS.getMessage());
                     } else {
@@ -208,9 +208,9 @@ public class NaverOauthServiceImpl implements NaverOauthService {
                 }
             }
 
-            if (!isExistingUser) {
+            if (!isExistingMember) {
                 SocialMemberDTO socialMemberDTO = new SocialMemberDTO();
-                socialMemberDTO.setUserId(userId);
+                socialMemberDTO.setMemberId(memberId);
                 socialMemberDTO.setEmail(email);
                 socialMemberDTO.setName(name);
                 socialMemberDTO.setPhoneFirst(phoneFirst);
@@ -226,7 +226,7 @@ public class NaverOauthServiceImpl implements NaverOauthService {
 
             }
 
-            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(userId, null);
+            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(memberId, null);
             LoginResponseDTO loginResponse = memberService.socialLogin(loginRequestDTO, request, response);
             System.out.println("로그인 완료");
             return loginResponse;

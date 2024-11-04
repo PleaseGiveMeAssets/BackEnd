@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Setting {
     private Long settingId;
-    private String userId;
+    private String memberId;
     private Character modeCode;
     private Character homeNavigationCode;
     private Timestamp createdAt;

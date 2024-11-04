@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class InvestmentTypeAnswer {
 
-    private String userId;
+    private String memberId;
     private Long investmentTypeId;
     private Timestamp createdAt;
     private Timestamp updatedAt;

@@ -9,9 +9,9 @@ import java.util.List;
 
 @Mapper
 public interface SavedNewsMapper {
-    List<News> findAllSavedNewsByUserId(String userId);
+    List<News> findAllSavedNewsByMemberId(String memberId);
 
     void save(SavedNews savedNews);
 
-    void deleteByUserIdAndSavedNewsId(@Param("userId") String userId, @Param("savedNewsId") Long savedNewsId);
+    void deleteByMemberIdAndSavedNewsId(@Param("memberId") String memberId, @Param("savedNewsId") Long savedNewsId);
 }

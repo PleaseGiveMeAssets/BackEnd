@@ -22,8 +22,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<NotificationDTO> getNotificationsByUserId(String userId) {
-        List<Notification> notifications = notificationMapper.getNotificationsByUserId(userId);
+    public List<NotificationDTO> getNotificationsByMemberId(String memberId) {
+        List<Notification> notifications = notificationMapper.getNotificationsByMemberId(memberId);
         if (log.isInfoEnabled()) {
             log.info("hi : {}", notifications.get(0).getMessageType());
         }
@@ -33,20 +33,20 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void deleteNotificationById(int notificationId, String userId) {
-        notificationMapper.deleteNotificationById(notificationId, userId);
+    public void deleteNotificationById(int notificationId, String memberId) {
+        notificationMapper.deleteNotificationById(notificationId, memberId);
     }
 
     @Override
-    public void deleteAllNotificationsByUserId(String userId) {
-        notificationMapper.deleteAllNotificationsByUserId(userId);
+    public void deleteAllNotificationsByMemberId(String memberId) {
+        notificationMapper.deleteAllNotificationsByMemberId(memberId);
     }
 
     // VO를 DTO로 변환하는 메서드
     private NotificationDTO convertToDTO(Notification notification) {
         NotificationDTO notificationDTO = new NotificationDTO();
         notificationDTO.setNotificationId(notification.getNotificationId());
-        notificationDTO.setUserId(notification.getUserId());
+        notificationDTO.setMemberId(notification.getMemberId());
         notificationDTO.setMessage(notification.getMessage());
         notificationDTO.setMessageType(notification.getMessageType());
         notificationDTO.setReaded(notification.getReaded());

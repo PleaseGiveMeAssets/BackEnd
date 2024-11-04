@@ -27,14 +27,14 @@ public class InterestCategoryServiceImpl implements InterestCategoryService {
 
     // 사용자가 등록한 관심 세부 카테고리 불러오기
     @Override
-    public List<InterestCategoryDTO> getUserSubCategories(String userId) {
-        return interestCategoryMapper.getUserSubCategories(userId);
+    public List<InterestCategoryDTO> getMemberSubCategories(String memberId) {
+        return interestCategoryMapper.getMemberSubCategories(memberId);
     }
 
     // 사용자가 등록한 관심 세부 카테고리 삭제
     @Override
-    public int deleteSubCategory(String userId, int subCategoryId) {
-        return interestCategoryMapper.deleteSubCategory(userId, subCategoryId);
+    public int deleteSubCategory(String memberId, int subCategoryId) {
+        return interestCategoryMapper.deleteSubCategory(memberId, subCategoryId);
     }
 
     // 메인 카테고리에 따른 세부 카테고리 목록 불러오기
@@ -45,7 +45,7 @@ public class InterestCategoryServiceImpl implements InterestCategoryService {
 
     // 사용자가 선택한 세부 카테고리 저장
     @Override
-    public void saveInterestCategory(String userId, int subCategoryId) {
-        interestCategoryMapper.saveInterestCategory(userId, subCategoryId);
+    public void saveInterestCategory(String memberId, int subCategoryId) {
+        interestCategoryMapper.saveInterestCategory(memberId, subCategoryId);
     }
 }

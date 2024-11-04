@@ -1,6 +1,6 @@
 package com.example.spring.domain;
 
-import com.example.spring.vo.UserAnswerVO;
+import com.example.spring.vo.MemberAnswerVO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +17,5 @@ public class QuestionOption {
     private Double score;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private UserAnswerVO userAnswerVO;
+    private MemberAnswerVO memberAnswerVO;
 }

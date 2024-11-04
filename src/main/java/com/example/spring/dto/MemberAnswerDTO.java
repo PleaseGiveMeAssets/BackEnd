@@ -3,8 +3,8 @@ package com.example.spring.dto;
 import lombok.Data;
 
 @Data
-public class UserAnswerDTO {
-//    private String userId;
+public class MemberAnswerDTO {
+//    private String memberId;
     private Long questionId;
     private Long optionId;
 }

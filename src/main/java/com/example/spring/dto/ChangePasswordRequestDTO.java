@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTotalStockPortfolioPowerDTO {
-    private double totalInvestedAmount;
-    private double totalProfitLossAmount;
-    private double totalProfitLossPercentage;
+public class ChangePasswordRequestDTO {
+    private String memberId;
+    private String password;
+    private String passwordConfirmation;
 }

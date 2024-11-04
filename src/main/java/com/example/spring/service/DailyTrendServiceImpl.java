@@ -27,8 +27,8 @@ public class DailyTrendServiceImpl implements DailyTrendService {
     }
 
     @Override
-    public DailyTrendReportDTO getDailyTrendInfo(String userId) {
-        List<DailyReport> dailyReportList = dailyReportMapper.selectDailyReportByUserId(userId);
+    public DailyTrendReportDTO getDailyTrendInfo(String memberId) {
+        List<DailyReport> dailyReportList = dailyReportMapper.selectDailyReportByMemberId(memberId);
 
         if (dailyReportList.isEmpty()) {
             throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
@@ -40,7 +40,7 @@ public class DailyTrendServiceImpl implements DailyTrendService {
 
         DailyTrendReportDTO dailyTrendReportDTO = new DailyTrendReportDTO();
         dailyTrendReportDTO.setDailyReportId(dailyReportList.get(0).getDailyReportId());
-        dailyTrendReportDTO.setUserId(dailyReportList.get(0).getUserId());
+        dailyTrendReportDTO.setMemberId(dailyReportList.get(0).getMemberId());
         dailyTrendReportDTO.setRecentTrendTitle(dailyReportList.get(0).getRecentTrendTitle());
         dailyTrendReportDTO.setRecentTrendContent(dailyReportList.get(0).getRecentTrendContent());
         dailyTrendReportDTO.setStockTrendTitle(dailyReportList.get(0).getStockTrendTitle());

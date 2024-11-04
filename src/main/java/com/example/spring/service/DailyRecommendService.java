@@ -5,5 +5,5 @@ import com.example.spring.dto.DailyStockDTO;
 import java.util.List;
 
 public interface DailyRecommendService {
-    public List<DailyStockDTO> getDailyRecommendStockInfo(String userId, String date);
+    public List<DailyStockDTO> getDailyRecommendStockInfo(String memberId, String date);
 }

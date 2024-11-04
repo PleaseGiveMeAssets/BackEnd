@@ -32,7 +32,7 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
     }
 
     @Override
-    public List<TotalStockInfoDTO> getStockPortfolioInfo(String userId) {
+    public List<TotalStockInfoDTO> getStockPortfolioInfo(String memberId) {
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         String currentYear = today.format(DateTimeFormatter.ofPattern("yyyy"));
 
@@ -54,7 +54,7 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
 
         String startDateFormat = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + MemberCodeEnum.START_TIME.getValue();
         String endDateFormat = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + MemberCodeEnum.END_TIME.getValue();
-        List<TotalStockInfoDTO> totalStockInfoDTOList = portfolioHistoryMapper.selectListStockPortfolioByUserId(userId, startDateFormat, endDateFormat);
+        List<TotalStockInfoDTO> totalStockInfoDTOList = portfolioHistoryMapper.selectListStockPortfolioByMemberId(memberId, startDateFormat, endDateFormat);
 
         if (totalStockInfoDTOList == null || totalStockInfoDTOList.isEmpty()) {
             throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
@@ -79,7 +79,7 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
     }
 
     @Override
-    public List<TotalInvestedSumStockPortfolio> getUserStockPortfolioTotalInvestedAmountByDate(String userId) {
+    public List<TotalInvestedSumStockPortfolio> getMemberStockPortfolioTotalInvestedAmountByDate(String memberId) {
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         String currentYear = today.format(DateTimeFormatter.ofPattern("yyyy"));
 
@@ -101,7 +101,7 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
 
         String startDateFormat = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + MemberCodeEnum.START_TIME.getValue();
         String endDateFormat = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + MemberCodeEnum.END_TIME.getValue();
-        List<TotalInvestedSumStockPortfolio> totalInvestedSumStockPortfolioList = portfolioHistoryMapper.getUserStockPortfolioTotalInvestedAmountByDate(userId, startDateFormat, endDateFormat);
+        List<TotalInvestedSumStockPortfolio> totalInvestedSumStockPortfolioList = portfolioHistoryMapper.getMemberStockPortfolioTotalInvestedAmountByDate(memberId, startDateFormat, endDateFormat);
         if (totalInvestedSumStockPortfolioList == null || totalInvestedSumStockPortfolioList.isEmpty()) {
             throw new NoSuchElementException(ResultCodeEnum.NO_EXIST_DATA.getMessage());
         }
@@ -124,9 +124,9 @@ public class PortfolioHistoryServiceImpl implements PortfolioHistoryService {
     }
 
     @Override
-    public List<StockPortfolioDTO> getStockPortfolioInfoByDate(String userId) {
-        List<TotalStockInfoDTO> stockPortfolioDTOList = getStockPortfolioInfo(userId);
-        List<TotalInvestedSumStockPortfolio> totalInvestedSumStockPortfolioList = getUserStockPortfolioTotalInvestedAmountByDate(userId);
+    public List<StockPortfolioDTO> getStockPortfolioInfoByDate(String memberId) {
+        List<TotalStockInfoDTO> stockPortfolioDTOList = getStockPortfolioInfo(memberId);
+        List<TotalInvestedSumStockPortfolio> totalInvestedSumStockPortfolioList = getMemberStockPortfolioTotalInvestedAmountByDate(memberId);
 
         List<StockPortfolioDTO> portfolioDTOList = new ArrayList<>();
         int sizegap = totalInvestedSumStockPortfolioList.size() - stockPortfolioDTOList.size();

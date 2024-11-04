@@ -25,29 +25,29 @@ public class SurveyResultServiceImpl implements SurveyResultService {
         this.surveyResultMapper = surveyResultMapper;
     }
 
-    // JWT 토큰에서 userId를 추출하는 메서드
-    private String getUserIdFromToken() {
+    // JWT 토큰에서 memberId를 추출하는 메서드
+    private String getMemberIdFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();  // JWT 토큰에서 userId 추출
+        return authentication.getName();  // JWT 토큰에서 memberId 추출
     }
 
     @Override
     public int getTotalScore() {
-        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
+        String memberId = getMemberIdFromToken();  // JWT 토큰에서 memberId 추출
         try {
-            int totalScore = surveyResultMapper.getTotalScore(userId);
-            log.info("Total score for userId {}: {}", userId, totalScore);
+            int totalScore = surveyResultMapper.getTotalScore(memberId);
+            log.info("Total score for memberId {}: {}", memberId, totalScore);
             return totalScore;
         } catch (Exception e) {
-            log.error("Error while calculating total score for userId: {}", userId, e);
-            throw new TotalScoreCalculationException("Failed to calculate total score for userId: " + userId, e);
+            log.error("Error while calculating total score for memberId: {}", memberId, e);
+            throw new TotalScoreCalculationException("Failed to calculate total score for memberId: " + memberId, e);
         }
     }
 
     @Override
     @Transactional
-    public InvestmentTypeAnswerDTO getInvestmentTypeByUserId() {
-        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
+    public InvestmentTypeAnswerDTO getInvestmentTypeByMemberId() {
+        String memberId = getMemberIdFromToken();  // JWT 토큰에서 memberId 추출
         try {
             // 총 점수 계산
             int totalScore = getTotalScore();
@@ -65,63 +65,63 @@ public class SurveyResultServiceImpl implements SurveyResultService {
 
             // InvestmentTypeAnswerDTO로 반환
             InvestmentTypeAnswerDTO answerDTO = new InvestmentTypeAnswerDTO();
-            answerDTO.setUserId(userId);
+            answerDTO.setMemberId(memberId);
             answerDTO.setInvestmentTypeId(investmentType.getInvestmentTypeId());
 
-            log.info("Investment type answer for userId {}: {}", userId, investmentType.getInvestmentTypeId());
+            log.info("Investment type answer for memberId {}: {}", memberId, investmentType.getInvestmentTypeId());
             return answerDTO;
         } catch (Exception e) {
-            log.error("Error while retrieving investment type answer for userId: {}", userId, e);
-            throw new InvestmentTypeAnswerProcessingException("Failed to get investment type answer for userId: " + userId, e);
+            log.error("Error while retrieving investment type answer for memberId: {}", memberId, e);
+            throw new InvestmentTypeAnswerProcessingException("Failed to get investment type answer for memberId: " + memberId, e);
         }
     }
 
     @Override
     public void insertOrUpdateInvestmentTypeAnswer(Long investmentTypeId) {
-        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
+        String memberId = getMemberIdFromToken();  // JWT 토큰에서 memberId 추출
         try {
             // 기존 답변이 있는지 확인
-            Long existingInvestmentTypeId = surveyResultMapper.getInvestmentTypeByUserId(userId);
+            Long existingInvestmentTypeId = surveyResultMapper.getInvestmentTypeByMemberId(memberId);
 
             if (existingInvestmentTypeId != null) {
                 // 기존 답변이 있을 경우 updatedAt만 수정
-                InvestmentTypeAnswer existingAnswer = new InvestmentTypeAnswer(userId, investmentTypeId, null, new Timestamp(System.currentTimeMillis()));
+                InvestmentTypeAnswer existingAnswer = new InvestmentTypeAnswer(memberId, investmentTypeId, null, new Timestamp(System.currentTimeMillis()));
                 int result = surveyResultMapper.updateInvestmentTypeAnswer(existingAnswer);
 
                 if (result <= 0) {
-                    log.error("Failed to update InvestmentTypeAnswer for userId: {}", userId);
-                    throw new InvestmentTypeAnswerProcessingException("Failed to update investment type answer for userId: " + userId);
+                    log.error("Failed to update InvestmentTypeAnswer for memberId: {}", memberId);
+                    throw new InvestmentTypeAnswerProcessingException("Failed to update investment type answer for memberId: " + memberId);
                 }
 
-                log.info("Successfully updated InvestmentTypeAnswer for userId: {}", userId);
+                log.info("Successfully updated InvestmentTypeAnswer for memberId: {}", memberId);
             } else {
                 // 기존 답변이 없을 경우 createdAt만 설정하여 새로 삽입
-                InvestmentTypeAnswer newAnswer = new InvestmentTypeAnswer(userId, investmentTypeId, new Timestamp(System.currentTimeMillis()), null);
+                InvestmentTypeAnswer newAnswer = new InvestmentTypeAnswer(memberId, investmentTypeId, new Timestamp(System.currentTimeMillis()), null);
                 int result = surveyResultMapper.insertInvestmentTypeAnswer(newAnswer);
 
                 if (result <= 0) {
-                    log.error("Failed to insert InvestmentTypeAnswer for userId: {}", userId);
-                    throw new InvestmentTypeAnswerProcessingException("Failed to insert investment type answer for userId: " + userId);
+                    log.error("Failed to insert InvestmentTypeAnswer for memberId: {}", memberId);
+                    throw new InvestmentTypeAnswerProcessingException("Failed to insert investment type answer for memberId: " + memberId);
                 }
 
-                log.info("Successfully inserted InvestmentTypeAnswer for userId: {}", userId);
+                log.info("Successfully inserted InvestmentTypeAnswer for memberId: {}", memberId);
             }
 
         } catch (Exception e) {
-            log.error("Error while saving investment type answer for userId: {}", userId, e);
-            throw new InvestmentTypeAnswerProcessingException("An error occurred while saving the investment type answer for userId: " + userId, e);
+            log.error("Error while saving investment type answer for memberId: {}", memberId, e);
+            throw new InvestmentTypeAnswerProcessingException("An error occurred while saving the investment type answer for memberId: " + memberId, e);
         }
     }
 
     @Override
     public InvestmentTypeDTO getInvestmentTypeDetails() {
-        String userId = getUserIdFromToken();  // JWT 토큰에서 userId 추출
+        String memberId = getMemberIdFromToken();  // JWT 토큰에서 memberId 추출
         // Long 타입의 투자 유형 ID 조회
-        Long investmentTypeId = surveyResultMapper.getInvestmentTypeByUserId(userId);
+        Long investmentTypeId = surveyResultMapper.getInvestmentTypeByMemberId(memberId);
 
         if (investmentTypeId == null) {
-            log.info("Investment type ID not found for userId: {}", userId);
-            throw new ResourceNotFoundException("Investment type not found for userId: " + userId);
+            log.info("Investment type ID not found for memberId: {}", memberId);
+            throw new ResourceNotFoundException("Investment type not found for memberId: " + memberId);
         }
 
         // 투자 유형 상세 정보 조회
@@ -132,19 +132,19 @@ public class SurveyResultServiceImpl implements SurveyResultService {
             throw new ResourceNotFoundException("Investment type details not found for ID: " + investmentTypeId);
         }
 
-        log.info("Investment type details for userId {}: {}", userId, investmentTypeDTO.getInvestmentTypeName());
+        log.info("Investment type details for memberId {}: {}", memberId, investmentTypeDTO.getInvestmentTypeName());
         return investmentTypeDTO;
     }
 
     @Override
-    public String getUserNickname(String userId) {
+    public String getMemberNickname(String memberId) {
         try {
-            String nickname = surveyResultMapper.getUserNickname(userId); // Mapper를 통해 닉네임 조회
-            log.info("User nickname for userId {}: {}", userId, nickname);
+            String nickname = surveyResultMapper.getMemberNickname(memberId); // Mapper를 통해 닉네임 조회
+            log.info("Member nickname for memberId {}: {}", memberId, nickname);
             return nickname;
         } catch (Exception e) {
-            log.error("Error while retrieving nickname for userId: {}", userId, e);
-            throw new RuntimeException("Failed to get nickname for userId: " + userId);
+            log.error("Error while retrieving nickname for memberId: {}", memberId, e);
+            throw new RuntimeException("Failed to get nickname for memberId: " + memberId);
         }
     }
 }

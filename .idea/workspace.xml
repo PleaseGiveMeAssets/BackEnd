@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 추천 등락률 버그 수정">
+    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 프리티어 데이터베이스 추가">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/InterestCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/controller/InterestCategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/config/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +62,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/Downloads/Backend-Key.pem" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -225,10 +229,13 @@
       <workItem from="1728742387895" duration="1550000" />
       <workItem from="1728828380806" duration="7089000" />
       <workItem from="1728882032757" duration="22000" />
-      <workItem from="1729090572087" duration="232000" />
-      <workItem from="1729138286222" duration="43000" />
-      <workItem from="1730651411566" duration="68000" />
-      <workItem from="1730688809223" duration="4344000" />
+      <workItem from="1729153340601" duration="1058000" />
+      <workItem from="1730047919955" duration="20000" />
+      <workItem from="1730188641180" duration="1224000" />
+      <workItem from="1730384821654" duration="77000" />
+      <workItem from="1730643732278" duration="24000" />
+      <workItem from="1730646776492" duration="2262000" />
+      <workItem from="1730695459808" duration="57000" />
     </task>
     <task id="LOCAL-00002" summary="fix : 추천 등락률 버그 수정">
       <option name="closed" value="true" />
@@ -238,7 +245,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728988096842</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix : 정렬 쿼리 수정">
+      <option name="closed" value="true" />
+      <created>1729008006845</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729008006845</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix : 프리티어 데이터베이스 추가">
+      <option name="closed" value="true" />
+      <created>1730653012982</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730653012982</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,6 +273,8 @@
     <MESSAGE value="fix : 소셜로그인 컨트롤러 배포" />
     <MESSAGE value="fix : 코스닥 및 코스피 데이터 타입 변경" />
     <MESSAGE value="fix : 추천 등락률 버그 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : 추천 등락률 버그 수정" />
+    <MESSAGE value="fix : 정렬 쿼리 수정" />
+    <MESSAGE value="fix : 프리티어 데이터베이스 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix : 프리티어 데이터베이스 추가" />
   </component>
 </project>

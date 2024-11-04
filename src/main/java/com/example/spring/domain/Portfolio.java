@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Portfolio {
     private Long portfolioId;
-    private String userId;
+    private String memberId;
     private Long stockId;
     private String shortCode;
     private Long price;

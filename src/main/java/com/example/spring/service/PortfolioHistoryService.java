@@ -7,7 +7,7 @@ import com.example.spring.dto.TotalStockInfoDTO;
 import java.util.List;
 
 public interface PortfolioHistoryService {
-    List<TotalStockInfoDTO> getStockPortfolioInfo(String userId);
-    List<TotalInvestedSumStockPortfolio> getUserStockPortfolioTotalInvestedAmountByDate(String userId);
-    List<StockPortfolioDTO> getStockPortfolioInfoByDate(String userId);
+    List<TotalStockInfoDTO> getStockPortfolioInfo(String memberId);
+    List<TotalInvestedSumStockPortfolio> getMemberStockPortfolioTotalInvestedAmountByDate(String memberId);
+    List<StockPortfolioDTO> getStockPortfolioInfoByDate(String memberId);
 }

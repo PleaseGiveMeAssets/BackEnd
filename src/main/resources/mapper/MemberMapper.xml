@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.spring.mapper.UserMapper">
-    <resultMap id="userResultMap" type="User">
-        <id property="userId" column="USER_ID"/>
+<mapper namespace="com.example.spring.mapper.MemberMapper">
+    <resultMap id="memberResultMap" type="Member">
+        <id property="memberId" column="MEMBER_ID"/>
         <result property="password" column="PASSWORD"/>
         <result property="phoneFirst" column="PHONE_FIRST"/>
         <result property="phoneMiddle" column="PHONE_MIDDLE"/>
@@ -20,13 +20,13 @@
         <result property="updatedAt" column="UPDATED_AT"/>
     </resultMap>
 
-    <!-- User 정보를 가져오는 resultMap -->
-    <resultMap id="selectUserProfileResultMap" type="User" autoMapping="false">
+    <!-- Member 정보를 가져오는 resultMap -->
+    <resultMap id="selectMemberProfileResultMap" type="Member" autoMapping="false">
         <constructor>
-            <idArg column="user_id" javaType="String"/>
+            <idArg column="member_id" javaType="String"/>
             <arg column="profile_image_url" javaType="String"/>
             <arg column="nickname" javaType="String"/>
-            <arg column="user_name" javaType="String"/>
+            <arg column="member_name" javaType="String"/>
         </constructor>
         <association property="investmentType" javaType="com.example.spring.domain.InvestmentType">
             <id column="investment_type_id" javaType="Integer"/>
@@ -35,92 +35,92 @@
     </resultMap>
 
     <!-- 사용자 프로필을 조회하는 쿼리 -->
-    <select id="selectUserProfile" parameterType="string" resultMap="selectUserProfileResultMap">
-        SELECT u.USER_ID AS user_id,
+    <select id="selectMemberProfile" parameterType="string" resultMap="selectMemberProfileResultMap">
+        SELECT u.MEMBER_ID AS member_id,
         u.NICKNAME AS nickname,
         u.PROFILE_IMAGE_URL AS profile_image_url,
-        u.NAME AS user_name,
+        u.NAME AS member_name,
         it.INVESTMENT_TYPE_NAME AS investment_type_name
-        FROM USER u
-        LEFT JOIN INVESTMENT_TYPE_ANSWER ita ON u.USER_ID = ita.USER_ID
+        FROM MEMBER u
+        LEFT JOIN INVESTMENT_TYPE_ANSWER ita ON u.MEMBER_ID = ita.MEMBER_ID
         LEFT JOIN INVESTMENT_TYPE it ON ita.INVESTMENT_TYPE_ID = it.INVESTMENT_TYPE_ID
-        WHERE u.USER_ID = #{userId}
+        WHERE u.MEMBER_ID = #{memberId}
     </select>
 
 
-    <select id="selectUserById" parameterType="string" resultType="int">
+    <select id="selectMemberById" parameterType="string" resultType="int">
         SELECT COUNT(*)
-        FROM USER
-        WHERE USER_ID = #{userId}
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
     </select>
 
-    <insert id="insertUser" parameterType="MemberDTO">
-        INSERT INTO USER (USER_ID, PASSWORD, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, PHONE_VERIFICATION_CODE, NAME,
+    <insert id="insertMember" parameterType="MemberDTO">
+        INSERT INTO MEMBER (MEMBER_ID, PASSWORD, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, PHONE_VERIFICATION_CODE, NAME,
         EMAIL, EMAIL_VERIFICATION_CODE)
-        VALUES (#{userId}, #{password}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{phoneVerificationCode}, #{name},
+        VALUES (#{memberId}, #{password}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{phoneVerificationCode}, #{name},
         #{email}, #{emailVerificationCode})
     </insert>
 
-    <insert id="insertSocialUser" parameterType="SocialMemberDTO">
-        INSERT INTO USER (USER_ID, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, NAME, EMAIL, SNS)
-        VALUES (#{userId}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{name}, #{email}, #{sns})
+    <insert id="insertSocialMember" parameterType="SocialMemberDTO">
+        INSERT INTO MEMBER (MEMBER_ID, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, NAME, EMAIL, SNS)
+        VALUES (#{memberId}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{name}, #{email}, #{sns})
     </insert>
 
     <!--아이디와 휴대폰 번호로 회원찾기-->
-    <select id="findMemberByNameAndPhone" parameterType="FindIdRequestDTO" resultType="User">
+    <select id="findMemberByNameAndPhone" parameterType="FindIdRequestDTO" resultType="Member">
         SELECT *
-        FROM USER
+        FROM MEMBER
         WHERE NAME = #{name}
         AND PHONE_FIRST = #{phoneFirst}
         AND PHONE_MIDDLE = #{phoneMiddle}
     </select>
 
-    <select id="selectUserByIdAndNameAndPhone" parameterType="FindPasswordRequestDTO" resultType="User">
+    <select id="selectMemberByIdAndNameAndPhone" parameterType="FindPasswordRequestDTO" resultType="Member">
         SELECT *
-        FROM USER
-        WHERE USER_ID = #{userId}
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
         AND NAME = #{name}
         AND PHONE_FIRST = #{phoneFirst}
         AND PHONE_MIDDLE = #{phoneMiddle}
     </select>
 
     <update id="updatePasswordById" parameterType="map">
-        UPDATE USER SET PASSWORD = #{password}, UPDATED_AT = CURRENT_TIMESTAMP() WHERE USER_ID = #{userId}
+        UPDATE MEMBER SET PASSWORD = #{password}, UPDATED_AT = CURRENT_TIMESTAMP() WHERE MEMBER_ID = #{memberId}
     </update>
 
-    <select id="findByUserId" resultType="User">
-        SELECT * FROM USER WHERE USER_ID = #{userId}
+    <select id="findByMemberId" resultType="Member">
+        SELECT * FROM MEMBER WHERE MEMBER_ID = #{memberId}
     </select>
 
-    <select id="findMemberByPhoneNumber" resultType="User">
-        SELECT * FROM USER
+    <select id="findMemberByPhoneNumber" resultType="Member">
+        SELECT * FROM MEMBER
         WHERE PHONE_FIRST = #{phoneFirst}
         AND PHONE_MIDDLE = #{phoneMiddle}
     </select>
 
     <update id="incrementPasswordFailureCount" parameterType="String">
-        UPDATE USER
+        UPDATE MEMBER
         SET PASSWORD_FAILURE_COUNT = PASSWORD_FAILURE_COUNT + 1, UPDATED_AT = CURRENT_TIMESTAMP()
-        WHERE USER_ID = #{userId}
+        WHERE MEMBER_ID = #{memberId}
     </update>
 
     <update id="resetPasswordFailureCount" parameterType="String">
-        UPDATE USER
+        UPDATE MEMBER
         SET PASSWORD_FAILURE_COUNT = 0, UPDATED_AT = CURRENT_TIMESTAMP()
-        WHERE USER_ID = #{userId}
+        WHERE MEMBER_ID = #{memberId}
     </update>
 
     <!-- survey_status 업데이트 -->
     <update id="updateSurveyStatus">
-        UPDATE USER
+        UPDATE MEMBER
         SET survey_status = #{surveyStatus}
-        WHERE user_id = #{userId}
+        WHERE member_id = #{memberId}
     </update>
 
     <!-- survey_status 조회 -->
     <select id="getSurveyStatus" resultType="String">
-        SELECT survey_status FROM USER
-        WHERE user_id = #{userId}
+        SELECT survey_status FROM MEMBER
+        WHERE member_id = #{memberId}
     </select>
 
 </mapper>

@@ -18,7 +18,10 @@ public interface MemberService {
     List<Map<String, Object>> findIdByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
 
     // 비밀번호 찾기
-    int findPassword(FindPasswordRequestDTO findPasswordRequestDTO);
+    void findPassword(FindPasswordRequestDTO findPasswordRequestDTO);
+
+    // 비밀번호 변경
+    int changePassword(ChangePasswordRequestDTO changePasswordRequestDTO);
 
     // 로그인
     LoginResponseDTO login(LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response);
