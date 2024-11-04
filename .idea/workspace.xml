@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 정렬 쿼리 수정">
+    <list default="true" id="f0afdb7c-cf20-4a87-93c1-3d1121ada246" name="Changes" comment="fix : 프리티어 데이터베이스 추가">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/spring/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/spring/config/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,6 +230,7 @@
       <workItem from="1730384821654" duration="77000" />
       <workItem from="1730643732278" duration="24000" />
       <workItem from="1730646776492" duration="2262000" />
+      <workItem from="1730695459808" duration="57000" />
     </task>
     <task id="LOCAL-00002" summary="fix : 추천 등락률 버그 수정">
       <option name="closed" value="true" />
@@ -247,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729008006845</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix : 프리티어 데이터베이스 추가">
+      <option name="closed" value="true" />
+      <created>1730653012982</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730653012982</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,6 +269,7 @@
     <MESSAGE value="fix : 코스닥 및 코스피 데이터 타입 변경" />
     <MESSAGE value="fix : 추천 등락률 버그 수정" />
     <MESSAGE value="fix : 정렬 쿼리 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : 정렬 쿼리 수정" />
+    <MESSAGE value="fix : 프리티어 데이터베이스 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix : 프리티어 데이터베이스 추가" />
   </component>
 </project>
