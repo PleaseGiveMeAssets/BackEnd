@@ -24,7 +24,7 @@ public interface MemberMapper {
     // 아이디찾기
     List<Member> findMemberByNameAndPhone(FindIdRequestDTO findIdRequestDTO);
 
-    Member selectMemberByIdAndNameAndPhone(FindPasswordRequestDTO findPasswordRequestDTO);
+    List<Member> selectMemberByIdAndNameAndPhone(FindPasswordRequestDTO findPasswordRequestDTO);
 
     int updatePasswordById(@Param("memberId") String memberId, @Param("password") String password);
 

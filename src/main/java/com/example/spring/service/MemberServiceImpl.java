@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -148,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 비밀번호 찾기
     @Override
-    public int findPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
+    public void findPassword(FindPasswordRequestDTO findPasswordRequestDTO) {
         if (log.isInfoEnabled()) {
             log.info("findPassword findPasswordRequestDTO : {}", findPasswordRequestDTO.toString());
         }
@@ -157,29 +158,50 @@ public class MemberServiceImpl implements MemberService {
         checkVerifyCodeForFindPassword(findPasswordRequestDTO);
 
         // 아이디, 이름, 휴대폰번호로 유저 정보가 존재하는지 조회
-        Member member = memberMapper.selectMemberByIdAndNameAndPhone(findPasswordRequestDTO);
-        if (member == null) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        List<Member> members = memberMapper.selectMemberByIdAndNameAndPhone(findPasswordRequestDTO);
+        if (members.isEmpty()) {
+            throw new NoMatchingMemberException(ResultCodeEnum.NO_MATCHING_MEMBER.getMessage());
         }
 
-        // 핸드폰 번호 마지막 부분 복호화
-        String decryptedPhoneLast = encryptionService.decrypt(member.getPhoneLast());
-        log.info("입력한 핸드폰 번호 마지막 자리: {}", findPasswordRequestDTO.getPhoneLast());
-        log.info("MEMBER 핸드폰 번호 마지막 자리 복호화: {}", decryptedPhoneLast);
+        boolean isPasswordChanged = false;
 
-        if (!findPasswordRequestDTO.getPhoneLast().equals(decryptedPhoneLast)) {
-            // TODO 익셉션이랑 결과메시지 변경할 것
-            throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
+        for(Member user: members) {
+
+            String decryptedPhoneLast = encryptionService.decrypt(user.getPhoneLast());
+
+            if(decryptedPhoneLast.equals(findPasswordRequestDTO.getPhoneLast())) {
+                ChangePasswordRequestDTO changePasswordRequestDTO = new ChangePasswordRequestDTO();
+                changePasswordRequestDTO.setMemberId(user.getMemberId());
+                changePasswordRequestDTO.setPassword(findPasswordRequestDTO.getPassword());
+                changePasswordRequestDTO.setPasswordConfirmation(findPasswordRequestDTO.getPasswordConfirmation());
+                changePassword(changePasswordRequestDTO);
+                isPasswordChanged = true;
+                break;
+            }
         }
 
-        if (!findPasswordRequestDTO.getPassword().equals(findPasswordRequestDTO.getPasswordConfirmation())) {
+        if(!isPasswordChanged) {
+            throw new NoMatchingMemberException(ResultCodeEnum.NO_MATCHING_MEMBER.getMessage());
+        }
+    }
+
+    // 비밀번호 변경
+    @Override
+    public int changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+        String newPassword = changePasswordRequestDTO.getPassword();
+        if(newPassword.equals(changePasswordRequestDTO.getPasswordConfirmation())) {
+            String password = passwordEncoder.encode(newPassword);
+            memberMapper.updatePasswordById(changePasswordRequestDTO.getMemberId(), password);
+            return 1;
+        }
+
+        if (!changePasswordRequestDTO.getPassword().equals(changePasswordRequestDTO.getPasswordConfirmation())) {
             // TODO 익셉션이랑 결과메시지 변경할 것
             throw new PasswordMismatchException(ResultCodeEnum.INVALID_CREDENTIALS.getMessage());
         }
 
         // DB에서 아이디, 이름, 휴대폰번호로 비밀번호 변경
-        return memberMapper.updatePasswordById(findPasswordRequestDTO.getMemberId(), passwordEncoder.encode(findPasswordRequestDTO.getPassword()));
+        return memberMapper.updatePasswordById(changePasswordRequestDTO.getMemberId(), passwordEncoder.encode(changePasswordRequestDTO.getPassword()));
     }
 
     // 로그인
