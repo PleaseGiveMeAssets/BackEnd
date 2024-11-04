@@ -35,10 +35,10 @@ public class InterestCategoryController {
     }
 
     // 세부 카테고리 삭제
-    @DeleteMapping("/{userId}/{subCategoryId}")
-    public String deleteSubCategory(@PathVariable String userId, @PathVariable int subCategoryId) {
-        log.info("카테고리 삭제 요청 - userId: {}, subCategoryId: {}", userId, subCategoryId);
-        int result = interestCategoryService.deleteSubCategory(userId, subCategoryId);
+    @DeleteMapping("/{subCategoryId}")
+    public String deleteSubCategory(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int subCategoryId) {
+        log.info("카테고리 삭제 요청 - userId: {}, subCategoryId: {}", userDetails, subCategoryId);
+        int result = interestCategoryService.deleteSubCategory(userDetails.getUsername(), subCategoryId);
         String message = result > 0 ? "삭제 성공" : "삭제 실패";
         log.info("카테고리 삭제 결과 - message: {}", message);
         return message;
