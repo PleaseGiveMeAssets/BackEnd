@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spring.mapper.PortfolioMapper">
+    <resultMap id="selectListPortfolioByMemberIdResultMap" type="Stock" autoMapping="true">
+        <id property="stockId" column="stockId"/>
+        <collection property="portfolioList" ofType="Portfolio" autoMapping="true">
+        </collection>
+    </resultMap>
+
+    <!-- 특정 사용자에 대한 주문 정보 조회 -->
+    <select id="selectOrdersByMemberId" parameterType="string" resultType="Portfolio">
+        SELECT MEMBER_ID AS memberId, PRICE AS price, QUANTITY AS quantity
+        FROM `PORTFOLIO`
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <select id="selectOrdersByMemberIdAndStockId" parameterType="map" resultType="Portfolio">
+        SELECT *
+        FROM PORTFOLIO
+        WHERE STOCK_ID = #{stockId}
+        AND MEMBER_ID = #{memberId}
+        ORDER BY ORDERED_AT ASC, ORDER_TYPE ASC
+<!--        ORDER BY ORDERED_AT ASC, CREATED_AT ASC;-->
+    </select>
+    <insert id="insert" parameterType="map">
+        INSERT INTO PORTFOLIO
+        ( MEMBER_ID, STOCK_ID, SHORT_CODE, PRICE, QUANTITY, MEMO, ORDER_TYPE, ORDERED_AT)
+        VALUES
+        ( #{memberId}, #{stockId}, #{shortCode}, #{orderDTO.price}, #{orderDTO.quantity},
+        #{orderDTO.memo}, #{orderDTO.orderType}, #{orderDTO.orderedAt})
+    </insert>
+    <update id="update" parameterType="map">
+        UPDATE PORTFOLIO
+        SET
+        PRICE = #{orderDTO.price},
+        QUANTITY = #{orderDTO.quantity},
+        MEMO = #{orderDTO.memo},
+        ORDER_TYPE = #{orderDTO.orderType},
+        ORDERED_AT = #{orderDTO.orderedAt},
+        UPDATED_AT = CURRENT_TIMESTAMP()
+        WHERE
+        PORTFOLIO_ID = #{portfolioId}
+    </update>
+    <delete id="deleteOrdersByIds" parameterType="list">
+        DELETE FROM PORTFOLIO
+        WHERE PORTFOLIO_ID IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteAllOrder" parameterType="map">
+        DELETE FROM PORTFOLIO
+        WHERE MEMBERID_ID = #{memberID} AND
+        STOCK_ID = #{stockId}
+    </delete>
+
+    <select id="selectListPortfolioByMemberId" parameterType="string" resultMap="selectListPortfolioByMemberIdResultMap">
+        SELECT s.STOCK_ID AS stockID
+        , s.SHORT_CODE AS shortCode
+        , s.STOCK_NAME AS stockName
+        , s.STOCK_TRADE_STATUS AS stockTradeStatus
+        , p.PORTFOLIO_ID AS portfolioId
+        , (SELECT CLOSED_PRICE
+        FROM STOCK_HISTORY sh
+        WHERE STOCK_HISTORY_ID = (SELECT MAX(STOCK_HISTORY_ID)
+        FROM STOCK_HISTORY sh
+        WHERE sh.STOCK_ID = s.STOCK_ID
+        AND sh.SHORT_CODE = s.SHORT_CODE)
+        AND sh.STOCK_ID = s.STOCK_ID
+        AND sh.SHORT_CODE = s.SHORT_CODE) AS closedPrice
+        , p.QUANTITY AS quantity
+        , p.ORDER_TYPE AS orderType
+        FROM STOCK s
+        JOIN PORTFOLIO p ON s.STOCK_ID = p.STOCK_ID
+        AND s.SHORT_CODE = p.SHORT_CODE
+        WHERE p.MEMBER_ID = #{memberId}
+    </select>
+</mapper>

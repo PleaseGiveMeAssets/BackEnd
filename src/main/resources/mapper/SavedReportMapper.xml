@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spring.mapper.SavedReportMapper">
+
+    <!-- 유저의 저장된 리포트 목록을 불러옴 -->
+    <select id="findAllSavedReportsByMemberId" parameterType="String" resultType="com.example.spring.domain.DailyReport">
+        SELECT dr.daily_report_id, dr.recent_trend_title, dr.stock_trend_title,dr.created_at, dr.updated_at,
+               sr.saved_report_id, sr.created_at as saved_at
+        FROM DAILY_REPORT dr
+                 JOIN SAVED_REPORT sr ON dr.daily_report_id = sr.daily_report_id
+        WHERE sr.member_id = #{memberId}
+        ORDER BY sr.created_at DESC
+    </select>
+
+    <!-- 리포트 저장 -->
+    <insert id="save" parameterType="com.example.spring.domain.SavedReport">
+        INSERT INTO SAVED_REPORT (daily_report_id, member_id, created_at, updated_at)
+        VALUES (#{dailyReportId}, #{memberId}, NOW(), NOW())
+    </insert>
+
+    <!-- 특정 유저의 특정 저장된 리포트 삭제 -->
+    <delete id="deleteByMemberIdAndSavedReportId" parameterType="map">
+        DELETE FROM SAVED_REPORT
+        WHERE member_id = #{memberId}
+          AND daily_report_id = #{dailyReportId}
+    </delete>
+</mapper>
+
+

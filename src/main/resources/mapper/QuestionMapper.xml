@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spring.mapper.QuestionMapper">
+
+    <!-- 질문 조회 -->
+    <select id="selectSurveyQuestion" parameterType="long" resultType="com.example.spring.domain.Question">
+        SELECT QUESTION_ID as questionId, CONTENT as content
+        FROM QUESTION
+        WHERE QUESTION_ID = #{questionId}
+    </select>
+
+    <!-- 특정 질문에 대한 옵션을 조회 -->
+    <select id="selectOptionsByQuestionId" parameterType="long" resultType="com.example.spring.domain.QuestionOption">
+        SELECT QUESTION_OPTION_ID as questionOptionId, QUESTION_ID as questionId, CONTENT as content, SCORE as score
+        FROM QUESTION_OPTION
+        WHERE QUESTION_ID = #{questionId}
+    </select>
+
+
+    <!-- 설문에 대한 총 질문 수 조회 -->
+    <select id="getTotalQuestionsCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM QUESTION
+    </select>
+
+
+</mapper>

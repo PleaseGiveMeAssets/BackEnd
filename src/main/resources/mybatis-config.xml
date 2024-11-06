@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="SLF4J"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.example.spring.domain.RecommendStock" alias="RecommendStock"/>
+        <typeAlias type="com.example.spring.domain.Stock" alias="Stock"/>
+        <typeAlias type="com.example.spring.domain.Portfolio" alias="Portfolio"/>
+        <typeAlias type="com.example.spring.domain.Notification" alias="Notification"/>
+        <typeAlias type="com.example.spring.domain.Member" alias="Member"/>
+        <typeAlias type="com.example.spring.domain.DailyReport" alias="DailyReport"/>
+        <typeAlias type="com.example.spring.domain.Question" alias="Question"/>
+        <typeAlias type="com.example.spring.domain.QuestionOption" alias="QuestionOption"/>
+        <typeAlias type="com.example.spring.vo.MemberAnswerVO" alias="MemberAnswerVO"/>
+        <typeAlias type="com.example.spring.dto.StockDTO" alias="StockDTO"/>
+        <typeAlias type="com.example.spring.domain.SavedNews" alias="SavedNews"/>
+        <typeAlias type="com.example.spring.dto.FindIdRequestDTO" alias="FindIdRequestDTO"/>
+        <typeAlias type="com.example.spring.dto.ForChartDTO" alias="ForChartDTO"/>
+        <typeAlias type="com.example.spring.dto.FindPasswordRequestDTO" alias="FindPasswordRequestDTO"/>
+        <typeAlias type="com.example.spring.domain.SelectedTerms" alias="SelectedTerms"/>
+        <typeAlias type="com.example.spring.domain.SavedReport" alias="SavedReport"/>
+        <typeAlias type="com.example.spring.dto.MemberDTO" alias="MemberDTO"/>
+        <typeAlias type="com.example.spring.dto.MemberProfileDTO" alias="MemberProfileDTO"/>
+        <typeAlias type="com.example.spring.dto.SocialMemberDTO" alias="SocialMemberDTO"/>
+        <typeAlias type="com.example.spring.domain.TermsOfUse" alias="TermsOfUse"/>
+        <typeAlias type="com.example.spring.domain.StockHistory" alias="StockHistory"/>
+        <typeAlias type="com.example.spring.domain.News" alias="News"/>
+        <typeAlias type="com.example.spring.dto.TotalStockInfoDTO" alias="TotalStockInfoDTO"/>
+        <typeAlias type="com.example.spring.dto.DailyStockDTO" alias="DailyStockDTO"/>
+        <typeAlias type="com.example.spring.dto.DailyRecommendStockDTO" alias="DailyRecommendStockDTO"/>
+        <typeAlias type="com.example.spring.dto.SmsDTO" alias="SmsDTO"/>
+        <typeAlias type="com.example.spring.domain.MemberSms" alias="MemberSms"/>
+        <typeAlias type="com.example.spring.domain.EditStockPortfolio" alias="EditStockPortfolio"/>
+        <typeAlias type="com.example.spring.domain.TotalInvestedSumStockPortfolio" alias="TotalInvestedSumStockPortfolio"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="mapper/DailyReportMapper.xml"/>
+        <mapper resource="mapper/InterestCategoryMapper.xml"/>
+        <mapper resource="mapper/NotificationMapper.xml"/>
+        <mapper resource="mapper/PortfolioMapper.xml"/>
+        <mapper resource="mapper/QuestionMapper.xml"/>
+        <mapper resource="mapper/SavedNewsMapper.xml"/>
+        <mapper resource="mapper/SavedReportMapper.xml"/>
+        <mapper resource="mapper/SearchMapper.xml"/>
+        <mapper resource="mapper/StockMapper.xml"/>
+        <mapper resource="mapper/MemberAnswerMapper.xml"/>
+        <mapper resource="mapper/MemberMapper.xml"/>
+        <mapper resource="mapper/InterestCategoryMapper.xml"/>
+        <mapper resource="mapper/ProfileEditMapper.xml"/>
+        <mapper resource="mapper/TermsOfUseMapper.xml"/>
+        <mapper resource="mapper/DailyReportMapper.xml"/>
+        <mapper resource="mapper/PortfolioHistoryMapper.xml"/>
+        <mapper resource="mapper/StockHistoryMapper.xml"/>
+        <mapper resource="mapper/MarketHolidayMapper.xml"/>
+        <mapper resource="mapper/SurveyResultMapper.xml"/>
+        <mapper resource="mapper/NewsMapper.xml"/>
+        <mapper resource="mapper/SearchDetailStockMapper.xml"/>
+        <mapper resource="mapper/MemberSmsMapper.xml"/>
+    </mappers>
+</configuration>
