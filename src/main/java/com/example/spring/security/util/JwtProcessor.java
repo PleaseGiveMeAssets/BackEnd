@@ -53,11 +53,17 @@ public class JwtProcessor {
 
     // JWT 검증(유효 기간 검증) - 해석 불가인 경우 예외 발생
     public boolean validateToken(String jwtToken) {
-        Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jwtToken);
-        return true;
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwtToken);
+
+            Date expirationDate = claims.getBody().getExpiration();
+            return expirationDate.after(new Date());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

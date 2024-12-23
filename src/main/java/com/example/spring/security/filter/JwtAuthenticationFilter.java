@@ -1,9 +1,10 @@
 package com.example.spring.security.filter;
 
-import com.example.spring.config.SecurityConfig;
 import com.example.spring.security.util.JwtProcessor;
+import com.example.spring.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,17 +27,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProcessor jwtProcessor;
     private final UserDetailsService userDetailsService;
 
+    @Autowired
+    private final RedisService redisService;
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    private Authentication getAuthentication(String token) {
+    private Authentication getAuthentication(HttpServletResponse response, String token) {
+        String username = jwtProcessor.getUsername(token);
+
         if (jwtProcessor.validateToken(token)) {
-            String username = jwtProcessor.getUsername(token);
             UserDetails principal = userDetailsService.loadUserByUsername(username);
             return new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
         } else {
-            return null;
+            String refreshToken = redisService.getRefreshToken(username);
+            if(!jwtProcessor.validateToken(refreshToken)){
+                return null;
+            }
+            String newAccessToken = jwtProcessor.generateToken(username);
+            String newRefreshToken = jwtProcessor.generateRefreshToken(username);
+            redisService.storeRefreshToken(username, newRefreshToken);
+            response.addCookie(new Cookie("accessToken", newAccessToken));
         }
+        return null;
+
     }
 
     @Override
@@ -50,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             // 토큰에서 사용자 정보 추출 및 Authentication 객체 구성 후 SecurityContext에 저장
-            Authentication authentication = getAuthentication(token);
+            Authentication authentication = getAuthentication(response, token);
             if (authentication != null) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
