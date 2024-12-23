@@ -39,10 +39,13 @@ public class MemberServiceImpl implements MemberService {
     private SmsService smsService;
     private JwtProcessor jwtProcessor;
 
+
     @Autowired
     private EncryptionService encryptionService;
     @Autowired
     private KaKaoOauthServiceImpl kaKaoOauthServiceImpl;
+    @Autowired
+    private RedisService redisService;
 
     @Autowired
     public MemberServiceImpl(MemberMapper memberMapper, TermsOfUseMapper termsOfUseMapper, PasswordEncoder passwordEncoder, SmsService smsService, JwtProcessor jwtProcessor) {
@@ -68,19 +71,19 @@ public class MemberServiceImpl implements MemberService {
         }
 
         // 이용약관 필수 체크
-        checkTermsOfUse(memberDTO);
+//        checkTermsOfUse(memberDTO);
 
         // 휴대폰 인증 체크
-        checkVerifyCodeForSignup(memberDTO);
+//        checkVerifyCodeForSignup(memberDTO);
 
         // 아이디 중복 체크
-        checkDuplicatedMemberId(memberDTO.getMemberId());
+//        checkDuplicatedMemberId(memberDTO.getMemberId());
 
         // 비밀번호 체크
         checkPassword(memberDTO);
 
         // 이메일 체크
-        checkEmailVerificationCode(memberDTO.getEmailVerificationCode());
+//        checkEmailVerificationCode(memberDTO.getEmailVerificationCode());
 
         // 회원가입
         log.info("핸드폰 번호 마지막 부분 암호화 시작 - 원본: {}", memberDTO.getPhoneLast());
@@ -90,9 +93,21 @@ public class MemberServiceImpl implements MemberService {
         memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
         memberDTO.setPhoneLast(encryptedPhoneLast);
 
-        return memberMapper.insertMember(memberDTO);
+        return registerMember(memberDTO);
     }
+    public int registerMember(MemberDTO member) {
+        int result = 0;
 
+        result += memberMapper.insertMember(member);
+        result += memberMapper.insertMemberSms(member);
+        result += memberMapper.insertMemberEmail(member);
+
+        if (result == 3) {
+            return 1;
+        } else {
+            throw new RuntimeException("회원 가입 중 오류가 발생했습니다.");
+        }
+    }
     @Override
     public int socialSignup(SocialMemberDTO socialMemberDTO) {
         return memberMapper.insertSocialMember(socialMemberDTO);
@@ -247,20 +262,9 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtProcessor.generateToken(authentication.getName());
         String refreshToken = jwtProcessor.generateRefreshToken(authentication.getName());
 
-        // Refresh Token을 HTTP-Only 쿠키로 설정
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        if (request.isSecure()) {
-            refreshTokenCookie.setHttpOnly(false);
-            refreshTokenCookie.setSecure(true);
-        } else {
-            refreshTokenCookie.setHttpOnly(true);
-            refreshTokenCookie.setSecure(false);
-        }
-        refreshTokenCookie.setPath("/"); // 쿠키 경로
-        refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
-        response.addCookie(refreshTokenCookie);
+        redisService.storeRefreshToken(member.getMemberId(), refreshToken);
 
-        return new LoginResponseDTO(accessToken, null);
+        return new LoginResponseDTO(accessToken);
     }
 
     // 소셜로그인
@@ -303,7 +307,7 @@ public class MemberServiceImpl implements MemberService {
         refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
         response.addCookie(refreshTokenCookie);
 
-        return new LoginResponseDTO(accessToken, null);
+        return new LoginResponseDTO(accessToken);
     }
 
 
@@ -523,7 +527,7 @@ public class MemberServiceImpl implements MemberService {
                 refreshTokenCookie.setPath("/"); // 쿠키 경로
                 refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // 쿠키 유효시간 (15일)
                 response.addCookie(refreshTokenCookie);
-                return new LoginResponseDTO(accessToken, null);
+                return new LoginResponseDTO(accessToken);
             } else {
                 throw new SessionExpiredException(ResultCodeEnum.SESSION_EXPIRATION.getMessage());
             }
