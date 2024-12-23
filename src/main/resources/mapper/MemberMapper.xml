@@ -55,10 +55,18 @@
     </select>
 
     <insert id="insertMember" parameterType="MemberDTO">
-        INSERT INTO MEMBER (MEMBER_ID, PASSWORD, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, PHONE_VERIFICATION_CODE, NAME,
-        EMAIL, EMAIL_VERIFICATION_CODE)
-        VALUES (#{memberId}, #{password}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{phoneVerificationCode}, #{name},
-        #{email}, #{emailVerificationCode})
+        INSERT INTO MEMBER (MEMBER_ID, PASSWORD, NAME)
+        VALUES (#{memberId}, #{password}, #{name})
+    </insert>
+
+    <insert id="insertMemberSms" parameterType="MemberDTO">
+        INSERT INTO MEMBER_SMS (MEMBER_ID, PHONE_FIRST, PHONE_MIDDLE, PHONE_LAST, PHONE_VERIFICATION_CODE)
+        VALUES (#{memberId}, #{phoneFirst}, #{phoneMiddle}, #{phoneLast}, #{phoneVerificationCode})
+    </insert>
+
+    <insert id="insertMemberEmail" parameterType="MemberDTO">
+        INSERT INTO MEMBER_EMAIL (MEMBER_ID, EMAIL, EMAIL_VERIFICATION_CODE)
+        VALUES (#{memberId}, #{email}, #{emailVerificationCode})
     </insert>
 
     <insert id="insertSocialMember" parameterType="SocialMemberDTO">

@@ -17,7 +17,9 @@ public interface MemberMapper {
 
     int selectMemberById(String memberId);
 
-    int insertMember(MemberDTO memberDTO);
+    int insertMember(MemberDTO member);
+    int insertMemberSms(MemberDTO member);
+    int insertMemberEmail(MemberDTO member);
 
     int insertSocialMember(SocialMemberDTO socialMemberDTO);
 
